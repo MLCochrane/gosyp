@@ -5,6 +5,6 @@ import type { Application } from 'express';
 // import config from '../config';
 export default ({ app }: { app: Application }) => {
   app.get('/', (req, res) => {
-    res.send('<h1>Hello World</h1>');
+    res.sendFile(`${global.appRoot}/public/index.html`);
   });
 };

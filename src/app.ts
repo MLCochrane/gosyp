@@ -1,32 +1,34 @@
 import 'reflect-metadata'; // We need this in order to use @Decorators
+import path from 'path';
+import http from 'http';
 import express from 'express';
 import config from './config';
 import Logger from './loaders/logger';
 
 async function startServer() {
-	const app = express();
+  global.appRoot = path.resolve(__dirname);
+  const app = express();
+  const httpServer = http.createServer(app);
 
-	/**
-	 * A little hack here
-	 * Import/Export can only be used in 'top-level code'
-	 * Well, at least in node 10 without babel and at the time of writing
-	 * So we are using good old require.
-	 **/
-	await import('./loaders').then(res => {
-		res.default({ expressApp: app });
-	});
+  await import('./loaders').then((res) => {
+    res.default({
+      expressApp: app,
+      httpServer,
+    });
+  });
 
-	app.listen(config.port, (err) => {
-		if (err) {
-			Logger.error(err);
-			process.exit(1);
-		}
-		Logger.info(`
+  httpServer.listen(config.port, () => {
+    Logger.info(`
       ################################################
       🛡️  Server listening on port: ${config.port} 🛡️
       ################################################
     `);
-	});
+  });
+
+  httpServer.on('error', (err: Error) => {
+    Logger.error(err);
+    process.exit(1);
+  });
 }
 
 startServer();
