@@ -6,21 +6,25 @@ import { socket } from '../../api';
 import Form from './Form';
 
 const Feed = () => {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<Message[]>([]);
+
   useEffect(() => {
-    socket.on('connection', (data) => {
+    socket.on('connection', (data: string) => {
       console.log('hi');
     });
 
-    socket.on('userJoined', (data) => {
+    socket.on('userJoined', (data: string) => {
       console.log(data);
     });
 
-    socket.on('chatMessage', (msg) => {
+    socket.on('chatMessage', (msg: Message) => {
       setMessages(currentMessages => [...currentMessages, msg]);
     });
 
-    return () => socket.disconnect();
+    // If not wrapped it will return a value.
+    return () => {
+      socket.disconnect();
+    }
   }, []);
 
   return (
@@ -41,5 +45,3 @@ const Feed = () => {
   )
 }
 export default Feed;
-Feed.propTypes = {
-};

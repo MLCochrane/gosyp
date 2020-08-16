@@ -8,11 +8,11 @@ import {
 const Form = () => {
   const [message, setMessage] = useState('');
 
-  const handleChange = ({ target }) => {
+  const handleChange = ({ target } : { target: HTMLInputElement }) => {
     setMessage(target.value);
   }
 
-  const formSubmit = (e) => {
+  const formSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     socket.emit('chatMessage', message);

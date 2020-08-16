@@ -39,6 +39,11 @@
     ]
   },
   "devDependencies": {
+    "@types/enzyme": "^3.10.5",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
+    "@types/react": "^16.9.46",
+    "@types/react-dom": "^16.9.8",
+    "@types/socket.io-client": "^1.4.33",
     "axios-mock-adapter": "^1.18.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
@@ -50,6 +55,7 @@
     "node-sass": "^4.14.1",
     "path-to-regexp": "^6.1.0",
     "prop-types": "^15.7.2",
-    "react-test-renderer": "^16.13.1"
+    "react-test-renderer": "^16.13.1",
+    "typescript": "^3.9.7"
   }
 }
