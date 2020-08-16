@@ -1,0 +1,62 @@
+input, textarea {
+  margin: 0;
+  border: none;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+textarea {
+  // removes whitespace at bottom - similar to img
+  display: block;
+}
+
+select {
+  cursor: pointer;
+}
+
+.form-field {
+  margin-bottom: ($padding / 2);
+  &__label, &__input-wrap {
+    display: inline-block;
+    vertical-align: top;
+    font-family: $mainFont;
+  }
+  &__input-wrap {
+    border: 2px solid $white;
+    width: 80%;
+    &.has-error {
+      border: 2px solid $red;
+    }
+  }
+  &__label {
+    padding: ($padding / 2) 0;
+    width: 20%;
+  }
+  &__input {
+    padding: ($padding / 2) - 4px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  &__helper {
+    display: inline-block;
+    font-size: 14px;
+    padding: 10px 0 10px 10px;
+    line-height: 1;
+  }
+}
+
+.btn {
+  cursor: pointer;
+  padding: 15px 24px;
+  font-family: $altFont;
+  font-size: 16px;
+  line-height: 1;
+  text-transform: uppercase;
+  background-color: $lime;
+  color: $blue;
+  border: none;
+  &--disabled {
+    cursor: not-allowed;
+    background-color: $lightBlue;
+  }
+}

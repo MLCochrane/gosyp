@@ -1,0 +1,77 @@
+.heading {
+  &-1 {
+    font-family: $mainFont;
+    font-size: 42px;
+    line-height: percentage(96/80);
+    @include media-query($med) {
+      font-size: 64px;
+    }
+    @include media-query($xlarge) {
+      font-size: 80px;
+    }
+  }
+
+  &-2 {
+    font-family: $mainFont;
+    font-size: 28px;
+    line-height: percentage(64/48);
+    @include media-query($med) {
+      font-size: 34px;
+    }
+    @include media-query($xlarge) {
+      font-size: 48px;
+    }
+  }
+
+  &-3 {
+    font-family: $mainFont;
+    font-size: 21px;
+    @include media-query($med) {
+      font-size: 24px;
+    }
+  }
+
+  &-4 {
+    font-family: $mainFont;
+    font-size: 21px;
+  }
+
+  &-5 {
+    font-family: $mainFont;
+    font-size: 16px;
+  }
+}
+
+.alt-header {
+  font-family: $altFont;
+  font-size: 16px;
+  text-transform: uppercase;
+  line-height: percentage(21/16);
+}
+
+.feat-header {
+  font-size: 36px;
+  font-family: $mainFont;
+  line-height: percentage(88/72);
+  @include media-query($med) {
+    font-size: 48px;
+  }
+  @include media-query($xlarge) {
+    font-size: 72px;
+  }
+}
+
+.block-title {
+  font-family: $mainFont;
+  font-size: 36px;
+  line-height: percentage(48/36);
+}
+
+p {
+  font-family: $mainFont;
+  font-size: 18px;
+  line-height: percentage(42/21);
+  @include media-query($med) {
+    font-size: 21px;
+  }
+}

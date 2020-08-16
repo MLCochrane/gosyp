@@ -1,0 +1,30 @@
+.wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 $padding;
+  @include media-query($xlarge) {
+    max-width: $wrapperWidth+(2 * $padding);
+  }
+  &--no-pad {
+    padding: 0;
+  }
+  &--wide {
+    max-width: $wrapperBigWidth;
+  }
+  &--small {
+    max-width: $wrapperSmallWidth+(2 * $padding);
+  }
+}
+
+.screen-reader-text {
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute !important;
+  width: 1px;
+  word-wrap: normal !important;
+}

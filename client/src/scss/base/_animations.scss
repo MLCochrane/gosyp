@@ -1,0 +1,13 @@
+.has-anim {
+  transition: transform 400ms, opacity 400ms;
+}
+
+.is-hidden {
+  transform: translateY(100px);
+  opacity: 0;
+}
+
+.is-seen {
+  transform: translateY(0);
+  opacity: 1;
+}
