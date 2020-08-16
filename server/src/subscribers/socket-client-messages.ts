@@ -29,6 +29,7 @@ export default function socketClientMessages({
     */
     io.to(room).emit(Events.chatMessage, {
       id: (Math.random() + 1).toString(36).substring(7),
+      timestamp: Date.now(),
       msg,
       userId: socket.id,
     });

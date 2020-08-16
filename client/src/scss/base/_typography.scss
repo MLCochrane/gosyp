@@ -42,35 +42,23 @@
   }
 }
 
-.alt-header {
-  font-family: $altFont;
-  font-size: 16px;
-  text-transform: uppercase;
-  line-height: percentage(21/16);
-}
-
-.feat-header {
-  font-size: 36px;
-  font-family: $mainFont;
-  line-height: percentage(88/72);
-  @include media-query($med) {
-    font-size: 48px;
-  }
-  @include media-query($xlarge) {
-    font-size: 72px;
-  }
-}
-
-.block-title {
-  font-family: $mainFont;
-  font-size: 36px;
-  line-height: percentage(48/36);
-}
-
-p {
-  font-family: $mainFont;
+.alt-type {
   font-size: 18px;
-  line-height: percentage(42/21);
+  color: $grey;
+  line-height: percentage(24/18);
+}
+
+.meta-type {
+  font-size: 18px;
+  color: $grey;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+}
+
+p, .body-type {
+  font-family: $mainFont;
+  font-size: 24px;
+  line-height: percentage(30/24);
   @include media-query($med) {
     font-size: 21px;
   }

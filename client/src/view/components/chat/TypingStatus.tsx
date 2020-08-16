@@ -1,7 +1,7 @@
 import React, {
   useEffect, useState,
 } from 'react';
-import TypingUpdate from './lib/events/typingStatus';
+import TypingUpdate from '../lib/events/typingStatus';
 
 const TypingStatus = () => {
   const [isTyping] = TypingUpdate();
@@ -9,13 +9,13 @@ const TypingStatus = () => {
 
   useEffect(() => {
     if (isTyping) {
-      setTypingStatus('Someone is typing');
+      setTypingStatus('Someone is typing...');
     }
 
     return () => setTypingStatus('');
   }, [isTyping]);
   return (
-    <div className="typing-status">
+    <div className="typing-status chat__component alt-type">
       { typingStatus }
     </div>
   )

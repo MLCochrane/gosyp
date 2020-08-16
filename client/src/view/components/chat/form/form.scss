@@ -1,0 +1,26 @@
+@import "src/scss/base/variables";
+@import "src/scss/base/mixins";
+
+.form-wrapper {
+  width: 100%;
+  border-top: 2px solid black;
+
+  form {
+    display: flex;
+  }
+
+  input, textarea {
+    width: 90%;
+    border: 1px solid;
+    background: none;
+    color: $white;
+    padding: $padding / 2;
+    &::placeholder {
+      color: $grey;
+    }
+  }
+
+  button {
+    width: 10%;
+  }
+}

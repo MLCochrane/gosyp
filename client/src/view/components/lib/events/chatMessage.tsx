@@ -7,6 +7,7 @@ export default () => {
     id: '',
     msg: '',
     userId: '',
+    timestamp: new Date(''),
   });
   useEffect(() => {
     socket.on('chatMessage', (msg: ChatMessage) => {

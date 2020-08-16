@@ -52,11 +52,8 @@ select {
   font-size: 16px;
   line-height: 1;
   text-transform: uppercase;
-  background-color: $lime;
-  color: $blue;
   border: none;
   &--disabled {
     cursor: not-allowed;
-    background-color: $lightBlue;
   }
 }

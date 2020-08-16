@@ -1,14 +1,14 @@
 import React from 'react';
-import Feed from './components/Feed';
-import Form from './components/Form';
-import TypingStatus from './components/TypingStatus';
+import Chat from './components/chat/Chat';
+import Sidebar from './components/sidebar/Sidebar';
 
 const App = () => {
   return (
     <div className="app">
-      <Feed />
-      <TypingStatus />
-      <Form />
+      <div className="page-content">
+        <Sidebar />
+        <Chat />
+      </div>
     </div>
   );
 };

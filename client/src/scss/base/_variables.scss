@@ -1,5 +1,5 @@
 // TYPOGRAPHY
-$mainFont: monospace;
+$mainFont: 't26-carbon', monospace;;
 $altFont: 'SohneBreit', Helvetica, Arial, sans-serif;
 
 // LAYOUT
@@ -9,13 +9,10 @@ $wrapperSmallWidth: 800px;
 $padding: 20px;
 
 // COLORS
-$black: #000;
-$white: #fff;
-$grey: #E2E4E8;
-$green: #9BE6B2;
-$lime: #DDE182;
-$blue: #0254C2;
-$lightBlue: #C5C9D2;
+$black: #141414;
+$white: #FFFCF9;
+$grey: rgba(#B1B1B1, 0.8);
+$pink: #EF476F;
 $red: #FF3F2F;
 
 // media

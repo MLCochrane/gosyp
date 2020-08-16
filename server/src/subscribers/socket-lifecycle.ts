@@ -17,6 +17,7 @@ export default function socketLifecylce({
   socket.join(room, () => {
     socket.broadcast.to(room).emit(Events.userJoined, {
       user: socket.id,
+      timestamp: Date.now(),
     });
   });
 
@@ -25,6 +26,7 @@ export default function socketLifecylce({
     logger.info('user disconnected');
     io.to(room).emit(Events.userLeft, {
       user: socket.id,
+      timestamp: Date.now(),
     });
   });
 }

@@ -2,11 +2,12 @@ import { socket } from '../../../../api';
 import { useEffect, useState } from 'react';
 
 export const UserJoined = () => {
-	const [user, setUser] = useState<User>({
-    user: null,
+	const [user, setUser] = useState<UserAction>({
+		user: null,
+		timestamp: new Date(''),
   });
 	useEffect(() => {
-		socket.on('userJoined', (data: User) => {
+		socket.on('userJoined', (data: UserAction) => {
 			setUser(data);
 		});
 	}, []);
@@ -15,11 +16,12 @@ export const UserJoined = () => {
 };
 
 export const UserLeft = () => {
-  const [user, setUser] = useState<User>({
-    user: null,
+  const [user, setUser] = useState<UserAction>({
+		user: null,
+		timestamp: new Date(''),
   });
 	useEffect(() => {
-		socket.on('userLeft', (data: User) => {
+		socket.on('userLeft', (data: UserAction) => {
 			setUser(data);
 		});
 	}, []);

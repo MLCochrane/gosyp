@@ -5,7 +5,7 @@ module.exports = {
     jest: true,
   },
   extends: 'airbnb',
-  parser: 'babel-eslint',
+  parser: '@typescript-eslint/parser',
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -14,7 +14,7 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: ['react', 'react-hooks'],
+  plugins: ['react', 'react-hooks', '@typescript-eslint/eslint-plugin'],
   rules: {
     'linebreak-style': 0,
     'no-plusplus': 0,
@@ -26,7 +26,7 @@ module.exports = {
       devDependencies: true,
     }],
     'react/jsx-filename-extension': [1, {
-      extensions: ['.js', '.jsx'],
+      extensions: ['.js', '.jsx', '.tsx'],
     }],
     'react/jsx-curly-spacing': [1,
       {
