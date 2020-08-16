@@ -1,15 +1,14 @@
-import React,
-{
-  useEffect,
-  useState,
-  createRef,
-} from 'react';
+import React from 'react';
 import Feed from './components/Feed';
+import Form from './components/Form';
+import TypingStatus from './components/TypingStatus';
 
 const App = () => {
   return (
     <div className="app">
-      <Feed></Feed>
+      <Feed />
+      <TypingStatus />
+      <Form />
     </div>
   );
 };

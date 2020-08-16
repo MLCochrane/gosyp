@@ -23,6 +23,8 @@ export default function socketLifecylce({
   // When a socket disonnects...
   socket.on('disconnect', () => {
     logger.info('user disconnected');
-    io.to(room).emit(Events.userLeft);
+    io.to(room).emit(Events.userLeft, {
+      user: socket.id,
+    });
   });
 }

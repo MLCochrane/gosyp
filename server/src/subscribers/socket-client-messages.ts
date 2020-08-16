@@ -33,4 +33,12 @@ export default function socketClientMessages({
       userId: socket.id,
     });
   });
+
+  // User typing
+  socket.on(Events.userTyping, (isTyping: Boolean) => {
+    logger.info(`Someone typing: ${isTyping}`);
+
+    // broadcast to others in the room
+    socket.broadcast.to(room).emit(Events.userTyping, isTyping);
+  });
 }
