@@ -1,9 +1,6 @@
-import React, {
-  useState,
-} from 'react';
-import {
-  socket,
-} from '../../../../api';
+import React, { useState } from 'react';
+import { socket } from '../../../../api';
+import Button from '../../lib/buttons/Button';
 
 import './form.scss';
 
@@ -41,13 +38,13 @@ const Form = () => {
           placeholder="Enter message..."
           type="text"
         />
-        <button
+        <Button
+          className="button--pri"
           disabled={ !message.length }
           type="submit"
         >
           Send
-
-        </button>
+        </Button>
       </form>
     </div>
   );

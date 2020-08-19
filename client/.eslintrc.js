@@ -37,5 +37,6 @@ module.exports = {
     'new-cap': 0,
     'react/jsx-props-no-spreading': 0,
     'react/no-array-index-key': 0,
+    'react/button-has-type' : 0,
   },
 };

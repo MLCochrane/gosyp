@@ -29,6 +29,7 @@ a {
   height: 100vh;
   background-color: $black;
   color: $white;
+  z-index: 0;
   &.no-tab * {
     &:focus {
       border: none;

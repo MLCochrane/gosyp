@@ -3,7 +3,6 @@
 
 .form-wrapper {
   width: 100%;
-  border-top: 2px solid black;
 
   form {
     display: flex;
@@ -15,6 +14,7 @@
     background: none;
     color: $white;
     padding: $padding / 2;
+    margin-right: 5%;
     &::placeholder {
       color: $grey;
     }
