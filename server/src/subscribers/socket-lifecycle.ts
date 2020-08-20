@@ -13,17 +13,9 @@ export default function socketLifecylce({
   const logger: Logger = Container.get('logger');
   const io: Server = Container.get('io');
 
-  // Adds socket to room and notifies room.
-  socket.join(room, () => {
-    socket.broadcast.to(room).emit(Events.userJoined, {
-      user: socket.id,
-      timestamp: Date.now(),
-    });
-  });
-
   // When a socket disonnects...
   socket.on('disconnect', () => {
-    logger.info('user disconnected');
+    logger.info('socket has disconnected');
     io.to(room).emit(Events.userLeft, {
       user: socket.id,
       timestamp: Date.now(),

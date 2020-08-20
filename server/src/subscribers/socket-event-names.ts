@@ -2,7 +2,8 @@ enum Events {
   userJoined = 'userJoined',
   userLeft = 'userLeft',
   chatMessage = 'chatMessage',
-  userTyping = 'userTyping'
+  userTyping = 'userTyping',
+  addedToRoom = 'addedToRoom',
 }
 
 export default Events;

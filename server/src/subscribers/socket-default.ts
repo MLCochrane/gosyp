@@ -2,6 +2,7 @@ import { Container } from 'typedi';
 import type { Server, Socket } from 'socket.io';
 import type { Logger } from 'winston';
 import socketLifecycle from './socket-lifecycle';
+import socketRooms from './socket-rooms';
 import socketClientMessages from './socket-client-messages';
 
 export default function DefaultSocket() {
@@ -12,9 +13,14 @@ export default function DefaultSocket() {
     // This will be the initial connection.
     // Define logic for specifiying which room to add the user to.
     const roomName = 'room237';
-    logger.info('user connected');
+    logger.info('socket has connected');
 
     socketLifecycle({
+      socket,
+      room: roomName,
+    });
+
+    socketRooms({
       socket,
       room: roomName,
     });
