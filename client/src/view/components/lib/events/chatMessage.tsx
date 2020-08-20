@@ -1,5 +1,5 @@
-import { socket } from '../../../../api';
 import { useEffect, useState } from 'react';
+import { socket } from '../../../../api';
 
 export default () => {
   const [message, setMessage] = useState<ChatMessage>({

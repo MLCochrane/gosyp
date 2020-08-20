@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { socket } from '../../../../api';
-import Button from '../../lib/buttons/Button';
+import Button from '../../lib/forms/Button';
 
 import './form.scss';
 

@@ -1,13 +1,18 @@
 import React from 'react';
-import Chat from './components/chat/Chat';
 import Sidebar from './components/sidebar/Sidebar';
+import SwitchView from './components/lib/helpers/SwitchView';
+import Home from './components/homepage/Home';
+import Room from './components/chat/Room';
+import HasAddedToRoom from './components/lib/events/rooms';
 
 const App = () => {
+  const [addedToRoom] = HasAddedToRoom();
+
   return (
     <div className="app">
       <div className="page-content">
         <Sidebar />
-        <Chat />
+        <SwitchView trigger={ addedToRoom } current={ Home } next={ Room } />
       </div>
     </div>
   );

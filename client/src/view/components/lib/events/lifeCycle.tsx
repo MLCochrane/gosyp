@@ -1,30 +1,30 @@
-import { socket } from '../../../../api';
 import { useEffect, useState } from 'react';
+import { socket } from '../../../../api';
 
 export const UserJoined = () => {
-	const [user, setUser] = useState<UserAction>({
-		user: null,
-		timestamp: new Date(''),
+  const [user, setUser] = useState<UserAction>({
+    user: null,
+    timestamp: new Date(''),
   });
-	useEffect(() => {
-		socket.on('userJoined', (data: UserAction) => {
-			setUser(data);
-		});
-	}, []);
+  useEffect(() => {
+    socket.on('userJoined', (data: UserAction) => {
+      setUser(data);
+    });
+  }, []);
 
-	return [user];
+  return [user];
 };
 
 export const UserLeft = () => {
   const [user, setUser] = useState<UserAction>({
-		user: null,
-		timestamp: new Date(''),
+    user: null,
+    timestamp: new Date(''),
   });
-	useEffect(() => {
-		socket.on('userLeft', (data: UserAction) => {
-			setUser(data);
-		});
-	}, []);
+  useEffect(() => {
+    socket.on('userLeft', (data: UserAction) => {
+      setUser(data);
+    });
+  }, []);
 
-	return [user];
+  return [user];
 };
