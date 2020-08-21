@@ -9,7 +9,7 @@ import validator from './validator';
 import TextField from './TextField';
 import Button from './Button';
 
-const ContactForm = ({
+const Form = ({
   formName,
   fields,
   submissionCallback,
@@ -154,4 +154,4 @@ const ContactForm = ({
   );
 };
 
-export default ContactForm;
+export default Form;

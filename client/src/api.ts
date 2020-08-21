@@ -12,9 +12,9 @@ const api = axios.create({
   baseURL: url,
 });
 
-const socket = io(url);
+const socket = io(url, { transports: ['websocket', 'polling'] });
 
 export {
   api,
-  socket
+  socket,
 };

@@ -44,7 +44,9 @@ module.exports = {
       "ts": "never",
       "tsx": "never",
       "mjs": "never"
-    }]
+    }],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error"]
   },
   "settings": {
     "import/parsers": {

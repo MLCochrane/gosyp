@@ -1,6 +1,6 @@
 import React from 'react';
 
-const UserMessage = ({
+const StatusMessage = ({
   msg,
   timestamp,
 }: StatusUpdate) => {
@@ -16,4 +16,4 @@ const UserMessage = ({
     </div>
   );
 };
-export default UserMessage;
+export default StatusMessage;

@@ -71,14 +71,11 @@ const Feed = () => {
     }
   }, [messages]);
 
-  const res: any = undefined;
-
   return (
     <div
       ref={ feedRef }
       className="feed chat__component"
     >
-      <p>{ res.missing }</p>
       <ul>
         {
           messages.map((el) => (
