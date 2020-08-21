@@ -1,8 +1,9 @@
 interface User {
-  user: string | null,
+  id: string | null,
+  nickname: string | null,
 }
 
 interface UserAction {
-  user: string | null,
+  user: User
   timestamp: Date,
 }

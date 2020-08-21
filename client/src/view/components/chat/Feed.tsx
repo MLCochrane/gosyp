@@ -26,11 +26,12 @@ const Feed = () => {
 
   useEffect(() => {
     // Listens to user joining event and adds message to feed
-    if (userHasJoined.user) {
+    if (userHasJoined.user.id) {
+      console.log(userHasJoined);
       const status: StatusUpdate = {
         messageType: 'status',
-        id: userHasJoined.user,
-        msg: `${userHasJoined.user} has joined the chat.`,
+        id: (Math.random() + 1).toString(36).substring(7),
+        msg: `${userHasJoined.user.nickname || userHasJoined.user.id} has joined the chat.`,
         timestamp: userHasJoined.timestamp,
       };
 
@@ -40,11 +41,11 @@ const Feed = () => {
 
   useEffect(() => {
     // Listens to user leaving event and adds message to feed
-    if (userHasLeft.user) {
+    if (userHasLeft.user.id) {
       const status: StatusUpdate = {
         messageType: 'status',
-        id: userHasLeft.user,
-        msg: `${userHasLeft.user} has left the chat.`,
+        id: (Math.random() + 1).toString(36).substring(7),
+        msg: `${userHasLeft.user.nickname || userHasLeft.user.id} has left the chat.`,
         timestamp: userHasLeft.timestamp,
       };
 

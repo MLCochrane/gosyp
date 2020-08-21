@@ -2,7 +2,7 @@ interface ChatMessage {
   messageType: 'message'
   id: string;
   msg: string;
-  userId: string;
+  user: User;
   timestamp: Date,
 }
 

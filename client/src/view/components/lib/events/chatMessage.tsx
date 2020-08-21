@@ -6,7 +6,10 @@ export default () => {
     messageType: 'message',
     id: '',
     msg: '',
-    userId: '',
+    user: {
+      id: '',
+      nickname: null,
+    },
     timestamp: new Date(''),
   });
   useEffect(() => {

@@ -3,7 +3,10 @@ import { socket } from '../../../../api';
 
 export const UserJoined = () => {
   const [user, setUser] = useState<UserAction>({
-    user: null,
+    user: {
+      id: null,
+      nickname: null,
+    },
     timestamp: new Date(''),
   });
   useEffect(() => {
@@ -17,7 +20,10 @@ export const UserJoined = () => {
 
 export const UserLeft = () => {
   const [user, setUser] = useState<UserAction>({
-    user: null,
+    user: {
+      id: null,
+      nickname: null,
+    },
     timestamp: new Date(''),
   });
   useEffect(() => {

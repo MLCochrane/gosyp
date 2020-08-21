@@ -3,7 +3,9 @@ enum Events {
   userLeft = 'userLeft',
   chatMessage = 'chatMessage',
   userTyping = 'userTyping',
-  addedToRoom = 'addedToRoom',
+  addUserToRoom = 'addedToRoom',
+  socketRequestsRoom = 'addMeToRoom',
+  socketDeniedRoomAccess = 'notAddedToRoom',
 }
 
 export default Events;

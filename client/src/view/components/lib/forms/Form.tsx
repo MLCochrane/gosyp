@@ -1,42 +1,26 @@
-import type { FormEvent, ChangeEvent } from 'react';
 import React, {
-  useState, useEffect,
+  FormEvent,
+  ChangeEvent,
+  useState,
+  useEffect,
 } from 'react';
+
 import validator from './validator';
 import TextField from './TextField';
 import Button from './Button';
-// import api from '../../../../api';
-
-type Field = {
-  value: string,
-  isRequired: boolean,
-  errors: {
-    valid: boolean,
-    message: string,
-  }
-};
-
-type FormFields = {
-  [key: string]: Field,
-};
-
-type FormProps = {
-  name: string,
-  required: boolean,
-};
-
-type FormBody = {
-  [key: string]: string,
-}
 
 const ContactForm = ({
   formName,
   fields,
   submissionCallback,
+  wasSuccess,
+  wasError,
 } : {
   formName: string,
   fields: FormProps[],
-  submissionCallback: Function,
+  submissionCallback: (body: FormBody) => void,
+  wasSuccess: boolean,
+  wasError: boolean,
 }) => {
   const mappedFields: FormFields = {};
   fields.forEach((el) => {
@@ -44,7 +28,7 @@ const ContactForm = ({
       value: '',
       isRequired: el.required,
       errors: {
-        valid: false,
+        valid: !el.required,
         message: '',
       },
     };
@@ -57,6 +41,10 @@ const ContactForm = ({
 
   const [disabledButton, setDisabled] = useState(true);
   const [butonText, setButtonText] = useState('Submit');
+
+  const onSubmission = () => {
+    setButtonText('Submitting...');
+  };
 
   useEffect(() => {
     let btnWillBeDisabled = false;
@@ -75,11 +63,35 @@ const ContactForm = ({
     setDisabled(btnWillBeDisabled);
   }, [formFields]);
 
+  /**
+   * Passing possible success from outside
+   */
+  useEffect(() => {
+    const onSuccess = () => {
+      setButtonText('Success!');
+      setFormFields(defaultForms);
+    };
+
+    if (wasSuccess) onSuccess();
+  }, [wasSuccess, defaultForms]);
+
+  /**
+   * Passing possible error from outside
+   */
+  useEffect(() => {
+    const onError = () => {
+      setButtonText('Error');
+    };
+    if (wasError) onError();
+  }, [wasError]);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { value }: { value: string } = e.target;
     const { name }: { name: string } = e.target;
 
-    const errorResult = validator(name, value);
+    const errorResult = formFields[name].isRequired
+      ? validator(name, value)
+      : { valid: true, message: '' };
 
     setFormFields({
       ...formFields,
@@ -91,23 +103,6 @@ const ContactForm = ({
     });
   };
 
-  const clearForm = () => {
-    setFormFields(defaultForms);
-  };
-
-  const onSubmission = () => {
-    setButtonText('Submitting...');
-  };
-
-  // const onSuccess = () => {
-  //   setButtonText('Success!');
-  //   clearForm();
-  // };
-
-  // const onError = () => {
-  //   setButtonText('Error');
-  // };
-
   const handleSubmit = (e: FormEvent) => {
     // The norm as we're hadling it ourselves
     e.preventDefault();
@@ -118,6 +113,7 @@ const ContactForm = ({
     const reqBody : FormBody = {};
     Object.keys(formFields).map((el) => {
       reqBody[el] = formFields[el].value;
+      return true;
     });
 
     // Once request goes out...

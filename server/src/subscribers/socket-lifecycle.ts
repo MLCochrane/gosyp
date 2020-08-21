@@ -1,13 +1,14 @@
-import type { Server, Socket } from 'socket.io';
+import type { Server } from 'socket.io';
 import { Container } from 'typedi';
 import type { Logger } from 'winston';
 import Events from './socket-event-names';
+import { ExtendedSocket } from '../types/global';
 
 export default function socketLifecylce({
   socket,
   room,
 }: {
-  socket: Socket,
+  socket: ExtendedSocket,
   room: string,
 }) {
   const logger: Logger = Container.get('logger');
@@ -17,7 +18,10 @@ export default function socketLifecylce({
   socket.on('disconnect', () => {
     logger.info('socket has disconnected');
     io.to(room).emit(Events.userLeft, {
-      user: socket.id,
+      user: {
+        id: socket.id,
+        nickname: socket.nickname,
+      },
       timestamp: Date.now(),
     });
   });
