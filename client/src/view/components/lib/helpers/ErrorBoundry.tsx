@@ -1,6 +1,9 @@
+import type { ReactNode } from 'react';
 import React, { Component } from 'react';
 
-class ErrorBoundry extends Component<{}, {
+class ErrorBoundry extends Component<{
+  errorDisplay?: ReactNode,
+}, {
   hasError: boolean,
 }> {
   constructor(props: any) {
@@ -15,22 +18,22 @@ class ErrorBoundry extends Component<{}, {
 
   componentDidCatch(error: any, errorInfo: any) {
     // You can also log the error to an error reporting service
-    console.log(error, errorInfo);
+    console.error(error, errorInfo);
   }
 
   render() {
     const {
       hasError,
     } = this.state;
+
     const {
       children,
+      errorDisplay,
     } = this.props;
-    if (hasError) {
-      // You can render any custom fallback UI
-      return <h1>Something went wrong.</h1>;
-    }
 
-    return children;
+    const toDisplay = () => errorDisplay || <h1>Something went wrong.</h1>;
+
+    return hasError ? toDisplay() : children;
   }
 }
 export default ErrorBoundry;

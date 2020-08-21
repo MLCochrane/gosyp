@@ -18,7 +18,6 @@ const Form = () => {
 
   const formSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (message === '') return;
     socket.emit('chatMessage', message);
     socket.emit('userTyping', false);

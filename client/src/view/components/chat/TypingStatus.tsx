@@ -18,6 +18,6 @@ const TypingStatus = () => {
     <div className="typing-status chat__component alt-type">
       { typingStatus }
     </div>
-  )
-}
+  );
+};
 export default TypingStatus;

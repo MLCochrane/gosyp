@@ -27,7 +27,6 @@ const Feed = () => {
   useEffect(() => {
     // Listens to user joining event and adds message to feed
     if (userHasJoined.user.id) {
-      console.log(userHasJoined);
       const status: StatusUpdate = {
         messageType: 'status',
         id: (Math.random() + 1).toString(36).substring(7),
@@ -72,11 +71,14 @@ const Feed = () => {
     }
   }, [messages]);
 
+  const res: any = undefined;
+
   return (
     <div
       ref={ feedRef }
       className="feed chat__component"
     >
+      <p>{ res.missing }</p>
       <ul>
         {
           messages.map((el) => (

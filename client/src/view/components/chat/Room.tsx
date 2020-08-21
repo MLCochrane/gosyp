@@ -4,7 +4,9 @@ import ErrorBoundry from '../lib/helpers/ErrorBoundry';
 
 const Room = () => (
   <div className="room">
-    <ErrorBoundry>
+    <ErrorBoundry
+      errorDisplay={ <p>Boom boom goes app</p> }
+    >
       <Chat />
     </ErrorBoundry>
   </div>
