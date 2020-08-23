@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { socket } from '../../../../api';
+import { socket } from 'api';
 
 export const HasAddedToRoom = () : [boolean] => {
   const [addedToRoom, setAddedToRoom] = useState(false);

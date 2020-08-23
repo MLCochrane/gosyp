@@ -1,5 +1,4 @@
-import type { ReactNode } from 'react';
-import React, { Component } from 'react';
+import React, { Component, ReactNode } from 'react';
 
 class ErrorBoundry extends Component<{
   errorDisplay?: ReactNode,

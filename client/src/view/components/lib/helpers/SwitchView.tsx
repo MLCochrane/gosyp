@@ -8,8 +8,6 @@ import {
   CSSPlugin,
 } from 'gsap';
 
-// import './loader.scss';
-
 gsap.registerPlugin(CSSPlugin);
 
 type SwitchViewTypes = {

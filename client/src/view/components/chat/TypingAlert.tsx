@@ -1,7 +1,7 @@
 import React, {
   useEffect, useState,
 } from 'react';
-import TypingUpdate from '../lib/events/typingStatus';
+import TypingUpdate from '@library/events/typingStatus';
 
 const TypingStatus = () => {
   const [isTyping] = TypingUpdate();

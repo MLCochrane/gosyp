@@ -3,8 +3,8 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
-import ChatMessage from '../lib/events/chatMessage';
-import { UserJoined, UserLeft } from '../lib/events/lifeCycle';
+import ChatMessage from '@library/events/chatMessage';
+import { UserJoined, UserLeft } from '@library/events/lifeCycle';
 import UserMessage from './messages/UserMessage';
 import StatusMessage from './messages/StatusMessage';
 

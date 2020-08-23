@@ -1,6 +1,6 @@
 import React from 'react';
+import ErrorBoundry from '@library/helpers/ErrorBoundry';
 import Chat from './Chat';
-import ErrorBoundry from '../lib/helpers/ErrorBoundry';
 
 const Room = () => (
   <div className="room">

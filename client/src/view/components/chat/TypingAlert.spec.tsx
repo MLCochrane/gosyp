@@ -14,10 +14,9 @@ const mockedIO = io as jest.Mocked<typeof io>;
 const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
 
 describe('Typing status alert', () => {
-  it('renders form', () => {
+  it('diplays message when listening to socket', () => {
     (mockedSocket.on as jest.Mock).mockImplementation((event, cb) => cb(true));
     const wrapper = mount(<TypingAlert />);
-    console.log(wrapper.debug());
-    expect(wrapper.contains('')).toEqual(true);
+    expect(wrapper.contains('Someone is typing...')).not.toEqual(true);
   });
 });

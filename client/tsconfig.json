@@ -23,7 +23,12 @@
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@components/*": ["./view/components/*"],
+      "@library/*": ["./view/components/lib/*"],
+    }
   },
   "include": [
     "src"
