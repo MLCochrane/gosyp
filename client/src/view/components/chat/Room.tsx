@@ -1,5 +1,5 @@
 import React from 'react';
-import ErrorBoundry from '@library/helpers/ErrorBoundry';
+import ErrorBoundry from 'view/components/lib/helpers/ErrorBoundry';
 import Chat from './Chat';
 
 const Room = () => (

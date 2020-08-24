@@ -24,11 +24,7 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "baseUrl": "./src",
-    "paths": {
-      "@components/*": ["./view/components/*"],
-      "@library/*": ["./view/components/lib/*"],
-    }
+    "baseUrl": "./src"
   },
   "include": [
     "src"

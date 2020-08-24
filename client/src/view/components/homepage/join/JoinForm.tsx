@@ -1,8 +1,8 @@
 import React from 'react';
 import { socket } from 'api';
-import { HasAddedToRoom, NotAddedToRoom } from '@library/events/rooms';
-import Events from '@library/events/eventTypes';
-import Form from '@library/forms/Form';
+import { HasAddedToRoom, NotAddedToRoom } from 'view/components/lib/events/rooms';
+import Events from 'view/components/lib/events/eventTypes';
+import Form from 'view/components/lib/forms/Form';
 
 const JoinForm = () => {
   const [addedToRoom] = HasAddedToRoom();

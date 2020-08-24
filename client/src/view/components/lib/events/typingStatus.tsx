@@ -5,7 +5,6 @@ export default () => {
   const [typing, setTyping] = useState<Boolean>(false);
   useEffect(() => {
     socket.on('userTyping', (isTyping: Boolean) => {
-      console.log('this happenes?');
       setTyping(isTyping);
     });
   }, []);
