@@ -14,30 +14,39 @@ const mockedIO = io as jest.Mocked<typeof io>;
 const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
 
 describe('Chat input form', () => {
-  it('emits message on change', () => {
-    // (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb(false));
+  beforeEach(() => {
+    (mockedSocket.emit as jest.Mock).mockReset();
+  });
+
+  it('emits typing event on change and blur', () => {
+    const mockedEmit = (mockedSocket.emit as jest.Mock).mockImplementationOnce(
+      (event, message) => message,
+    );
     const wrapper = mount(<Form />);
+    const input = wrapper.find('input');
+    input.simulate('focus');
+    input.simulate('change', { target: { value: 'My message' } });
+    expect(mockedEmit).toHaveBeenCalledTimes(1);
+    expect(mockedEmit).toHaveBeenCalledWith('userTyping', true);
+    input.simulate('blur');
+    expect(mockedEmit).toHaveBeenCalledTimes(2);
+    expect(mockedEmit).toHaveBeenCalledWith('userTyping', false);
+  });
+
+  it('emits message event on submit', () => {
+    const mockedEmit = (mockedSocket.emit as jest.Mock).mockImplementationOnce(
+      (event, message) => message,
+    );
+    const wrapper = mount(<Form />);
+    const input = wrapper.find('input');
+    input.simulate('change', { target: { value: 'My message' } });
+    input.simulate('submit', {
+      preventDefault: () => {},
+      target: { value: 'My message' },
+    });
+    expect(mockedEmit).toHaveBeenCalledTimes(3);
+    expect(mockedEmit).toHaveBeenCalledWith('userTyping', true);
+    expect(mockedEmit).toHaveBeenCalledWith('userTyping', false);
+    expect(mockedEmit).toHaveBeenCalledWith('chatMessage', 'My message');
   });
 });
-
-/**
- *  it('cancels changes when user presses esc', done => {
-    const wrapper = mount(<EditableText defaultValue="Hello" />);
-    const input = wrapper.find('input');
-
-    input.simulate('focus');
-    input.simulate('change', { target: { value: 'Changed' } });
-    input.simulate('keyDown', {
-      which: 27,
-      target: {
-        blur() {
-          // Needed since <EditableText /> calls target.blur()
-          input.simulate('blur');
-        },
-      },
-    });
-    expect(input.get(0).value).to.equal('Hello');
-
-    done();
-  });
- */

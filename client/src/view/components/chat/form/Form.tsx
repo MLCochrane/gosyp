@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { socket } from 'api';
 import Button from 'view/components/lib/forms/Button';
+import Events from 'view/components/lib/events/eventTypes';
 
 import './form.scss';
 
@@ -9,18 +10,18 @@ const Form = () => {
 
   const handleChange = ({ target } : { target: HTMLInputElement }) => {
     setMessage(target.value);
-    socket.emit('userTyping', true);
+    socket.emit(Events.userTyping, true);
   };
 
   const handleBlur = () => {
-    socket.emit('userTyping', false);
+    socket.emit(Events.userTyping, false);
   };
 
   const formSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (message === '') return;
-    socket.emit('chatMessage', message);
-    socket.emit('userTyping', false);
+    socket.emit(Events.chatMessage, message);
+    socket.emit(Events.userTyping, false);
     setMessage('');
   };
 
