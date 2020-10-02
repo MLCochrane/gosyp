@@ -24,14 +24,16 @@ const SwitchView = (props : SwitchViewTypes) => {
   } = props;
 
   const enterView = (node: Element) => {
-    gsap.to(node, 0.5, { autoAlpha: 1 });
+    gsap.to(node, { autoAlpha: 1, duration: 0.5 });
   };
 
   const leaveView = (node: Element) => {
-    gsap.to(node, 0.5, { autoAlpha: 0 });
+    gsap.to(node, { autoAlpha: 0, duration: 0.5 });
   };
   return (
-    <TransitionGroup>
+    <TransitionGroup
+      className="switch-wrapper"
+    >
       {
         !trigger
           ? (
