@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ComponentType } from 'react';
 import {
   Transition,
   TransitionGroup,
@@ -12,8 +12,8 @@ gsap.registerPlugin(CSSPlugin);
 
 type SwitchViewTypes = {
   trigger: boolean,
-  current: ReactNode,
-  next: ReactNode,
+  current: ComponentType,
+  next: ComponentType,
 };
 
 const SwitchView = (props : SwitchViewTypes) => {
@@ -30,6 +30,8 @@ const SwitchView = (props : SwitchViewTypes) => {
   const leaveView = (node: Element) => {
     gsap.to(node, { autoAlpha: 0, duration: 0.5 });
   };
+  const Current = current;
+  const Next = next;
   return (
     <TransitionGroup
       className="switch-wrapper"
@@ -46,7 +48,7 @@ const SwitchView = (props : SwitchViewTypes) => {
               onEnter={ (node: Element) => enterView(node) }
               onExit={ (node: Element) => leaveView(node) }
             >
-              { current }
+              <Current />
             </Transition>
           )
           : (
@@ -57,7 +59,7 @@ const SwitchView = (props : SwitchViewTypes) => {
               appear
               timeout={ 500 }
             >
-              { next }
+              <Next />
             </Transition>
           )
       }

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { socket } from 'api';
+import Events from './eventTypes';
 
 export const HasAddedToRoom = () : [boolean] => {
   const [addedToRoom, setAddedToRoom] = useState(false);
 
   useEffect(() => {
-    socket.on('addedToRoom', (status: boolean) => {
+    socket.on(Events.addUserToRoom, (status: boolean) => {
       setAddedToRoom(status);
     });
   }, []);
@@ -18,7 +19,7 @@ export const NotAddedToRoom = () : [boolean, string] => {
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    socket.on('notAddedToRoom', ({
+    socket.on(Events.socketDeniedRoomAccess, ({
       status,
       message,
     } : {
@@ -31,4 +32,16 @@ export const NotAddedToRoom = () : [boolean, string] => {
   }, []);
 
   return [notAdded, errorMessage];
+};
+
+export const RoomDetailsUpdated = () : [RoomDetails] => {
+  const [details, setDetails] = useState<RoomDetails>([]);
+
+  useEffect(() => {
+    socket.on(Events.updatedRoomInfo, (updatedDetails: RoomDetails) => {
+      setDetails(updatedDetails);
+    });
+  }, []);
+
+  return [details];
 };

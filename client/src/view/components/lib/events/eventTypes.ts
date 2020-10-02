@@ -4,6 +4,7 @@ enum Events {
   chatMessage = 'chatMessage',
   userTyping = 'userTyping',
   addUserToRoom = 'addedToRoom',
+  updatedRoomInfo = 'updatedRoomInfo',
   socketRequestsRoom = 'addMeToRoom',
   socketDeniedRoomAccess = 'notAddedToRoom',
 }
