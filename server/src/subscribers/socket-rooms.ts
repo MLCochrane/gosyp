@@ -1,6 +1,7 @@
 import { Container } from 'typedi';
 import type { Logger } from 'winston';
 import Events from './socket-event-names';
+import RoomService from '../services/room-service';
 import { ExtendedSocket } from '../types/global';
 
 export default function socketRooms({
@@ -11,15 +12,18 @@ export default function socketRooms({
   room: string,
 }) {
   const logger: Logger = Container.get('logger');
+  const roomService = Container.get(RoomService);
 
   // Adds socket to room and notifies room.
-  socket.on(Events.socketRequestsRoom, (requestBody) => {
+  socket.on(Events.socketRequestsRoom, async (requestBody) => {
     logger.info('socket requests room access');
 
     /**
-     * Check for room in DB or other things here
+     * Check for room in DB
      */
-    if (requestBody['room-id'] !== 'room237') {
+    const roomExists = await roomService.CheckForRoom(requestBody['room-id']);
+
+    if (!roomExists) {
       logger.info(Object.keys(requestBody));
       socket.emit(Events.socketDeniedRoomAccess, {
         // redundant to return true here

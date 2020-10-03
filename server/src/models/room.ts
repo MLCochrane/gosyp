@@ -5,8 +5,7 @@ const Room = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Please enter a full name'],
-      index: true,
+      required: false,
     },
 
     userCount: {

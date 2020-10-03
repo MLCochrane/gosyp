@@ -13,20 +13,30 @@ export default class RoomService {
   public async CreateRoom(
     name: string,
   ) {
-    const roomExists = await this.roomModel.findOne({ name });
-    if (roomExists) throw new Error('Room already exists');
+    // Quick name check
+    if (name) {
+      const roomExists = await this.roomModel.findOne({ name });
+      if (roomExists) throw new Error('Room with that name already exists');
+    }
 
+    // Creating new record
     const roomRecord = await this.roomModel.create({
       name,
       uuid: uuidv4(),
+      userCount: 0,
     });
 
+    // Throw error if issue else return the room.
     if (!roomRecord) throw new Error('Room cannot be created');
+    return roomRecord.toObject();
   }
 
   public async CheckForRoom(
     id: string,
   ) {
     const roomRecord = await this.roomModel.findOne({ uuid: id });
+    if (!roomRecord) throw new Error('Room does not exist');
+
+    return true;
   }
 }
