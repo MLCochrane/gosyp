@@ -70,26 +70,21 @@ export default class RoomService {
     uuid: string,
     increase: boolean,
   ) {
-    console.log('UpdateRoomUsers called here');
     const incrementVal = increase ? 1 : -1;
-    console.log(`Increment val is: ${incrementVal}`);
-    await this.roomModel.findOneAndUpdate(
+    const updatedRoom = await this.roomModel.findOneAndUpdate(
       { uuid },
       { $inc: { userCount: incrementVal } },
       {
         useFindAndModify: false,
         new: true,
       },
-      async (err, room) => {
-        console.log('In callback of find and update');
-        if (err) throw new Error(err);
-        if (room && room.userCount <= 0) {
-          const removal = await this.RemoveRoom(uuid);
-          return removal;
-        }
-        return room;
-      },
     );
+
+    if (updatedRoom && updatedRoom.userCount <= 0) {
+      const removal = await this.RemoveRoom(uuid);
+      return removal;
+    }
+    return updatedRoom;
   }
 
   /**

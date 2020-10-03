@@ -11,6 +11,7 @@ export default function socketRooms({
 }) {
   const logger: Logger = Container.get('logger');
   const roomService = Container.get(RoomService);
+  const io: Server = Container.get('io');
 
   /**
    * Socket requests room access
@@ -42,7 +43,7 @@ export default function socketRooms({
     }
 
     // Increase room number and send room detail update
-    await roomService.UpdateRoomUsers(room, true);
+    const roomDetails = await roomService.UpdateRoomUsers(room, true);
 
     // If no errors, add the user to the room
     socket.join(room, () => {
@@ -50,6 +51,12 @@ export default function socketRooms({
       socket.nickname = requestBody.nickname || null;
       // Tell client they've been included
       socket.emit(Events.addUserToRoom, true);
+
+      // Send room detail updates to erybody
+      io.to(room).emit(Events.updatedRoomInfo, {
+        roomDetails,
+      });
+
       // Let everyone else know they're in the room
       socket.broadcast.to(room).emit(Events.userJoined, {
         user: {
