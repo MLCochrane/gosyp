@@ -1,4 +1,4 @@
-import type { Server, Socket } from 'socket.io';
+import type { Server } from 'socket.io';
 import { Container } from 'typedi';
 import type { Logger } from 'winston';
 import Events from './socket-event-names';

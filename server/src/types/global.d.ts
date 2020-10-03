@@ -9,3 +9,8 @@ declare module NodeJS {
 export interface ExtendedSocket extends Socket {
   nickname: string;
 }
+
+export interface IModelArray {
+  name: string;
+  model: any;
+}

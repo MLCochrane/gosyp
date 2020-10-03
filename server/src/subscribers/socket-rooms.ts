@@ -43,6 +43,8 @@ export default function socketRooms({
         },
         timestamp: Date.now(),
       });
+
+      // Broadcast updated room details here
     });
   });
 }
