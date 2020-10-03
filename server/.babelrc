@@ -4,7 +4,13 @@
     "@babel/env"
   ],
   "plugins": [
-    ["@babel/plugin-transform-runtime",
+    ["@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ],
+    [
+      "@babel/plugin-transform-runtime",
       {
         "regenerator": true
       }

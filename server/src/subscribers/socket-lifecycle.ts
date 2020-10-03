@@ -24,5 +24,7 @@ export default function socketLifecylce({
       },
       timestamp: Date.now(),
     });
+
+    // Update Room details, remove room in service if userCount = 0
   });
 }

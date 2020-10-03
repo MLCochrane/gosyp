@@ -1,6 +1,6 @@
 export interface IRoom {
   _id: string;
+  name?: string;
   uuid: string;
-  name: string;
   userCount: number;
 }

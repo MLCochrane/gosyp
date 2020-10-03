@@ -3,7 +3,7 @@ import Room from './room';
 const models = [
   {
     name: 'roomModel',
-    model: new Room(),
+    model: Room,
   },
 ];
 

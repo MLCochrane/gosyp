@@ -17,6 +17,7 @@
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
     "typeRoots": [
       "./node_modules/@types",
       "./src/types" // path to your typings directory (relative to tsconfig.json)

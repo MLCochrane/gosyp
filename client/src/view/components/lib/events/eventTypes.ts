@@ -5,6 +5,9 @@ enum Events {
   userTyping = 'userTyping',
   addUserToRoom = 'addedToRoom',
   updatedRoomInfo = 'updatedRoomInfo',
+  socketCreateRoom = 'createRoom',
+  createRoomError = 'createRoomError',
+  createRoomSuccess = 'createRoomSuccess',
   socketRequestsRoom = 'addMeToRoom',
   socketDeniedRoomAccess = 'notAddedToRoom',
 }

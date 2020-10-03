@@ -34,6 +34,38 @@ export const NotAddedToRoom = () : [boolean, string] => {
   return [notAdded, errorMessage];
 };
 
+export const CreateRoomSuccess = () : [any] => {
+  const [responseMessage, setResponseMessage] = useState<any>({});
+
+  useEffect(() => {
+    socket.on(Events.createRoomSuccess, ({
+      message,
+    } : {
+      message: any,
+    }) => {
+      setResponseMessage(message);
+    });
+  }, []);
+
+  return [responseMessage];
+};
+
+export const CreateRoomError = () : [any] => {
+  const [errorMessage, setErrorMessage] = useState<any>({});
+
+  useEffect(() => {
+    socket.on(Events.createRoomError, ({
+      message,
+    } : {
+      message: any,
+    }) => {
+      setErrorMessage(message);
+    });
+  }, []);
+
+  return [errorMessage];
+};
+
 export const RoomDetailsUpdated = () : [RoomDetails] => {
   const [details, setDetails] = useState<RoomDetails>([]);
 

@@ -14,7 +14,15 @@ export default function socketRooms({
   const logger: Logger = Container.get('logger');
   const roomService = Container.get(RoomService);
 
-  // Adds socket to room and notifies room.
+  /**
+   * Socket requests room access
+   *
+   * Will check for room and add if the room
+   * has been created already.
+   *
+   * Could add additional checks to rooms service
+   * if need be such as additional authentication.
+   */
   socket.on(Events.socketRequestsRoom, async (requestBody) => {
     logger.info('socket requests room access');
 
@@ -23,6 +31,7 @@ export default function socketRooms({
      */
     const roomExists = await roomService.CheckForRoom(requestBody['room-id']);
 
+    // Simply tell the socket there's no room
     if (!roomExists) {
       logger.info(Object.keys(requestBody));
       socket.emit(Events.socketDeniedRoomAccess, {
@@ -50,6 +59,23 @@ export default function socketRooms({
 
       // Broadcast updated room details here
     });
+  });
+
+  socket.on(Events.socketCreateRoom, async (requestBody) => {
+    const { name } = requestBody;
+    logger.info('In socket create room request');
+    try {
+      const freshRoom = await roomService.CreateRoom(name);
+      socket.emit(Events.createRoomSuccess, {
+        message: freshRoom,
+      });
+    } catch (err) {
+      logger.info('Inside catch block');
+      logger.info(err);
+      socket.emit(Events.createRoomError, {
+        message: err,
+      });
+    }
   });
 }
 

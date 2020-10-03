@@ -8,6 +8,11 @@ const Room = new mongoose.Schema(
       required: false,
     },
 
+    uuid: {
+      type: String,
+      required: true,
+    },
+
     userCount: {
       type: Number,
       required: true,
