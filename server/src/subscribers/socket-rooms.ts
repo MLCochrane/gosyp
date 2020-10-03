@@ -6,10 +6,8 @@ import { ExtendedSocket } from '../types/global';
 
 export default function socketRooms({
   socket,
-  room,
 }: {
   socket: ExtendedSocket,
-  room: string,
 }) {
   const logger: Logger = Container.get('logger');
   const roomService = Container.get(RoomService);
@@ -25,6 +23,7 @@ export default function socketRooms({
    */
   socket.on(Events.socketRequestsRoom, async (requestBody) => {
     logger.info('socket requests room access');
+    const room: string = Container.get('roomName');
 
     /**
      * Check for room in DB
@@ -41,6 +40,9 @@ export default function socketRooms({
       });
       return;
     }
+
+    // Increase room number and send room detail update
+    await roomService.UpdateRoomUsers(room, true);
 
     // If no errors, add the user to the room
     socket.join(room, () => {
@@ -69,6 +71,8 @@ export default function socketRooms({
       socket.emit(Events.createRoomSuccess, {
         message: freshRoom,
       });
+
+      Container.set('roomName', freshRoom.uuid);
     } catch (err) {
       logger.info('Inside catch block');
       logger.info(err);

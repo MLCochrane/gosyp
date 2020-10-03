@@ -12,23 +12,18 @@ export default function DefaultSocket() {
 
   io.on('connection', (socket: ExtendedSocket) => {
     // This will be the initial connection.
-    // Define logic for specifiying which room to add the user to.
-    const roomName = 'room237';
     logger.info('socket has connected');
 
     socketLifecycle({
       socket,
-      room: roomName,
     });
 
     socketRooms({
       socket,
-      room: roomName,
     });
 
     socketClientMessages({
       socket,
-      room: roomName,
     });
   });
 }

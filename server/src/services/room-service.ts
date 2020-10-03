@@ -3,6 +3,10 @@ import { Service, Container } from 'typedi';
 import type { Logger } from 'winston';
 import RoomModel from '../models/room';
 
+/**
+ * Handles interaction with the Room model
+ * for managing room CRUD.
+ */
 @Service()
 export default class RoomService {
   // eslint-disable-next-line no-useless-constructor
@@ -14,6 +18,10 @@ export default class RoomService {
     this.logger = Container.get('logger');
   }
 
+  /**
+   * Creates room with optional name.
+   * @param name Optional name for the room.
+   */
   public async CreateRoom(
     name?: string,
   ) {
@@ -40,12 +48,58 @@ export default class RoomService {
     return roomRecord.toObject();
   }
 
+  /**
+   * Checks for existance of room based on uuid.
+   * @param id String representing the room uuid.
+   */
   public async CheckForRoom(
     id: string,
   ) {
     const roomRecord = await this.roomModel.findOne({ uuid: id });
     if (!roomRecord) return false;
 
+    return true;
+  }
+
+  /**
+   * Updates room user count and calls remove method if no more users.
+   * @param uuid String representing the room uuid.
+   * @param increase Boolean to either increase or decrease user count.
+   */
+  public async UpdateRoomUsers(
+    uuid: string,
+    increase: boolean,
+  ) {
+    console.log('UpdateRoomUsers called here');
+    const incrementVal = increase ? 1 : -1;
+    console.log(`Increment val is: ${incrementVal}`);
+    await this.roomModel.findOneAndUpdate(
+      { uuid },
+      { $inc: { userCount: incrementVal } },
+      {
+        useFindAndModify: false,
+        new: true,
+      },
+      async (err, room) => {
+        console.log('In callback of find and update');
+        if (err) throw new Error(err);
+        if (room && room.userCount <= 0) {
+          const removal = await this.RemoveRoom(uuid);
+          return removal;
+        }
+        return room;
+      },
+    );
+  }
+
+  /**
+   * Removes room from DB with supplied uuid.
+   * @param id String representing the room uuid.
+   */
+  public async RemoveRoom(
+    id: string,
+  ) {
+    await this.roomModel.deleteOne({ uuid: id });
     return true;
   }
 }

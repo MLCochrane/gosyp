@@ -6,16 +6,16 @@ import { ExtendedSocket } from '../types/global';
 
 export default function socketClientMessages({
   socket,
-  room,
 }: {
   socket: ExtendedSocket,
-  room: string,
 }) {
   const logger: Logger = Container.get('logger');
   const io: Server = Container.get('io');
 
   // Default chat message
   socket.on(Events.chatMessage, (msg: string) => {
+    const room: string = Container.get('roomName');
+
     logger.info(msg);
 
     // broadcast to everyone in the room
@@ -41,6 +41,7 @@ export default function socketClientMessages({
 
   // User typing
   socket.on(Events.userTyping, (isTyping: Boolean) => {
+    const room: string = Container.get('roomName');
     logger.info(`Someone typing: ${isTyping}`);
 
     // broadcast to others in the room
