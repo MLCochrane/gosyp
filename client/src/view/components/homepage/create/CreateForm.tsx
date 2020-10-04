@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { socket } from 'api';
 import { CreateRoomSuccess, CreateRoomError } from 'view/components/lib/events/rooms';
 import Events from 'view/components/lib/events/eventTypes';
@@ -7,6 +7,12 @@ import Form from 'view/components/lib/forms/Form';
 const CreateForm = () => {
   const [roomSuccess] = CreateRoomSuccess();
   const [roomError] = CreateRoomError();
+
+  useEffect(() => {
+    if (roomSuccess['room-id']) {
+      socket.emit(Events.socketRequestsRoom, roomSuccess);
+    }
+  }, [roomSuccess]);
 
   const handleClick = (body: FormBody) => {
     socket.emit(Events.socketCreateRoom, body);
@@ -29,8 +35,8 @@ const CreateForm = () => {
           ]
         }
         submissionCallback={ handleClick }
-        wasSuccess={ false }
-        wasError={ false }
+        wasSuccess={ roomSuccess }
+        wasError={ roomError }
       />
     </div>
   );

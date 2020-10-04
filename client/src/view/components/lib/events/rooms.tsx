@@ -43,7 +43,9 @@ export const CreateRoomSuccess = () : [any] => {
     } : {
       message: any,
     }) => {
-      setResponseMessage(message);
+      setResponseMessage({
+        'room-id': message.uuid,
+      });
     });
   }, []);
 
