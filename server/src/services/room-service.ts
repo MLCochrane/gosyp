@@ -12,10 +12,10 @@ export default class RoomService {
   // eslint-disable-next-line no-useless-constructor
   constructor(
     private roomModel: typeof RoomModel,
-    private logger: Logger,
+    // private logger: Logger,
   ) {
     this.roomModel = Container.get('roomModel');
-    this.logger = Container.get('logger');
+    // this.logger = Container.get('logger');
   }
 
   /**
@@ -30,7 +30,6 @@ export default class RoomService {
       const roomExists = await this.roomModel.findOne({ name });
       if (roomExists) throw new Error('Room with that name already exists');
     }
-    this.logger.info('passing our first db query...');
 
     const roomFields: any = {
       uuid: uuidv4(),
@@ -111,7 +110,22 @@ export default class RoomService {
   public async RemoveRoom(
     id: string,
   ) {
-    await this.roomModel.deleteOne({ uuid: id });
+    try {
+      await this.roomModel.deleteOne({ uuid: id });
+    } catch (e) {
+      /**
+       * Not yet sure what is best to do here. The removal
+       * is only ever called server side and the issue we'd
+       * catch here is if a user leaves a room that doesn't
+       * exist. Other than when in dev with the client open
+       * and server restarting would the client disconnect
+       * before connection.
+       *
+       * Handling the forced disconnect of the client when
+       * the server doesn't respond should be dealt with
+       * elsewhere.
+       */
+    }
     return true;
   }
 }
