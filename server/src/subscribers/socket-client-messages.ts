@@ -4,15 +4,14 @@ import type { Logger } from 'winston';
 import Events from './socket-event-names';
 import { ExtendedSocket } from '../types/global';
 
-export default function socketClientMessages({
-  socket,
-}: {
+/**
+ * Defauilt chat message.
+ */
+export function chatMessage(
   socket: ExtendedSocket,
-}) {
-  const logger: Logger = Container.get('logger');
-  const io: Server = Container.get('io');
-
-  // Default chat message
+  logger: Logger,
+  io: Server,
+) {
   socket.on(Events.chatMessage, (msg: string) => {
     const room: string = Container.get('roomName');
 
@@ -38,8 +37,15 @@ export default function socketClientMessages({
       },
     });
   });
+}
 
-  // User typing
+/**
+ * Sent from client when main text field detects user input.
+ */
+export function userTyping(
+  socket: ExtendedSocket,
+  logger: Logger,
+) {
   socket.on(Events.userTyping, (isTyping: Boolean) => {
     const room: string = Container.get('roomName');
     logger.info(`Someone typing: ${isTyping}`);
@@ -47,4 +53,17 @@ export default function socketClientMessages({
     // broadcast to others in the room
     socket.broadcast.to(room).emit(Events.userTyping, isTyping);
   });
+}
+
+export default function socketClientMessages({
+  socket,
+}: {
+  socket: ExtendedSocket,
+}) {
+  const logger: Logger = Container.get('logger');
+  const io: Server = Container.get('io');
+
+  // Separating events and calling here so it's easier to test each one
+  chatMessage(socket, logger, io);
+  userTyping(socket, logger);
 }

@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Service, Container } from 'typedi';
-import type { Logger } from 'winston';
 import RoomModel from '../models/room';
 
 /**
@@ -9,13 +8,10 @@ import RoomModel from '../models/room';
  */
 @Service()
 export default class RoomService {
-  // eslint-disable-next-line no-useless-constructor
   constructor(
     private roomModel: typeof RoomModel,
-    // private logger: Logger,
   ) {
     this.roomModel = Container.get('roomModel');
-    // this.logger = Container.get('logger');
   }
 
   /**
@@ -117,7 +113,7 @@ export default class RoomService {
        * Not yet sure what is best to do here. The removal
        * is only ever called server side and the issue we'd
        * catch here is if a user leaves a room that doesn't
-       * exist. Other than when in dev with the client open
+       * exist. Only dev in dev with the client open
        * and server restarting would the client disconnect
        * before connection.
        *

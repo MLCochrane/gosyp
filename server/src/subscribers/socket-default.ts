@@ -27,9 +27,3 @@ export default function DefaultSocket() {
     });
   });
 }
-
-// Will need to events: create room, join room
-// If creating room, generate UUID on server taking optional nickname, have socket join that room
-// If joining room, ask for UUID of room, somehow check if it exists and if it does have them join
-
-// Need events for: when joining, leaving, typing, messages, setting nicknames
