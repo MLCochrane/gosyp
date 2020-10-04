@@ -70,8 +70,8 @@ export const RoomDetailsUpdated = () : [RoomDetails] => {
   const [details, setDetails] = useState<RoomDetails>([]);
 
   useEffect(() => {
-    socket.on(Events.updatedRoomInfo, (updatedDetails: RoomDetails) => {
-      setDetails(updatedDetails);
+    socket.on(Events.updatedRoomInfo, ({ roomDetails }: { roomDetails: RoomDetails }) => {
+      setDetails(roomDetails);
     });
   }, []);
 

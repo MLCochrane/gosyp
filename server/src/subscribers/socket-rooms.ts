@@ -1,3 +1,4 @@
+import type { Server } from 'socket.io';
 import { Container } from 'typedi';
 import type { Logger } from 'winston';
 import Events from './socket-event-names';
@@ -33,7 +34,6 @@ export default function socketRooms({
 
     // Simply tell the socket there's no room
     if (!roomExists) {
-      logger.info(Object.keys(requestBody));
       socket.emit(Events.socketDeniedRoomAccess, {
         // redundant to return true here
         status: true,
@@ -72,7 +72,6 @@ export default function socketRooms({
 
   socket.on(Events.socketCreateRoom, async (requestBody) => {
     const { name } = requestBody;
-    logger.info('In socket create room request');
     try {
       const freshRoom = await roomService.CreateRoom(name);
       socket.emit(Events.createRoomSuccess, {
@@ -81,7 +80,6 @@ export default function socketRooms({
 
       Container.set('roomName', freshRoom.uuid);
     } catch (err) {
-      logger.info('Inside catch block');
       logger.info(err);
       socket.emit(Events.createRoomError, {
         message: err,

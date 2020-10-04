@@ -84,7 +84,24 @@ export default class RoomService {
       const removal = await this.RemoveRoom(uuid);
       return removal;
     }
-    return updatedRoom;
+    return [
+      {
+        name: 'Room ID',
+        value: updatedRoom?.uuid,
+      },
+      {
+        name: 'Room Name',
+        value: updatedRoom?.name || 'N/A',
+      },
+      {
+        name: 'Created At',
+        value: (updatedRoom as any).createdAt,
+      },
+      {
+        name: 'Active users',
+        value: updatedRoom?.userCount,
+      },
+    ];
   }
 
   /**

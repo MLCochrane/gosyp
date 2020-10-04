@@ -21,13 +21,14 @@ export default function socketLifecylce({
     // Get room name
     const room: string = Container.get('roomName');
 
-    const updateRes = await roomService.UpdateRoomUsers(room, false);
+    const roomDetails = await roomService.UpdateRoomUsers(room, false);
     /**
      * Send room details update to room
      */
-    if (typeof updateRes !== 'boolean') {
-      console.log(`UpdateRoomUsers returns: ${updateRes}`);
-      // io.to(room)
+    if (typeof roomDetails !== 'boolean') {
+      io.to(room).emit(Events.updatedRoomInfo, {
+        roomDetails,
+      });
     }
 
     // Updates other users to user leaving
