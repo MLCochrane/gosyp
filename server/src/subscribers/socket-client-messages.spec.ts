@@ -100,7 +100,11 @@ describe('Chat messages', () => {
 
   it('sends typing boolean to room if socket typing', () => {
     const userSocket = mockedSocket as ExtendedSocket;
-    // Makes me a bit iffy, but that's essentailly what is happening
+    /**
+     * Feels a bit iffy but kind of what's happening. We're mostly
+     * concerned with the function calling with the correct things
+     * rather than the implementation being the same.
+     */
     (userSocket.broadcast as any) = mockedIO;
     (userSocket.on as jest.Mock)
       .mockImplementationOnce((event, cb) => cb(true))
