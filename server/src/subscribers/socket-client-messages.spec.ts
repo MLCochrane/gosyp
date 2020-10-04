@@ -73,7 +73,9 @@ describe('Chat messages', () => {
 
   it('takes message from client and emits to the room', () => {
     const userSocket = mockedSocket as ExtendedSocket;
-    (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb('My message'));
+    (userSocket.on as jest.Mock)
+      .mockImplementationOnce((event, cb) => cb('My message'))
+      .mockImplementationOnce((event, cb) => cb('My Second Message!'));
     chatMessage(userSocket, mockedLogger, mockedIO);
 
     expect(userSocket.on).toHaveBeenCalledWith('chatMessage', expect.anything());
@@ -84,9 +86,40 @@ describe('Chat messages', () => {
         msg: 'My message',
       }),
     );
+
+    chatMessage(userSocket, mockedLogger, mockedIO);
+    expect(userSocket.on).toHaveBeenCalledWith('chatMessage', expect.anything());
+    expect(mockedIO.to).toHaveBeenCalledWith('12345');
+    expect(mockedIO.emit).toHaveBeenCalledWith(
+      'chatMessage',
+      expect.objectContaining({
+        msg: 'My Second Message!',
+      }),
+    );
   });
 
-  // it.only('sends typing boolean to room if socket typing', () => {
+  it('sends typing boolean to room if socket typing', () => {
+    const userSocket = mockedSocket as ExtendedSocket;
+    // Makes me a bit iffy, but that's essentailly what is happening
+    (userSocket.broadcast as any) = mockedIO;
+    (userSocket.on as jest.Mock)
+      .mockImplementationOnce((event, cb) => cb(true))
+      .mockImplementationOnce((event, cb) => cb(false));
 
-  // });
+    userTyping(userSocket, mockedLogger);
+    expect(userSocket.on).toHaveBeenCalledWith('userTyping', expect.anything());
+    expect(userSocket.broadcast.to).toHaveBeenCalledWith('12345');
+    expect(userSocket.broadcast.emit).toHaveBeenCalledWith(
+      'userTyping',
+      true,
+    );
+
+    userTyping(userSocket, mockedLogger);
+    expect(userSocket.on).toHaveBeenCalledWith('userTyping', expect.anything());
+    expect(userSocket.broadcast.to).toHaveBeenCalledWith('12345');
+    expect(userSocket.broadcast.emit).toHaveBeenCalledWith(
+      'userTyping',
+      false,
+    );
+  });
 });
