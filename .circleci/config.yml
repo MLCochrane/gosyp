@@ -7,14 +7,15 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Moving to client folder
-          command: cd client
-      - run:
           name: Installing
-          command: npm ci
+          command: |
+            cd client
+            npm ci
       - run:
           name: Creating build
-          command: npm run build
+          command: |
+            cd client
+            npm run build
       - run:
           name: Build Alert
           command: |
@@ -25,28 +26,30 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Moving to client folder
-          command: cd client
-      - run:
           name: Installing
-          command: npm ci
+          command: |
+            cd client
+            npm ci
       - run:
           name: Running Test suite
-          command: npm run test
+          command: |
+            cd client
+            npm run test
   test-server:
     docker:
       - image: cimg/node:14.13.0
     steps:
       - checkout
       - run:
-          name: Moving to server folder
-          command: cd server
-      - run:
           name: Installing
-          command: npm ci
+          command: |
+            cd server
+            npm ci
       - run:
           name: Running Test suite
-          command: npm run test
+          command: |
+            cd server
+            npm run test
 
 workflows:
   build-test-and-deploy:
