@@ -20,7 +20,7 @@ const RoomDetails = () => {
      * we're assuming that the server will be handling
      * when this should be updated and with what.
      */
-    if (details.length) {
+    if (details && details.length) {
       setRows(details);
     }
   }, [details]);

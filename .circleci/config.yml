@@ -1,0 +1,58 @@
+version: 2.1
+jobs:
+  build-frontend:
+    # pre-built images: https://circleci.com/docs/2.0/circleci-images/
+    docker:
+      - image: cimg/node:14.13.0
+    steps:
+      - checkout
+      - run:
+          name: Moving to client folder
+          command: cd client
+      - run:
+          name: Installing
+          command: npm ci
+      - run:
+          name: Creating build
+          command: npm run build
+      - run:
+          name: Build Alert
+          command: |
+            echo 'Just confirming things build properly'
+  test-client:
+    docker:
+      - image: cimg/node:14.13.0
+    steps:
+      - checkout
+      - run:
+          name: Moving to client folder
+          command: cd client
+      - run:
+          name: Installing
+          command: npm ci
+      - run:
+          name: Running Test suite
+          command: npm run test
+  test-server:
+    docker:
+      - image: cimg/node:14.13.0
+    steps:
+      - checkout
+      - run:
+          name: Moving to server folder
+          command: cd server
+      - run:
+          name: Installing
+          command: npm ci
+      - run:
+          name: Running Test suite
+          command: npm run test
+
+workflows:
+  build-test-and-deploy:
+      jobs:
+        - build-frontend
+        - test-client:
+            requires:
+              - build-frontend
+        - test-server

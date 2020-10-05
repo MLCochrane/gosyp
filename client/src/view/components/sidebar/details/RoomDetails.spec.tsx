@@ -21,9 +21,10 @@ describe('Room specific detail widget', () => {
   });
 
   it('updates rows when receiving new details', () => {
-    (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => {
+    (mockedSocket.on as jest.Mock).mockImplementation((event, cb) => {
       if (event === 'updatedRoomInfo') {
-        return cb([
+        return cb({
+        roomDetails: [
           {
             name: 'ID',
             value: '#123-024',
@@ -36,7 +37,8 @@ describe('Room specific detail widget', () => {
             name: 'Created at:',
             value: '12/24/20',
           },
-        ]);
+        ]
+      });
       }
     });
 
