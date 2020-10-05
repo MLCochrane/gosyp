@@ -1,3 +1,7 @@
+import {
+  Grid,
+  Typography,
+} from '@material-ui/core';
 import React from 'react';
 
 const DetailRow = ({
@@ -7,9 +11,17 @@ const DetailRow = ({
   name: string,
   value: string,
 }) => (
-  <div className="detail-row">
-    <p className="detail-row__name">{ name }</p>
-    <p className="detail-row__value">{ value }</p>
-  </div>
+  <Grid
+    className="detail-row"
+    container
+    justify="space-between"
+  >
+    <Grid item>
+      <Typography className="detail-row__name">{ name }</Typography>
+    </Grid>
+    <Grid item>
+      <Typography className="detail-row__value">{ value }</Typography>
+    </Grid>
+  </Grid>
 );
 export default DetailRow;

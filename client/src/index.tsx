@@ -22,7 +22,7 @@ const theme = createMuiTheme({
   },
   palette: {
     text: {
-      primary: '#fff',
+      primary: '#000',
     },
     primary: {
       main: '#EF476F',

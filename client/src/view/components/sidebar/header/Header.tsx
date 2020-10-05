@@ -1,9 +1,16 @@
 import React from 'react';
-import './header.scss';
+import {
+  Typography,
+} from '@material-ui/core';
 
 const Header = () => (
   <header className="header">
-    <h1 className="header__title">GOSYP</h1>
+    <Typography
+      variant="h1"
+      color="primary"
+    >
+      GOSYP
+    </Typography>
   </header>
 );
 export default Header;

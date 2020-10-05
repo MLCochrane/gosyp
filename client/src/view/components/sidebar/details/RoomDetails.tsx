@@ -2,10 +2,19 @@ import React, {
   useState,
   useEffect,
 } from 'react';
+import { Paper } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import DetailRow from './DetailRow';
 import { RoomDetailsUpdated } from '../../lib/events/rooms';
 
+const useStyles = makeStyles((theme) => ({
+  roomDetails: {
+    padding: theme.spacing(2),
+  },
+}));
+
 const RoomDetails = () => {
+  const classes = useStyles();
   const [details] = RoomDetailsUpdated();
   const [rows, setRows] = useState<RoomDetails>([
     {
@@ -26,7 +35,10 @@ const RoomDetails = () => {
   }, [details]);
 
   return (
-    <div className="room-details">
+    <Paper
+      elevation={ 0 }
+      className={ classes.roomDetails }
+    >
       <ul>
         {
         rows.map((row) => (
@@ -41,7 +53,7 @@ const RoomDetails = () => {
         ))
       }
       </ul>
-    </div>
+    </Paper>
   );
 };
 export default RoomDetails;
