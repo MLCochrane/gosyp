@@ -34,6 +34,10 @@ describe('Room CRUD', () => {
     (mockedIO?.to as jest.Mock).mockImplementation(() => mockedIO);
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('calls each socket funciton to bind', () => {
     const userSocket = mockedSocket as ExtendedSocket;
     (userSocket.on as jest.Mock).mockImplementation((event, cb) => {
@@ -55,8 +59,6 @@ describe('Room CRUD', () => {
         ['createRoom', expect.anything()],
       ],
     );
-
-    (userSocket.on as jest.Mock).mockClear();
   });
 
   it('sends error to socket if it cant create room', () => {
@@ -64,9 +66,22 @@ describe('Room CRUD', () => {
     (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb({ name: 'room-name' }));
     (mockedRoomService.CreateRoom as jest.Mock).mockImplementationOnce(() => { throw new Error('Room exists'); });
 
-    socketCreateRoom(mockedSocket, mockedRoomService, mockedLogger);
+    socketCreateRoom(userSocket, mockedRoomService, mockedLogger);
     expect(userSocket.emit).toHaveBeenCalledWith('createRoomError', {
       message: Error('Room exists'),
     });
+  });
+
+  it('sends success message to socket with room created', async () => {
+    const userSocket = mockedSocket as ExtendedSocket;
+    (mockedRoomService.CreateRoom as jest.Mock).mockResolvedValue({
+      uuid: '123',
+      name: 'room-name',
+      userCount: 0,
+    });
+    (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb({ name: 'room-name' }));
+
+    await socketCreateRoom(userSocket, mockedRoomService, mockedLogger);
+    expect(userSocket.emit).toHaveBeenCalledTimes(1);
   });
 });
