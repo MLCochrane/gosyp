@@ -6,37 +6,18 @@ import socketRooms, {
   socketCreateRoom,
   socketRequestsRoom,
 } from './socket-rooms';
+import RoomModel from '../models/room';
 import { ExtendedSocket } from '../types/global';
 
-jest.mock('socket.io', () => {
-  const socket = {
-    id: '123',
-    nickname: '',
-    emit: jest.fn(),
-    on: jest.fn(),
-  };
-  const on = () => socket;
-  const to = jest.fn();
-  const emit = jest.fn();
-  return jest.fn(() => ({ on, to, emit }));
-});
-
-jest.mock('winston', () => {
-  const info = jest.fn();
-  const createLogger = () => ({ info });
-  return {
-    createLogger,
-  };
-});
-
-jest.mock('../services/room-service', () => ({
-  createRoom: jest.fn(),
-}));
+jest.mock('../models/room');
+jest.mock('socket.io');
+jest.mock('winston');
+jest.mock('../services/room-service');
 
 let mockedSocket: ExtendedSocket;
 const mockedIO = new IOServer() as jest.Mocked<Server>;
 const mockedLogger = winston.createLogger() as jest.Mocked<Logger>;
-// const mockedRoomService = new RoomService();
+const mockedRoomService = new RoomService(RoomModel) as jest.Mocked<RoomService>;
 
 describe('Room CRUD', () => {
   beforeAll(() => {
@@ -55,7 +36,7 @@ describe('Room CRUD', () => {
 
   it('calls each socket funciton to bind', () => {
     const userSocket = mockedSocket as ExtendedSocket;
-    (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => {
+    (userSocket.on as jest.Mock).mockImplementation((event, cb) => {
       switch (event) {
         case 'addMeToRoom':
           return cb({});
@@ -74,19 +55,18 @@ describe('Room CRUD', () => {
         ['createRoom', expect.anything()],
       ],
     );
+
+    (userSocket.on as jest.Mock).mockClear();
   });
 
-  // it('sends error to socket if it cant create room', () => {
-  //   const userSocket = mockedSocket as ExtendedSocket;
-  //   (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => {
-  //     switch (event) {
-  //       case 'userTyping':
-  //         return cb(true);
-  //       case 'chatMessage':
-  //         return cb('Message');
-  //       default:
-  //         return cb(null);
-  //     }
-  //   });
-  // });
+  it('sends error to socket if it cant create room', () => {
+    const userSocket = mockedSocket as ExtendedSocket;
+    (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb({ name: 'room-name' }));
+    (mockedRoomService.CreateRoom as jest.Mock).mockImplementationOnce(() => { throw new Error('Room exists'); });
+
+    socketCreateRoom(mockedSocket, mockedRoomService, mockedLogger);
+    expect(userSocket.emit).toHaveBeenCalledWith('createRoomError', {
+      message: Error('Room exists'),
+    });
+  });
 });

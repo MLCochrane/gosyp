@@ -14,6 +14,12 @@
       {
         "regenerator": true
       }
+    ],
+    [
+      "@babel/proposal-class-properties",
+      {
+        "loose": true
+      }
     ]
   ]
 }
