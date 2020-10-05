@@ -35,8 +35,8 @@ const CreateForm = () => {
           ]
         }
         submissionCallback={ handleClick }
-        wasSuccess={ roomSuccess }
-        wasError={ roomError }
+        wasSuccess={ !!roomSuccess.message }
+        wasError={ !!roomError.message }
       />
     </div>
   );

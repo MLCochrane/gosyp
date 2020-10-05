@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import {
+  Button,
+} from '@material-ui/core';
 import { socket } from 'api';
-import Button from 'view/components/lib/forms/Button';
 import Events from 'view/components/lib/events/eventTypes';
 
 import './form.scss';
@@ -39,9 +41,10 @@ const Form = () => {
           type="text"
         />
         <Button
-          className="button--pri"
-          disabled={ !message.length }
+          color="primary"
           type="submit"
+          variant="contained"
+          disabled={ !message.length }
         >
           Send
         </Button>

@@ -4,10 +4,13 @@ import React, {
   useState,
   useEffect,
 } from 'react';
+import {
+  Container,
+  TextField,
+  Button,
+} from '@material-ui/core';
 
 import validator from './validator';
-import TextField from './TextField';
-import Button from './Button';
 
 const Form = ({
   formName,
@@ -123,34 +126,35 @@ const Form = ({
   };
 
   return (
-    <form className={ `${formName}-form` } noValidate onSubmit={ handleSubmit }>
-      {
-        fields.map((el) => (
-          <TextField
-            key={ el.name }
-            inputName={ el.name }
-            id={ `${formName}-${el.name}` }
-            label={ el.name.toUpperCase() }
-            value={ formFields[el.name].value }
-            errors={ !formFields[el.name].errors.valid }
-            errorMessage={ formFields[el.name].errors.message }
-            handleChange={ handleChange }
-            placeholder=""
-            required
-          />
-        ))
-      }
-
-      <div className="contact-form__btn-wrap">
+    <Container>
+      <form className={ `${formName}-form` } noValidate onSubmit={ handleSubmit }>
+        {
+          fields.map((el) => (
+            <TextField
+              fullWidth
+              margin="normal"
+              required={ el.required }
+              key={ el.name }
+              name={ el.name }
+              id={ `${formName}-${el.name}` }
+              label={ el.name }
+              value={ formFields[el.name].value }
+              variant="outlined"
+              onChange={ handleChange }
+            />
+          ))
+        }
         <Button
-          className="button--pri"
           type="submit"
           disabled={ disabledButton }
+          variant="contained"
+          color="primary"
+          fullWidth
         >
           { butonText }
         </Button>
-      </div>
-    </form>
+      </form>
+    </Container>
   );
 };
 
