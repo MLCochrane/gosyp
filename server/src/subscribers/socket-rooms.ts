@@ -5,16 +5,7 @@ import Events from './socket-event-names';
 import RoomService from '../services/room-service';
 import { ExtendedSocket } from '../types/global';
 
-export default function socketRooms({
-  socket,
-}: {
-  socket: ExtendedSocket,
-}) {
-  const logger: Logger = Container.get('logger');
-  const roomService = Container.get(RoomService);
-  const io: Server = Container.get('io');
-
-  /**
+/**
    * Socket requests room access
    *
    * Will check for room and add if the room
@@ -23,6 +14,12 @@ export default function socketRooms({
    * Could add additional checks to rooms service
    * if need be such as additional authentication.
    */
+export function socketRequestsRoom(
+  socket: ExtendedSocket,
+  roomService: RoomService,
+  logger: Logger,
+  io: Server,
+) {
   socket.on(Events.socketRequestsRoom, async (requestBody) => {
     logger.info('socket requests room access');
     const room: string = Container.get('roomName');
@@ -69,7 +66,16 @@ export default function socketRooms({
       // Broadcast updated room details here
     });
   });
+}
 
+/**
+ * Sent from client to create new room.
+ */
+export function socketCreateRoom(
+  socket: ExtendedSocket,
+  roomService: RoomService,
+  logger: Logger,
+) {
   socket.on(Events.socketCreateRoom, async (requestBody) => {
     const { name } = requestBody;
     try {
@@ -88,4 +94,15 @@ export default function socketRooms({
   });
 }
 
-// let currentRoom = io.sockets.adapter.rooms[room];
+export default function socketRooms({
+  socket,
+}: {
+  socket: ExtendedSocket,
+}) {
+  const logger: Logger = Container.get('logger');
+  const roomService = Container.get(RoomService);
+  const io: Server = Container.get('io');
+
+  socketRequestsRoom(socket, roomService, logger, io);
+  socketCreateRoom(socket, roomService, logger);
+}
