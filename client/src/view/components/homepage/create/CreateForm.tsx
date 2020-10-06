@@ -27,11 +27,13 @@ const CreateForm = () => {
             {
               label: 'Room Name',
               name: 'name',
+              helperText: 'Optional name for your chat room',
               required: false,
             },
             {
               label: 'Your Nickname',
               name: 'nickname',
+              helperText: 'Optional display name',
               required: false,
             },
           ]

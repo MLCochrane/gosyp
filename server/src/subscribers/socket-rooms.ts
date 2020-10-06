@@ -21,7 +21,7 @@ export function socketRequestsRoom(
   io: Server,
 ) {
   socket.on(Events.socketRequestsRoom, async (requestBody) => {
-    logger.info('socket requests room access');
+    logger.info(`socket requests room access: ${requestBody['room-id']}`);
     const room: string = Container.get('roomUuid');
 
     /**

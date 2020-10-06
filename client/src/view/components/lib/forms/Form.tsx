@@ -140,6 +140,7 @@ const Form = ({
               label={ el.label }
               value={ formFields[el.name].value }
               variant="outlined"
+              helperText={ el.helperText }
               onChange={ handleChange }
             />
           ))

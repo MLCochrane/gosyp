@@ -23,10 +23,12 @@ export default function socketLifecycle({
      * disconnect without being in a room so we
      * need to check.
      */
+    logger.info('about to check for room in disonnect');
     const roomCheck = Container.has('roomUuid');
     if (!roomCheck) {
       return;
     }
+    logger.info('room check has passed so we can continue');
 
     // Get room name
     const room: string = Container.get('roomUuid');

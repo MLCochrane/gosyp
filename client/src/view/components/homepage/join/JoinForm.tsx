@@ -20,11 +20,13 @@ const JoinForm = () => {
             {
               name: 'room-id',
               label: 'Room ID',
+              helperText: 'Room ID that has been shared with you',
               required: true,
             },
             {
               name: 'nickname',
               label: 'Nickname',
+              helperText: 'Optional display name',
               required: false,
             },
           ]
