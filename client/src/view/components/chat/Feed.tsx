@@ -95,3 +95,8 @@ const Feed = () => {
   );
 };
 export default Feed;
+
+// moduleName.func(arg1, callback())
+// mockedModule.func.mockImplementation((arg1, callback) => callback(
+//   // ...whatever data I want to make assertions with
+// ))
