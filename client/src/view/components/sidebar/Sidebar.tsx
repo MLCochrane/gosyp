@@ -5,119 +5,117 @@ import {
   Typography,
   Divider,
   Drawer,
+  IconButton,
+  Hidden,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Details from './details/DetailWidget';
 
 const drawerWidth = 400;
-const useStyles = makeStyles((theme: any) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
-  appBar: {
-    // background: 'none',
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
   },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+  appBar: {
+    [theme.breakpoints.up('sm')]: {
+      background: 'none',
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: drawerWidth,
+    },
   },
   menuButton: {
     marginRight: theme.spacing(2),
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
   },
-  hide: {
-    display: 'none',
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
+  // necessary for content to be below app bar
+  toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
-  },
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
   },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: -drawerWidth,
-  },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
   },
 }));
 
 const Sidebar = () => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  // const handleDrawerOpen = () => {
-  //   setOpen(true);
-  // };
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+  const drawer = (
+    <div>
+      <div className={ classes.toolbar } />
+      { /* <Typography
+        variant="h1"
+        color="primary"
+      >
+        GOSYP
+      </Typography> */ }
+      <Divider />
+      <Details />
+    </div>
+  );
 
-  // const handleDrawerClose = () => {
-  //   setOpen(false);
-  // };
   return (
     <>
       <AppBar
         elevation={ 0 }
         position="fixed"
-        className={ `${open ? classes.appBarShift : ''} ${classes.appBar}` }
+        className={ classes.appBar }
       >
         <Toolbar>
-          { /* <IconButton
+          <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={ handleDrawerOpen }
             edge="start"
-            className={ clsx(classes.menuButton, open && classes.hide) }
+            onClick={ handleDrawerToggle }
+            className={ classes.menuButton }
           >
-            <MenuIcon />
-          </IconButton> */ }
+            menu
+          </IconButton>
         </Toolbar>
       </AppBar>
-      <Drawer
-        className={ classes.drawer }
-        variant="persistent"
-        anchor="left"
-        open={ open }
-        classes={ {
-          paper: classes.drawerPaper,
-        } }
-      >
-        <div className={ classes.drawerHeader }>
-          <Typography variant="h6" component="h1" noWrap>
-            GOSYP
-          </Typography>
-          { /* <IconButton onClick={ handleDrawerClose }>
-            { theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon /> }
-          </IconButton> */ }
-        </div>
-        <Divider />
-        <Details />
-      </Drawer>
+      <nav className={ classes.drawer } aria-label="mailbox folders">
+        { /* The implementation can be swapped with js to avoid SEO duplication of links. */ }
+        <Hidden smUp implementation="css">
+          <Drawer
+            variant="temporary"
+            anchor="left"
+            open={ mobileOpen }
+            onClose={ handleDrawerToggle }
+            classes={ {
+              paper: classes.drawerPaper,
+            } }
+            ModalProps={ {
+              keepMounted: true, // Better open performance on mobile.
+            } }
+          >
+            { drawer }
+          </Drawer>
+        </Hidden>
+        <Hidden xsDown implementation="css">
+          <Drawer
+            classes={ {
+              paper: classes.drawerPaper,
+            } }
+            variant="permanent"
+            open
+          >
+            { drawer }
+          </Drawer>
+        </Hidden>
+      </nav>
     </>
   );
 };

@@ -38,15 +38,21 @@ export const CreateRoomSuccess = () : [any] => {
   const [responseMessage, setResponseMessage] = useState<any>({});
 
   useEffect(() => {
+    let cancelled = false;
     socket.on(Events.createRoomSuccess, ({
       message,
     } : {
       message: any,
     }) => {
-      setResponseMessage({
-        'room-id': message.uuid,
-      });
+      if (!cancelled) {
+        setResponseMessage({
+          'room-id': message.uuid,
+        });
+      }
     });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return [responseMessage];
