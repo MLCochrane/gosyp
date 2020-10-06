@@ -75,6 +75,7 @@ export default class RoomService {
       },
     );
 
+    if (!updatedRoom) return false;
     if (updatedRoom && updatedRoom.userCount <= 0) {
       const removal = await this.RemoveRoom(uuid);
       return removal;

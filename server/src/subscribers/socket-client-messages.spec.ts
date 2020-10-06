@@ -19,7 +19,7 @@ describe('Chat messages', () => {
   beforeAll(() => {
     Container.set('io', mockedIO);
     Container.set('logger', mockedLogger);
-    Container.set('roomName', '12345');
+    Container.set('roomUuid', '12345');
 
     mockedSocket = (mockedIO.on as jest.Mock)();
 

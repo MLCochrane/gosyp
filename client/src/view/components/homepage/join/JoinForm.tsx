@@ -19,10 +19,12 @@ const JoinForm = () => {
           [
             {
               name: 'room-id',
+              label: 'Room ID',
               required: true,
             },
             {
               name: 'nickname',
+              label: 'Nickname',
               required: false,
             },
           ]

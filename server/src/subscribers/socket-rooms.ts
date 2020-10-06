@@ -22,7 +22,7 @@ export function socketRequestsRoom(
 ) {
   socket.on(Events.socketRequestsRoom, async (requestBody) => {
     logger.info('socket requests room access');
-    const room: string = Container.get('roomName');
+    const room: string = Container.get('roomUuid');
 
     /**
      * Check for room in DB
@@ -75,15 +75,17 @@ export function socketCreateRoom(
   logger: Logger,
 ) {
   socket.on(Events.socketCreateRoom, async (requestBody) => {
-    const { name } = requestBody;
+    const { name, nickname } = requestBody;
     let freshRoom;
     try {
       freshRoom = await roomService.CreateRoom(name);
+      // Add on user nickname
+      freshRoom.nickname = nickname;
       socket.emit(Events.createRoomSuccess, {
         message: freshRoom,
       });
 
-      Container.set('roomName', freshRoom.uuid);
+      Container.set('roomUuid', freshRoom.uuid);
     } catch (err) {
       logger.info(err);
       socket.emit(Events.createRoomError, {

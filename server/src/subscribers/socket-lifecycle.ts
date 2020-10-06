@@ -18,8 +18,18 @@ export default function socketLifecycle({
   socket.on('disconnect', async () => {
     logger.info('socket has disconnected');
 
+    /**
+     * Check if room set in container. User can
+     * disconnect without being in a room so we
+     * need to check.
+     */
+    const roomCheck = Container.has('roomUuid');
+    if (!roomCheck) {
+      return;
+    }
+
     // Get room name
-    const room: string = Container.get('roomName');
+    const room: string = Container.get('roomUuid');
 
     const roomDetails = await roomService.UpdateRoomUsers(room, false);
     /**

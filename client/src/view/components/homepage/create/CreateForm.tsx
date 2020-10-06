@@ -25,11 +25,13 @@ const CreateForm = () => {
         fields={
           [
             {
-              name: 'Room Name',
+              label: 'Room Name',
+              name: 'name',
               required: false,
             },
             {
-              name: 'Your Nickname',
+              label: 'Your Nickname',
+              name: 'nickname',
               required: false,
             },
           ]

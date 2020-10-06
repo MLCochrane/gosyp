@@ -35,7 +35,7 @@ describe('Room CRUD', () => {
   beforeEach(() => {
     Container.set('io', mockedIO);
     Container.set('logger', mockedLogger);
-    Container.set('roomName', '12345');
+    Container.set('roomUuid', '12345');
   });
 
   afterEach(() => {
@@ -83,7 +83,7 @@ describe('Room CRUD', () => {
     (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb({ name: 'room-name' }));
     (mockedRoomService.CreateRoom as jest.Mock).mockResolvedValueOnce({
       uuid: '867',
-      roomName: 'room-name',
+      roomUuid: 'room-name',
       userCount: 0,
     });
 
@@ -95,7 +95,7 @@ describe('Room CRUD', () => {
       {
         message: {
           uuid: '867',
-          roomName: 'room-name',
+          roomUuid: 'room-name',
           userCount: 0,
         },
       },

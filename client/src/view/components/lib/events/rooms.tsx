@@ -47,6 +47,7 @@ export const CreateRoomSuccess = () : [any] => {
       if (!cancelled) {
         setResponseMessage({
           'room-id': message.uuid,
+          nickname: message.nickname,
         });
       }
     });
