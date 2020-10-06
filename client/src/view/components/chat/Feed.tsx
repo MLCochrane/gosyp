@@ -81,6 +81,28 @@ const Feed = () => {
     }
   }, [messages]);
 
+  const messageBody = (message: ChatMessage | StatusUpdate, index: number) => {
+    if (message.messageType === 'message') {
+      let hideMeta = false;
+      const prevMessage = messages[index - 1] ? messages[index - 1] : null;
+      if (
+        prevMessage
+        && prevMessage.messageType === 'message'
+        && prevMessage.user.id === message.user.id
+      ) {
+        hideMeta = true;
+      }
+
+      return (
+        <UserMessage
+          hideMeta={ hideMeta }
+          { ...message }
+        />
+      );
+    }
+    return <StatusMessage { ...message } />;
+  };
+
   return (
     <Paper
       elevation={ 0 }
@@ -89,15 +111,11 @@ const Feed = () => {
     >
       <ul>
         {
-          messages.map((el) => (
+          messages.map((el, index) => (
             <li
               key={ el.id }
             >
-              {
-                el.messageType === 'message'
-                  ? <UserMessage { ...el } />
-                  : <StatusMessage { ...el } />
-              }
+              { messageBody(el, index) }
             </li>
           ))
         }
