@@ -5,8 +5,6 @@ import Feed from './Feed';
 import MessageForm from './form/Form';
 import TypingAlert from './TypingAlert';
 
-import './chat.scss';
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     width: '100%',

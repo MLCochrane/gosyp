@@ -22,25 +22,8 @@ const App = () => {
   return (
     <div className="app">
       <div className="page-content">
-        <Grid
-          container
-          spacing={ 0 }
-        >
-          <Grid
-            item
-            className={ classes.gridItem }
-            xs={ addedToRoom ? 3 : true }
-          >
-            <Sidebar />
-          </Grid>
-          <Grid
-            item
-            xs
-            className={ classes.gridItem }
-          >
-            <SwitchView trigger={ addedToRoom } current={ Home } next={ Room } />
-          </Grid>
-        </Grid>
+        <Sidebar />
+        <SwitchView trigger={ addedToRoom } current={ Home } next={ Room } />
       </div>
     </div>
   );
