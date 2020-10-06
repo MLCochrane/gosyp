@@ -5,7 +5,7 @@ import Events from './socket-event-names';
 import RoomService from '../services/room-service';
 import { ExtendedSocket } from '../types/global';
 
-export default function socketLifecylce({
+export default function socketLifecycle({
   socket,
 }: {
   socket: ExtendedSocket,
@@ -29,15 +29,15 @@ export default function socketLifecylce({
       io.to(room).emit(Events.updatedRoomInfo, {
         roomDetails,
       });
-    }
 
-    // Updates other users to user leaving
-    io.to(room).emit(Events.userLeft, {
-      user: {
-        id: socket.id,
-        nickname: socket.nickname,
-      },
-      timestamp: Date.now(),
-    });
+      // Updates other users to user leaving
+      io.to(room).emit(Events.userLeft, {
+        user: {
+          id: socket.id,
+          nickname: socket.nickname,
+        },
+        timestamp: Date.now(),
+      });
+    }
   });
 }

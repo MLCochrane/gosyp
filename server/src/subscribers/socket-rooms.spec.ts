@@ -22,10 +22,6 @@ const mockedRoomService = new RoomService(RoomModel) as jest.Mocked<RoomService>
 
 describe('Room CRUD', () => {
   beforeAll(() => {
-    Container.set('io', mockedIO);
-    Container.set('logger', mockedLogger);
-    Container.set('roomName', '12345');
-
     mockedSocket = (mockedIO.on as jest.Mock)();
     (mockedSocket?.to as jest.Mock).mockImplementation(() => mockedSocket);
 
@@ -34,6 +30,12 @@ describe('Room CRUD', () => {
      * Probably could move into our initial mock but I haven't.
      */
     (mockedIO?.to as jest.Mock).mockImplementation(() => mockedIO);
+  });
+
+  beforeEach(() => {
+    Container.set('io', mockedIO);
+    Container.set('logger', mockedLogger);
+    Container.set('roomName', '12345');
   });
 
   afterEach(() => {
@@ -80,7 +82,7 @@ describe('Room CRUD', () => {
     const userSocket = mockedSocket as ExtendedSocket;
     (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb({ name: 'room-name' }));
     (mockedRoomService.CreateRoom as jest.Mock).mockResolvedValueOnce({
-      uuid: '12345',
+      uuid: '867',
       roomName: 'room-name',
       userCount: 0,
     });
@@ -92,7 +94,7 @@ describe('Room CRUD', () => {
       'createRoomSuccess',
       {
         message: {
-          uuid: '12345',
+          uuid: '867',
           roomName: 'room-name',
           userCount: 0,
         },
