@@ -1,6 +1,7 @@
 import { Container } from 'typedi';
 import IOServer, { Server } from 'socket.io';
 import winston, { Logger } from 'winston';
+import flushPromises from 'flush-promises';
 import RoomService from '../services/room-service';
 import socketRooms, {
   socketCreateRoom,
@@ -26,6 +27,7 @@ describe('Room CRUD', () => {
     Container.set('roomName', '12345');
 
     mockedSocket = (mockedIO.on as jest.Mock)();
+    (mockedSocket?.to as jest.Mock).mockImplementation(() => mockedSocket);
 
     /**
      * Needed because the socket.io calls allow for chaining.
@@ -61,12 +63,14 @@ describe('Room CRUD', () => {
     );
   });
 
-  it('sends error to socket if it cant create room', () => {
+  it('sends error to socket if it cant create room', async () => {
     const userSocket = mockedSocket as ExtendedSocket;
     (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb({ name: 'room-name' }));
     (mockedRoomService.CreateRoom as jest.Mock).mockImplementationOnce(() => { throw new Error('Room exists'); });
 
     socketCreateRoom(userSocket, mockedRoomService, mockedLogger);
+    await flushPromises();
+
     expect(userSocket.emit).toHaveBeenCalledWith('createRoomError', {
       message: Error('Room exists'),
     });
@@ -74,14 +78,90 @@ describe('Room CRUD', () => {
 
   it('sends success message to socket with room created', async () => {
     const userSocket = mockedSocket as ExtendedSocket;
-    (mockedRoomService.CreateRoom as jest.Mock).mockResolvedValue({
-      uuid: '123',
-      name: 'room-name',
+    (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb({ name: 'room-name' }));
+    (mockedRoomService.CreateRoom as jest.Mock).mockResolvedValueOnce({
+      uuid: '12345',
+      roomName: 'room-name',
       userCount: 0,
     });
-    (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb({ name: 'room-name' }));
 
-    await socketCreateRoom(userSocket, mockedRoomService, mockedLogger);
+    socketCreateRoom(userSocket, mockedRoomService, mockedLogger);
+    await flushPromises();
     expect(userSocket.emit).toHaveBeenCalledTimes(1);
+    expect(userSocket.emit).toHaveBeenCalledWith(
+      'createRoomSuccess',
+      {
+        message: {
+          uuid: '12345',
+          roomName: 'room-name',
+          userCount: 0,
+        },
+      },
+    );
+  });
+
+  it('sends denied message to socket if no room found, does not add user to room', async () => {
+    const userSocket = mockedSocket as ExtendedSocket;
+    (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb({ 'room-id': '123' }));
+    (mockedRoomService.CheckForRoom as jest.Mock).mockReturnValue(false);
+
+    socketRequestsRoom(userSocket, mockedRoomService, mockedLogger, mockedIO);
+    await flushPromises();
+
+    expect(userSocket.emit).toHaveBeenCalledTimes(1);
+    expect(userSocket.emit).toHaveBeenCalledWith(
+      'notAddedToRoom',
+      {
+        status: true,
+        message: 'Room ID is not available',
+      },
+    );
+    expect(userSocket.join).toHaveBeenCalledTimes(0);
+  });
+
+  it('if a room found add socket, send room details to everyone, and tell room someone joined', async () => {
+    const roomDetails = [
+      {
+        name: 'Room ID',
+        value: '12345',
+      },
+      {
+        name: 'Room Name',
+        value: '',
+      },
+      {
+        name: 'Created At',
+        value: 'Thursday',
+      },
+      {
+        name: 'Active users',
+        value: 0,
+      },
+    ];
+    const userSocket = mockedSocket as ExtendedSocket;
+    (userSocket.broadcast as any) = userSocket;
+    (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb({ 'room-id': '583' }));
+    (userSocket.join as jest.Mock).mockImplementationOnce((event, cb) => cb());
+    (mockedRoomService.CheckForRoom as jest.Mock).mockReturnValue(true);
+    (mockedRoomService.UpdateRoomUsers as jest.Mock).mockReturnValue(roomDetails);
+
+    socketRequestsRoom(userSocket, mockedRoomService, mockedLogger, mockedIO);
+    await flushPromises();
+
+    expect(userSocket.join).toHaveBeenCalledWith('12345', expect.anything());
+    expect((userSocket.emit as jest.Mock).mock.calls).toEqual([
+      ['addedToRoom', true],
+      ['userJoined', expect.objectContaining({
+        user: {
+          id: '123',
+          nickname: null,
+        },
+      })],
+    ]);
+    expect(mockedIO.to).toHaveBeenCalledWith('12345');
+    expect(mockedIO.emit).toHaveBeenCalledWith(
+      'updatedRoomInfo',
+      { roomDetails },
+    );
   });
 });

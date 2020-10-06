@@ -62,8 +62,6 @@ export function socketRequestsRoom(
         },
         timestamp: Date.now(),
       });
-
-      // Broadcast updated room details here
     });
   });
 }
@@ -76,10 +74,11 @@ export function socketCreateRoom(
   roomService: RoomService,
   logger: Logger,
 ) {
-  socket.on(Events.socketCreateRoom, (requestBody) => {
+  socket.on(Events.socketCreateRoom, async (requestBody) => {
     const { name } = requestBody;
+    let freshRoom;
     try {
-      const freshRoom = roomService.CreateRoom(name) as any;
+      freshRoom = await roomService.CreateRoom(name);
       socket.emit(Events.createRoomSuccess, {
         message: freshRoom,
       });
@@ -106,6 +105,3 @@ export default function socketRooms({
   socketRequestsRoom(socket, roomService, logger, io);
   socketCreateRoom(socket, roomService, logger);
 }
-
-// module.functionName(arg1, async callback(arg2) {...});
-// module.fucntionName.mockImplementation((arg1, cb) => cb('some data'));
