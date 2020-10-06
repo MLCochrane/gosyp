@@ -3,12 +3,10 @@ import ErrorBoundry from 'view/components/lib/helpers/ErrorBoundry';
 import Chat from './Chat';
 
 const Room = () => (
-  <div className="room">
-    <ErrorBoundry
-      errorDisplay={ <p>Boom boom goes app</p> }
-    >
-      <Chat />
-    </ErrorBoundry>
-  </div>
+  <ErrorBoundry
+    errorDisplay={ <p>Boom boom goes app</p> }
+  >
+    <Chat />
+  </ErrorBoundry>
 );
 export default Room;

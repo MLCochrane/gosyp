@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Sidebar from './Sidebar';
-import Header from './header/Header';
+import Details from './details/DetailWidget';
 
 it('renders childrens', () => {
   const wrapper = shallow(<Sidebar />);
-  expect(wrapper.find(Header)).toHaveLength(1);
+  expect(wrapper.find(Details)).toHaveLength(2);
 });

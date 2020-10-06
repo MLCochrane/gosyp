@@ -25,18 +25,20 @@ const CreateForm = () => {
         fields={
           [
             {
+              label: 'Room Name',
               name: 'name',
               required: false,
             },
             {
+              label: 'Your Nickname',
               name: 'nickname',
               required: false,
             },
           ]
         }
         submissionCallback={ handleClick }
-        wasSuccess={ roomSuccess }
-        wasError={ roomError }
+        wasSuccess={ false }
+        wasError={ !!roomError.message }
       />
     </div>
   );

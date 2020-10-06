@@ -1,11 +1,10 @@
 import React from 'react';
 import { socket } from 'api';
-import { HasAddedToRoom, NotAddedToRoom } from 'view/components/lib/events/rooms';
+import { NotAddedToRoom } from 'view/components/lib/events/rooms';
 import Events from 'view/components/lib/events/eventTypes';
 import Form from 'view/components/lib/forms/Form';
 
 const JoinForm = () => {
-  const [addedToRoom] = HasAddedToRoom();
   const [notAddedToRoom] = NotAddedToRoom();
 
   const handleClick = (body: FormBody) => {
@@ -20,16 +19,18 @@ const JoinForm = () => {
           [
             {
               name: 'room-id',
+              label: 'Room ID',
               required: true,
             },
             {
               name: 'nickname',
+              label: 'Nickname',
               required: false,
             },
           ]
         }
         submissionCallback={ handleClick }
-        wasSuccess={ addedToRoom }
+        wasSuccess={ false }
         wasError={ notAddedToRoom }
       />
     </div>

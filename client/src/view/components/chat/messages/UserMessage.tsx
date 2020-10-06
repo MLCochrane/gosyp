@@ -1,12 +1,24 @@
 import React from 'react';
+import {
+  Grid,
+  Typography,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
-import './userMessage.scss';
+const useStyles = makeStyles(() => (
+  {
+    meta: {
+      justifyContent: 'space-between',
+    },
+  }
+));
 
 const UserMessage = ({
   user,
   msg,
   timestamp,
 } : ChatMessage) => {
+  const classes = useStyles();
   const displayName = user.nickname || user.id;
 
   const showTime = () => {
@@ -15,11 +27,35 @@ const UserMessage = ({
   };
   return (
     <div className="message message--user user-message">
-      <div className="user-message__meta">
-        <h2 className="user-message__name body-type">{ displayName }</h2>
-        <p className="user-message__time meta-type">{ showTime() }</p>
-      </div>
-      <p className="user-message__message">{ msg }</p>
+      <Grid
+        container
+        className={ classes.meta }
+      >
+        <Grid
+          item
+        >
+          <Typography
+            variant="h6"
+            component="p"
+          >
+            { displayName }
+          </Typography>
+        </Grid>
+        <Grid
+          item
+        >
+          <Typography
+            variant="h6"
+            component="span"
+          >
+            { showTime() }
+          </Typography>
+        </Grid>
+
+      </Grid>
+      <Typography>
+        { msg }
+      </Typography>
     </div>
   );
 };

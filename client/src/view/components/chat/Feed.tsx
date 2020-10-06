@@ -3,14 +3,24 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
+import { Paper } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import ChatMessage from 'view/components/lib/events/chatMessage';
 import { UserJoined, UserLeft } from 'view/components/lib/events/lifeCycle';
 import UserMessage from './messages/UserMessage';
 import StatusMessage from './messages/StatusMessage';
 
-import './feed.scss';
+const useStyles = makeStyles(() => (
+  {
+    feed: {
+      flexGrow: 1,
+      overflowY: 'auto',
+    },
+  }
+));
 
 const Feed = () => {
+  const classes = useStyles();
   const [messages, setMessages] = useState<Messages>([]);
   const [newMessage] = ChatMessage();
   const [userHasJoined] = UserJoined();
@@ -72,9 +82,10 @@ const Feed = () => {
   }, [messages]);
 
   return (
-    <div
+    <Paper
+      elevation={ 0 }
       ref={ feedRef }
-      className="feed chat__component"
+      className={ classes.feed }
     >
       <ul>
         {
@@ -91,7 +102,7 @@ const Feed = () => {
           ))
         }
       </ul>
-    </div>
+    </Paper>
   );
 };
 export default Feed;

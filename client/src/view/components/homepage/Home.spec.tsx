@@ -1,9 +1,13 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import {
+  Container,
+  Button,
+} from '@material-ui/core';
 import Home from './Home';
-import JoinForm from './join/JoinForm';
 
 it('renders children', () => {
   const wrapper = shallow(<Home />);
-  expect(wrapper.find(JoinForm)).toHaveLength(1);
+  expect(wrapper.find(Container)).toHaveLength(1);
+  expect(wrapper.find(Button)).toHaveLength(1);
 });
