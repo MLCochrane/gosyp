@@ -10,6 +10,9 @@ const useStyles = makeStyles(() => (
     meta: {
       justifyContent: 'space-between',
     },
+    hideMeta: {
+      display: 'none',
+    },
   }
 ));
 
@@ -17,6 +20,7 @@ const UserMessage = ({
   user,
   msg,
   timestamp,
+  hideMeta,
 } : ChatMessage) => {
   const classes = useStyles();
   const displayName = user.nickname || user.id;
@@ -29,7 +33,7 @@ const UserMessage = ({
     <div className="message message--user user-message">
       <Grid
         container
-        className={ classes.meta }
+        className={ `${classes.meta} ${hideMeta ? classes.hideMeta : ''}` }
       >
         <Grid
           item

@@ -16,6 +16,10 @@ const mockedIO = io as jest.Mocked<typeof io>;
 const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
 
 describe('Feed', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('does not display anything if no messages', () => {
     (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => {
       switch (event) {
