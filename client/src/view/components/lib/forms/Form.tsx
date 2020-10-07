@@ -9,22 +9,35 @@ import {
   TextField,
   Button,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { reach, ObjectSchema } from 'yup';
 
-import validator from './validator';
+const useStyles = makeStyles(() => ({
+  button: {
+    display: 'block',
+    margin: '0 auto',
+  },
+}));
 
 const Form = ({
   formName,
   fields,
+  buttonText,
   submissionCallback,
   wasSuccess,
   wasError,
+  schema,
 } : {
   formName: string,
   fields: FormProps[],
   submissionCallback: (body: FormBody) => void,
   wasSuccess: boolean,
   wasError: boolean,
+  buttonText: string,
+  schema: ObjectSchema,
 }) => {
+  const classes = useStyles();
+
   const mappedFields: FormFields = {};
   fields.forEach((el) => {
     mappedFields[el.name] = {
@@ -43,7 +56,7 @@ const Form = ({
   const [defaultForms] = useState(formFields);
 
   const [disabledButton, setDisabled] = useState(true);
-  const [butonText, setButtonText] = useState('Submit');
+  const [butonText, setButtonText] = useState(buttonText);
 
   const onSubmission = () => {
     setButtonText('Submitting...');
@@ -92,18 +105,28 @@ const Form = ({
     const { value }: { value: string } = e.target;
     const { name }: { name: string } = e.target;
 
-    const errorResult = formFields[name].isRequired
-      ? validator(name, value)
-      : { valid: true, message: '' };
-
-    setFormFields({
-      ...formFields,
-      [name]: {
-        ...formFields[name],
-        value,
-        errors: errorResult,
-      },
-    });
+    reach(schema, name)
+      .validate(value)
+      .then(() => {
+        setFormFields({
+          ...formFields,
+          [name]: {
+            ...formFields[name],
+            value,
+            errors: { valid: true, message: '' },
+          },
+        });
+      })
+      .catch((error) => {
+        setFormFields({
+          ...formFields,
+          [name]: {
+            ...formFields[name],
+            value,
+            errors: { valid: false, message: error.message },
+          },
+        });
+      });
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -140,7 +163,12 @@ const Form = ({
               label={ el.label }
               value={ formFields[el.name].value }
               variant="outlined"
-              helperText={ el.helperText }
+              error={ !formFields[el.name].errors.valid }
+              helperText={
+                formFields[el.name].errors.valid
+                  ? el.helperText
+                  : formFields[el.name].errors.message
+              }
               onChange={ handleChange }
             />
           ))
@@ -150,7 +178,8 @@ const Form = ({
           disabled={ disabledButton }
           variant="contained"
           color="primary"
-          fullWidth
+          size="large"
+          className={ classes.button }
         >
           { butonText }
         </Button>

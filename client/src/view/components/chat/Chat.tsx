@@ -21,6 +21,7 @@ const Chat = () => {
     <Paper
       elevation={ 0 }
       className={ classes.paper }
+      square
     >
       <Feed />
       <TypingAlert />

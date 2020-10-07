@@ -28,6 +28,10 @@ const useStyles = makeStyles((theme: any) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
+  buttonToggle: {
+    display: 'block',
+    margin: `${theme.spacing(2)}px auto 0`,
+  },
 }));
 
 const Home = () => {
@@ -58,8 +62,8 @@ const Home = () => {
         </Typography>
         <SwitchView trigger={ formToggle } current={ JoinFrom } next={ CreateForm } />
         <Button
-          fullWidth
           color="primary"
+          className={ classes.buttonToggle }
           onClick={ handleClick }
         >
           {
