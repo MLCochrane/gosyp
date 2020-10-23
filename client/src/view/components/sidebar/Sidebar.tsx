@@ -6,7 +6,6 @@ import {
   Drawer,
   IconButton,
   Hidden,
-  Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Details from './details/DetailWidget';
@@ -72,12 +71,6 @@ const Sidebar = () => {
         className={ classes.appBar }
       >
         <Toolbar>
-          {/* <Typography
-            variant="h1"
-            color="primary"
-          >
-            GOSYP
-          </Typography> */}
           <IconButton
             color="inherit"
             aria-label="open drawer"
