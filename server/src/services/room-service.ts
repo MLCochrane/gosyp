@@ -83,6 +83,10 @@ export default class RoomService {
       const removal = await this.RemoveRoom(uuid);
       return removal;
     }
+
+    // Format date
+    const formatDate = new Date((updatedRoom as any).createdAt);
+
     return [
       {
         name: 'Room ID',
@@ -94,7 +98,7 @@ export default class RoomService {
       },
       {
         name: 'Created At',
-        value: (updatedRoom as any).createdAt,
+        value: formatDate.toLocaleString(),
       },
       {
         name: 'Active users',
