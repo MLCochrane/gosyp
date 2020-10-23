@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme: any) => ({
   },
   title: {
     textAlign: 'center',
+    color: theme.palette.primary.main,
   },
   welcomeText: {
     textAlign: 'center',
@@ -49,7 +50,6 @@ const Home = () => {
         <Typography
           variant="h2"
           component="p"
-          color="primary"
           className={ classes.title }
         >
           GOSYP

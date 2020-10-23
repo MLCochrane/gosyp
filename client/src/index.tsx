@@ -22,8 +22,15 @@ const theme = createMuiTheme({
   },
   palette: {
     type: 'dark',
+    secondary: {
+      light: '#67daff',
+      main: '#03a9f4',
+      dark: '#007ac1',
+    },
     primary: {
-      main: '#EF476F',
+      light: '#ffffff',
+      main: '#e0f2f1',
+      dark: '#aebfbe',
     },
   },
 });
