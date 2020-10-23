@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: any) => ({
   home: {
     position: 'relative',
     height: '100%',
-    background: theme.palette.background.default,
+    background: theme.palette.background.paper,
   },
   formWrapper: {
     position: 'absolute',
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: any) => ({
 
 const Home = () => {
   const classes = useStyles();
-  const [formToggle, setFormToggle] = useState(true);
+  const [formToggle, setFormToggle] = useState(false);
   const handleClick = () => {
     setFormToggle((old) => !old);
   };
@@ -58,7 +58,11 @@ const Home = () => {
           variant="h5"
           className={ classes.welcomeText }
         >
-          Join Room
+          {
+            !formToggle
+            ? "Join Room"
+            : "Create Room"
+          }
         </Typography>
         <SwitchView trigger={ formToggle } current={ JoinFrom } next={ CreateForm } />
         <Button
