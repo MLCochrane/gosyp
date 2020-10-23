@@ -12,7 +12,12 @@ const App = () => {
     <div className="app">
       <div className="page-content">
         <Sidebar />
-        <SwitchView trigger={ addedToRoom } current={ Home } next={ Room } />
+        <SwitchView
+          trigger={ addedToRoom }
+          current={ Home }
+          next={ Room }
+          useAnimation={ false }
+        />
       </div>
     </div>
   );

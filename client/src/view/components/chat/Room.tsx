@@ -1,12 +1,12 @@
 import React from 'react';
-import ErrorBoundry from 'view/components/lib/helpers/ErrorBoundry';
+import ErrorBoundary from 'view/components/lib/helpers/ErrorBoundary';
 import Chat from './Chat';
 
 const Room = () => (
-  <ErrorBoundry
+  <ErrorBoundary
     errorDisplay={ <p>Boom boom goes app</p> }
   >
     <Chat />
-  </ErrorBoundry>
+  </ErrorBoundary>
 );
 export default Room;

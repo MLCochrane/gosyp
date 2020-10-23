@@ -4,9 +4,13 @@ import {
   Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { socket } from 'api';
 
-const useStyles = makeStyles(() => (
+const useStyles = makeStyles((theme) => (
   {
+    currentSocketMessage: {
+      color: theme.palette.secondary.light,
+    },
     meta: {
       justifyContent: 'space-between',
     },
@@ -30,7 +34,7 @@ const UserMessage = ({
     return timeToShow.toLocaleTimeString();
   };
   return (
-    <div className="message message--user user-message">
+    <div className={`message message--user user-message ${ socket.id === user.id ? classes.currentSocketMessage : '' }`}>
       <Grid
         container
         className={ `${classes.meta} ${hideMeta ? classes.hideMeta : ''}` }

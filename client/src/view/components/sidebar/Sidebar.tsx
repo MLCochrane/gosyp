@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Details from './details/DetailWidget';
+import Burger from './Burger';
 
 const drawerWidth = 400;
 const useStyles = makeStyles((theme) => ({
@@ -16,13 +17,13 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   drawer: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('lg')]: {
       width: drawerWidth,
       flexShrink: 0,
     },
   },
   appBar: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('lg')]: {
       background: 'none',
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
@@ -30,13 +31,15 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('lg')]: {
       display: 'none',
     },
   },
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
+    padding: theme.spacing(2),
+    background: theme.palette.background.default,
     width: drawerWidth,
   },
   content: {
@@ -55,12 +58,6 @@ const Sidebar = () => {
   const drawer = (
     <div>
       <div className={ classes.toolbar } />
-      { /* <Typography
-        variant="h1"
-        color="primary"
-      >
-        GOSYP
-      </Typography> */ }
       <Divider />
       <Details />
     </div>
@@ -81,13 +78,13 @@ const Sidebar = () => {
             onClick={ handleDrawerToggle }
             className={ classes.menuButton }
           >
-            menu
+            <Burger />
           </IconButton>
         </Toolbar>
       </AppBar>
       <nav className={ classes.drawer } aria-label="mailbox folders">
         { /* The implementation can be swapped with js to avoid SEO duplication of links. */ }
-        <Hidden smUp implementation="css">
+        <Hidden lgUp implementation="css">
           <Drawer
             variant="temporary"
             anchor="left"
@@ -103,7 +100,7 @@ const Sidebar = () => {
             { drawer }
           </Drawer>
         </Hidden>
-        <Hidden xsDown implementation="css">
+        <Hidden mdDown implementation="css">
           <Drawer
             classes={ {
               paper: classes.drawerPaper,
