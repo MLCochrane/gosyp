@@ -103,12 +103,27 @@ const Feed = () => {
     return <StatusMessage { ...message } />;
   };
 
+  const placeholderMessage = () => {
+    const message = "No one's talking... awkward"
+
+    return (
+      <h1>
+        { message }
+      </h1>
+    )
+  };
+
   return (
     <Paper
       elevation={ 0 }
       ref={ feedRef }
       className={ classes.feed }
     >
+      {
+        !messages.length
+        ? placeholderMessage()
+        : null
+      }
       <ul>
         {
           messages.map((el, index) => (

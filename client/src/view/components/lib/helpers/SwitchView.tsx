@@ -14,6 +14,7 @@ type SwitchViewTypes = {
   trigger: boolean,
   current: ComponentType,
   next: ComponentType,
+  useAnimation?: boolean,
 };
 
 const SwitchView = (props : SwitchViewTypes) => {
@@ -21,14 +22,26 @@ const SwitchView = (props : SwitchViewTypes) => {
     trigger,
     current,
     next,
+    useAnimation = true,
   } = props;
 
   const enterView = (node: Element) => {
-    gsap.to(node, { autoAlpha: 1, duration: 0.5 });
+    if (useAnimation) {
+      const tl = gsap.timeline();
+      tl
+        .set(node, { autoAlpha: 0, x: 100 }, 0)
+        .to(node, { autoAlpha: 1, x: 0, duration: 0.5 }, 0);
+        // .set(node, { clearProps: 'all' }, 0.5);
+    }
   };
 
   const leaveView = (node: Element) => {
-    gsap.to(node, { autoAlpha: 0, duration: 0.5 });
+    if (useAnimation) {
+      const tl = gsap.timeline();
+      tl
+        .set(node, { position: 'absolute', top: 0, }, 0)
+        .to(node, { autoAlpha: 0, x: -100, duration: 0.5 }, 0);
+    }
   };
   const Current = current;
   const Next = next;
@@ -43,8 +56,8 @@ const SwitchView = (props : SwitchViewTypes) => {
               unmountOnExit
               in={ !trigger }
               key="loaderKey"
-              appear
-              timeout={ 500 }
+              // appear
+              timeout={ useAnimation ? 500 : 0 }
               onEnter={ (node: Element) => enterView(node) }
               onExit={ (node: Element) => leaveView(node) }
             >
@@ -56,8 +69,10 @@ const SwitchView = (props : SwitchViewTypes) => {
               unmountOnExit
               in={ trigger }
               key="childKey"
-              appear
-              timeout={ 500 }
+              // appear
+              timeout={ useAnimation ? 500 : 0 }
+              onEnter={ (node: Element) => enterView(node) }
+              onExit={ (node: Element) => leaveView(node) }
             >
               <Next />
             </Transition>

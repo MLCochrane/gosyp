@@ -21,32 +21,30 @@ const JoinForm = () => {
   });
 
   return (
-    <div className="join-form">
-      <Form
-        formName="join"
-        buttonText="Join Room"
-        fields={
-          [
-            {
-              name: 'room-id',
-              label: 'Room ID',
-              helperText: 'Room ID that has been shared with you',
-              required: true,
-            },
-            {
-              name: 'nickname',
-              label: 'Nickname',
-              helperText: 'Optional display name',
-              required: false,
-            },
-          ]
-        }
-        submissionCallback={ handleClick }
-        wasSuccess={ false }
-        wasError={ notAddedToRoom }
-        schema={ schema }
-      />
-    </div>
+    <Form
+      formName="join"
+      buttonText="Join Room"
+      fields={
+        [
+          {
+            name: 'room-id',
+            label: 'Room ID',
+            helperText: 'Room ID that has been shared with you',
+            required: true,
+          },
+          {
+            name: 'nickname',
+            label: 'Nickname',
+            helperText: 'Optional display name',
+            required: false,
+          },
+        ]
+      }
+      submissionCallback={ handleClick }
+      wasSuccess={ false }
+      wasError={ notAddedToRoom }
+      schema={ schema }
+    />
   );
 };
 export default JoinForm;

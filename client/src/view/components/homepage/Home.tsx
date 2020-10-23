@@ -64,7 +64,12 @@ const Home = () => {
             : "Create Room"
           }
         </Typography>
-        <SwitchView trigger={ formToggle } current={ JoinFrom } next={ CreateForm } />
+        <SwitchView
+          trigger={formToggle }
+          current={ JoinFrom }
+          next={ CreateForm }
+          useAnimation={ false }
+        />
         <Button
           color="primary"
           className={ classes.buttonToggle }
