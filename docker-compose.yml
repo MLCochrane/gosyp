@@ -1,0 +1,66 @@
+# Use root/example as user/password credentials
+version: '3.7'
+
+services:
+  mongo:
+    image: mongo:latest
+    command: [--auth]
+    container_name: 'mongo-container'
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+    ports:
+      - 27017:27017
+    volumes:
+      # - data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d/
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ROOT_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ROOT_PASSWORD}
+
+  node:
+    container_name: 'gosyp-server'
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    volumes:
+      - /usr/src/app/node_modules
+      - type: bind
+        source: ./server
+        target: /usr/src/app
+    links:
+      - mongo
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+
+  web:
+    container_name: 'gosyp-client'
+    stdin_open: true
+    tty: true
+    depends_on:
+      - node
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    volumes:
+      - /usr/src/app/node_modules
+      - type: bind
+        source: ./client
+        target: /usr/src/app
+    expose:
+      - "4242"
+    ports:
+      - "4242:4242"
+
+volumes:
+  data:
+  mongo-init:
