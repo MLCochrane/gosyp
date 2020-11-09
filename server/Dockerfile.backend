@@ -1,0 +1,21 @@
+# Base Image
+FROM node:14.15.0-alpine3.12
+
+ENV NODE_ENV=development
+ENV PORT=3000
+ENV CHOKIDAR_USEPOLLING=true
+
+WORKDIR /usr/src/app
+COPY ./package*.json /usr/src/app/
+COPY . /usr/src/app
+RUN cd /usr/src/app \
+    && CI=true npm install \
+    && npm run build \
+    && rm -rf src \
+    && rm .env
+
+EXPOSE 3000
+CMD ["npm", "run", "serve"]
+
+# build the image with this command
+# docker build --tag [repo-name]:[tag] -f Dockerfile.backend .

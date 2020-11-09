@@ -31,12 +31,11 @@ services:
       context: .
       dockerfile: Dockerfile.backend
     volumes:
+      - ./server:/usr/src/app
       - /usr/src/app/node_modules
-      - type: bind
-        source: ./server
-        target: /usr/src/app
-    links:
-      - mongo
+      # - type: bind
+      #   source: ./server
+      #   target: /usr/src/app
     expose:
       - "3000"
     ports:
@@ -51,11 +50,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.frontend
+    # environment:
+    #   REACT_APP_CLIENT_URL: node:8000
     volumes:
+      - ./client:/usr/src/app
       - /usr/src/app/node_modules
-      - type: bind
-        source: ./client
-        target: /usr/src/app
+      # - type: bind
+      #   source: ./client
+      #   target: /usr/src/app
     expose:
       - "4242"
     ports:
