@@ -1,0 +1,5 @@
+auth:
+  rootPassword: goober2
+  username: superuser
+  password: secretpassword
+  database: gosyp_db
