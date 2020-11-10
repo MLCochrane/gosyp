@@ -4,7 +4,7 @@
   "description": "Chat app.",
   "main": "src/app.ts",
   "scripts": {
-    "build": "ls -l && babel src --out-dir lib --extensions .ts --ignore src/**/__mocks__/** --ignore src/**/*.spec.ts",
+    "build": "babel src --out-dir lib --extensions .ts --ignore src/**/__mocks__/** --ignore src/**/*.spec.ts",
     "start": "npm run build && nodemon lib/app.js",
     "deploy": "npm run build && node lib/app.js",
     "serve": "node lib/app.js",
