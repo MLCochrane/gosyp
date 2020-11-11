@@ -28,18 +28,19 @@ services:
   node:
     container_name: 'gosyp-server'
     build:
-      context: .
-      dockerfile: Dockerfile.backend
+      context: ./server
+      dockerfile: Dockerfile.backend-dev
+    depends_on:
+      - mongo
     volumes:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
-      # - type: bind
-      #   source: ./server
-      #   target: /usr/src/app
     expose:
       - "3000"
     ports:
       - "3000:3000"
+    environment:
+      MONGODB_URI: mongodb://superuser:secretpassword@mongo:27017/gosyp_db
 
   web:
     container_name: 'gosyp-client'
@@ -48,16 +49,11 @@ services:
     depends_on:
       - node
     build:
-      context: .
-      dockerfile: Dockerfile.frontend
-    # environment:
-    #   REACT_APP_CLIENT_URL: node:8000
+      context: ./client
+      dockerfile: Dockerfile.frontend-dev
     volumes:
       - ./client:/usr/src/app
       - /usr/src/app/node_modules
-      # - type: bind
-      #   source: ./client
-      #   target: /usr/src/app
     expose:
       - "4242"
     ports:
