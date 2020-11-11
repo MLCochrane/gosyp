@@ -6,7 +6,8 @@
   "scripts": {
     "build": "babel src --out-dir lib --extensions .ts --ignore src/**/__mocks__/** --ignore src/**/*.spec.ts",
     "start": "npm run build && nodemon lib/app.js",
-    "serve": "npm run build && node",
+    "deploy": "npm run build && node lib/app.js",
+    "serve": "node lib/app.js",
     "test": "jest ./src/",
     "watch": "jest ./src/ --watch --verbose",
     "check-types": "tsc"
@@ -55,6 +56,5 @@
   },
   "jest": {
     "testEnvironment": "node"
-  },
-  "type": "module"
+  }
 }
