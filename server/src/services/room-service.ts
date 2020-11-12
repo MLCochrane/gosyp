@@ -89,7 +89,7 @@ export default class RoomService {
 
     return [
       {
-        name: 'Room ID',
+        name: 'ID',
         value: updatedRoom?.uuid,
       },
       {
@@ -97,7 +97,7 @@ export default class RoomService {
         value: updatedRoom?.name || 'N/A',
       },
       {
-        name: 'Created At',
+        name: 'Created at',
         value: formatDate.toLocaleString(),
       },
       {
