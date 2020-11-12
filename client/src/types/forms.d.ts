@@ -16,6 +16,7 @@ type FormProps = {
   label: string,
   helperText: string,
   required: boolean,
+  value?: any,
 };
 
 type FormBody = {

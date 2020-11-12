@@ -41,7 +41,7 @@ const Form = ({
   const mappedFields: FormFields = {};
   fields.forEach((el) => {
     mappedFields[el.name] = {
-      value: '',
+      value: el.value || '',
       isRequired: el.required,
       errors: {
         valid: !el.required,
@@ -51,7 +51,6 @@ const Form = ({
   });
 
   const [formFields, setFormFields] = useState<FormFields>(mappedFields);
-
   // Copying empty form to set to later
   const [defaultForms] = useState(formFields);
 
@@ -61,6 +60,21 @@ const Form = ({
   const onSubmission = () => {
     setButtonText('Submitting...');
   };
+
+  useEffect(() => {
+    const mappedFields: FormFields = {};
+    fields.forEach((el) => {
+      mappedFields[el.name] = {
+        value: el.value || '',
+        isRequired: el.required,
+        errors: {
+          valid: !el.required,
+          message: '',
+        },
+      };
+    });
+    setFormFields(mappedFields);
+  }, [fields]);
 
   useEffect(() => {
     let btnWillBeDisabled = false;

@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {
+  useEffect,
+  useState,
+} from 'react';
 import {
   object,
   string,
@@ -8,8 +11,19 @@ import { NotAddedToRoom } from 'view/components/lib/events/rooms';
 import Events from 'view/components/lib/events/eventTypes';
 import Form from 'view/components/lib/forms/Form';
 
+
 const JoinForm = () => {
+  const [prePopulateId, setPrePopulateId ] = useState('');
   const [notAddedToRoom] = NotAddedToRoom();
+
+  useEffect(() => {
+    const [roomIdParam] = window.location.search.slice(1).split('&').map(el => {
+      const query = el.split('=');
+      if (query[0] === 'roomId') return query[1];
+    });
+
+    if (roomIdParam) setPrePopulateId(roomIdParam);
+  }, []);
 
   const handleClick = (body: FormBody) => {
     socket.emit(Events.socketRequestsRoom, body);
@@ -31,6 +45,7 @@ const JoinForm = () => {
             label: 'Room ID',
             helperText: 'Room ID that has been shared with you',
             required: true,
+            value: prePopulateId
           },
           {
             name: 'nickname',
