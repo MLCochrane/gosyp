@@ -8,7 +8,7 @@ it('displays name and value from props', () => {
     value="#103-104"
   />);
 
-  expect(wrapper.contains('Id')).toEqual(true);
+  expect(wrapper.contains('Id:')).toEqual(true);
   expect(wrapper.contains('#103-104')).toEqual(true);
 
   const wrapperTwo = shallow(<DetailRow
