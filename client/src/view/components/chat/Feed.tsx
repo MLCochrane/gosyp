@@ -10,12 +10,15 @@ import { UserJoined, UserLeft } from 'view/components/lib/events/lifeCycle';
 import UserMessage from './messages/UserMessage';
 import StatusMessage from './messages/StatusMessage';
 
-const useStyles = makeStyles(() => (
+const useStyles = makeStyles((theme) => (
   {
     feed: {
       flexGrow: 1,
       overflowY: 'auto',
     },
+    firstMessage: {
+      paddingTop: theme.spacing(8)
+    }
   }
 ));
 
@@ -118,6 +121,7 @@ const Feed = () => {
     {
       messages.map((el, index) => (
         <li
+          className={ index === 0 ? classes.firstMessage : undefined }
           key={ el.id }
         >
           { messageBody(el, index) }
