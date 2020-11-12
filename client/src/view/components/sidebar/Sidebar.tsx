@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     [theme.breakpoints.up('lg')]: {
-      background: 'none',
+      background: `linear-gradient(0, transparent, ${ theme.palette.background.paper })`,
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },

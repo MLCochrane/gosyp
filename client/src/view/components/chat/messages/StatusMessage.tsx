@@ -1,19 +1,47 @@
 import React from 'react';
+import {
+  Box,
+  Typography,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => (
+  {
+    box: {
+      textAlign: 'center',
+      color: theme.palette.grey[500],
+    },
+  }
+));
 
 const StatusMessage = ({
   msg,
   timestamp,
 }: StatusUpdate) => {
+  const classes = useStyles();
+
   const showTime = () => {
     const timeToShow = new Date(timestamp);
     return timeToShow.toLocaleTimeString();
   };
 
   return (
-    <div className="message message--status status-message">
-      <h2 className="status-message__message alt-type">{ msg }</h2>
-      <p className="status-message__time alt-type">{ showTime() }</p>
-    </div>
+    <Box
+      className={ classes.box }
+    >
+      <Typography
+        component="h2"
+        variant="h5"
+      >
+        { msg }
+      </Typography>
+      <Typography
+        component="p"
+        variant="h5"
+      >
+        { showTime() }
+      </Typography>
+    </Box>
   );
 };
 export default StatusMessage;

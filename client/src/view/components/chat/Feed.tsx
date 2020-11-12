@@ -10,12 +10,15 @@ import { UserJoined, UserLeft } from 'view/components/lib/events/lifeCycle';
 import UserMessage from './messages/UserMessage';
 import StatusMessage from './messages/StatusMessage';
 
-const useStyles = makeStyles(() => (
+const useStyles = makeStyles((theme) => (
   {
     feed: {
       flexGrow: 1,
       overflowY: 'auto',
     },
+    firstMessage: {
+      paddingTop: theme.spacing(8)
+    }
   }
 ));
 
@@ -30,7 +33,7 @@ const Feed = () => {
   useEffect(() => {
     // Simply checks if the message event has content and adds to feed
     if (newMessage.msg !== '') {
-      setMessages((currentMessages) => [...currentMessages, newMessage]);
+      setMessages((currentMessages: Messages) => [...currentMessages, newMessage]);
     }
   }, [newMessage]);
 
@@ -44,7 +47,7 @@ const Feed = () => {
         timestamp: userHasJoined.timestamp,
       };
 
-      setMessages((currentMessages) => [...currentMessages, status]);
+      setMessages((currentMessages: Messages) => [...currentMessages, status]);
     }
   }, [userHasJoined]);
 
@@ -58,7 +61,7 @@ const Feed = () => {
         timestamp: userHasLeft.timestamp,
       };
 
-      setMessages((currentMessages) => [...currentMessages, status]);
+      setMessages((currentMessages: Messages) => [...currentMessages, status]);
     }
   }, [userHasLeft]);
 
@@ -113,6 +116,21 @@ const Feed = () => {
     )
   };
 
+  const messageList = () => (
+    <ul>
+    {
+      messages.map((el, index) => (
+        <li
+          className={ index === 0 ? classes.firstMessage : undefined }
+          key={ el.id }
+        >
+          { messageBody(el, index) }
+        </li>
+      ))
+    }
+  </ul>
+  );
+
   return (
     <Paper
       elevation={ 0 }
@@ -122,19 +140,8 @@ const Feed = () => {
       {
         !messages.length
         ? placeholderMessage()
-        : null
+        : messageList()
       }
-      <ul>
-        {
-          messages.map((el, index) => (
-            <li
-              key={ el.id }
-            >
-              { messageBody(el, index) }
-            </li>
-          ))
-        }
-      </ul>
     </Paper>
   );
 };
