@@ -12,7 +12,7 @@ it('displays name and value from props', () => {
   expect(wrapper.contains('#103-104')).toEqual(true);
 
   const wrapperTwo = shallow(<DetailRow
-    name="Created at:"
+    name="Created at"
     value="08/13/20"
   />);
 
