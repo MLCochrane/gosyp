@@ -19,7 +19,7 @@ const JoinForm = () => {
   useEffect(() => {
     const [roomIdParam] = window.location.search.slice(1).split('&').map(el => {
       const query = el.split('=');
-      if (query[0] === 'roomId') return query[1];
+      return (query[0] === 'roomId') ? query[1] : null;
     });
 
     if (roomIdParam) setPrePopulateId(roomIdParam);

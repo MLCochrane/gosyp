@@ -3,6 +3,7 @@ import React, {
   ChangeEvent,
   useState,
   useEffect,
+  useCallback,
 } from 'react';
 import {
   Container,
@@ -38,20 +39,28 @@ const Form = ({
 }) => {
   const classes = useStyles();
 
-  const mappedFields: FormFields = {};
-  fields.forEach((el) => {
-    mappedFields[el.name] = {
-      value: el.value || '',
-      isRequired: el.required,
-      errors: {
-        valid: !el.required,
-        message: '',
-      },
-    };
-  });
+  const mapFields = useCallback(() => {
+    const mappedFields: FormFields = {};
+    fields.forEach((el) => {
+      mappedFields[el.name] = {
+        value: el.value || '',
+        isRequired: el.required,
+        errors: {
+          valid: true,
+          message: '',
+        },
+      };
+    });
 
-  const [formFields, setFormFields] = useState<FormFields>(mappedFields);
-  // Copying empty form to set to later
+    return mappedFields;
+  }, [fields]);
+
+  useEffect(() => {
+    setFormFields(mapFields());
+  }, [fields]);
+
+  const [formFields, setFormFields] = useState<FormFields>(mapFields());
+  // Copying initial fields to set to later
   const [defaultForms] = useState(formFields);
 
   const [disabledButton, setDisabled] = useState(true);
@@ -60,21 +69,6 @@ const Form = ({
   const onSubmission = () => {
     setButtonText('Submitting...');
   };
-
-  useEffect(() => {
-    const mappedFields: FormFields = {};
-    fields.forEach((el) => {
-      mappedFields[el.name] = {
-        value: el.value || '',
-        isRequired: el.required,
-        errors: {
-          valid: !el.required,
-          message: '',
-        },
-      };
-    });
-    setFormFields(mappedFields);
-  }, [fields]);
 
   useEffect(() => {
     let btnWillBeDisabled = false;
@@ -131,7 +125,7 @@ const Form = ({
           },
         });
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         setFormFields({
           ...formFields,
           [name]: {
