@@ -57,7 +57,7 @@ const Form = ({
 
   useEffect(() => {
     setFormFields(mapFields());
-  }, [fields]);
+  }, [fields, mapFields]);
 
   const [formFields, setFormFields] = useState<FormFields>(mapFields());
   // Copying initial fields to set to later

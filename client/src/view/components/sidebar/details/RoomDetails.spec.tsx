@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme';
 import io, { Socket } from 'socket.io-client';
 import RoomDetails from './RoomDetails';
 import DetailRow from './DetailRow';
+import ShareLink from './ShareLink';
 
 jest.mock('socket.io-client', () => {
   const emit = jest.fn();
@@ -17,7 +18,8 @@ const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
 describe('Room specific detail widget', () => {
   it('renders default rows before getting details', () => {
     const wrapper = shallow(<RoomDetails />);
-    expect(wrapper.find(DetailRow)).toHaveLength(1);
+    expect(wrapper.find(DetailRow)).toHaveLength(0);
+    expect(wrapper.find(ShareLink)).toHaveLength(1);
   });
 
   it('updates rows when receiving new details', () => {
