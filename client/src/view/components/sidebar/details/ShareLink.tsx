@@ -17,8 +17,19 @@ import {
 } from '@material-ui/icons';
 import { RoomDetailsUpdated } from 'view/components/lib/events/rooms';
 import Alert from 'view/components/lib/helpers/Alert';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  message: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    fontSize: '1.25em',
+  },
+}));
+
 
 const ShareLink = () => {
+  const classes = useStyles();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [roomDetails] = RoomDetailsUpdated();
   const inputRef = useRef(null);
@@ -47,6 +58,7 @@ const ShareLink = () => {
       <Typography
         variant="h5"
         component="p"
+        className={ classes.message }
       >
         Chatting is better with friends! Share the invite link below to encourage others to join your room.
       </Typography>
