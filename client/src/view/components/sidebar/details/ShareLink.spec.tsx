@@ -1,7 +1,9 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import io, { Socket } from 'socket.io-client';
+import { Snackbar } from '@material-ui/core';
 import ShareLink from './ShareLink';
+import Alert from 'view/components/lib/helpers/Alert';
 
 jest.mock('socket.io-client', () => {
   const emit = jest.fn();
@@ -13,7 +15,7 @@ jest.mock('socket.io-client', () => {
 const mockedIO = io as jest.Mocked<typeof io>;
 const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
 
-describe('Room specific detail widget', () => {
+describe('Share link', () => {
   it('creates url with room id', () => {
     (mockedSocket.on as jest.Mock).mockImplementation((event, cb) => {
       if (event === 'updatedRoomInfo') {
@@ -39,4 +41,10 @@ describe('Room specific detail widget', () => {
     const wrapper = mount(<ShareLink />);
     expect(wrapper.find('input').props().value).toEqual('localhost:4242?roomId=123-024');
   });
+
+  it('shows snackbar on copy', () => {
+    const wrapper = shallow(<ShareLink />);
+    expect(wrapper.find(Snackbar)).toHaveLength(1);
+    expect(wrapper.find(Alert)).toHaveLength(1);
+  })
 });

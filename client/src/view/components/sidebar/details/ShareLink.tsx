@@ -16,6 +16,7 @@ import {
   FileCopy,
 } from '@material-ui/icons';
 import { RoomDetailsUpdated } from 'view/components/lib/events/rooms';
+import Alert from 'view/components/lib/helpers/Alert';
 
 const ShareLink = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -76,8 +77,10 @@ const ShareLink = () => {
         // autoHideDuration={6000}
         onClose={handleClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        message="Copied to clipboard"
-      />
+      >
+          {/* <Alert
+          /> */}
+      </Snackbar>
     </Paper>
   )
 }
