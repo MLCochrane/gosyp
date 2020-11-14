@@ -78,8 +78,11 @@ const ShareLink = () => {
         onClose={handleClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       >
-          {/* <Alert
-          /> */}
+        <Alert
+          variant="success"
+          message="Copied to clipboard"
+          closeHandler={ handleClose }
+        />
       </Snackbar>
     </Paper>
   )

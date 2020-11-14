@@ -3,6 +3,7 @@ import {
   Typography,
   IconButton,
   Paper,
+  Grid,
 } from '@material-ui/core';
 import {
   Close,
@@ -21,6 +22,12 @@ const useStyles = makeStyles((theme) => ({
   },
   error: {
     backgroundColor: theme.palette.error.main,
+  },
+  wrapper: {
+    padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
+  },
+  closeButton: {
+    marginLeft: theme.spacing(1),
   }
 }));
 
@@ -43,17 +50,25 @@ const Alert = ({
   return (
     <Paper
       elevation={ 0 }
-      className={ backgroundClass() }
+      className={ `${ classes.wrapper } ${ backgroundClass() }` }
     >
-      <Typography>
-        { message }
-      </Typography>
-      <IconButton
-        aria-label="copy invite link to clipboard"
-        onClick={ () => closeHandler() }
-        >
-        <Close />
-      </IconButton>
+      <Grid container alignItems="center">
+        <Grid item>
+          <Typography>
+            { message }
+          </Typography>
+        </Grid>
+        <Grid item>
+          <IconButton
+            size="small"
+            className={ classes.closeButton }
+            aria-label="copy invite link to clipboard"
+            onClick={ () => closeHandler() }
+            >
+            <Close />
+          </IconButton>
+        </Grid>
+      </Grid>
     </Paper>
   )
 }
