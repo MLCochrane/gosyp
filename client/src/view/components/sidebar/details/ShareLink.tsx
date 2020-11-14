@@ -36,7 +36,8 @@ const ShareLink = () => {
 
   const generateLink = () => {
     const [roomID] = roomDetails;
-    return roomID ? `${process.env.REACT_APP_CLIENT_URL}?roomId=${roomID.value}` : ''
+    const host = process.env.NODE_ENV === 'test' ? 'localhost:4242' : process.env.REACT_APP_CLIENT_URL;
+    return roomID ? `${host}?roomId=${roomID.value}` : ''
   }
 
   const handleClickCopy = (e: MouseEvent) => {
