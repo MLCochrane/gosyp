@@ -10,7 +10,11 @@ import {
   InputAdornment,
   IconButton,
   Snackbar,
+  Tooltip,
 } from '@material-ui/core';
+import {
+  FileCopy,
+} from '@material-ui/icons';
 import { RoomDetailsUpdated } from 'view/components/lib/events/rooms';
 
 const ShareLink = () => {
@@ -55,12 +59,14 @@ const ShareLink = () => {
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton
-                aria-label="copy room link to clipboard"
-                onClick={ handleClickCopy }
-                >
-                copy
-              </IconButton>
+              <Tooltip title="Copy invite link">
+                <IconButton
+                  aria-label="copy invite link to clipboard"
+                  onClick={ handleClickCopy }
+                  >
+                  <FileCopy />
+                </IconButton>
+              </Tooltip>
             </InputAdornment>
           )
         }}
