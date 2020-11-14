@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import io, { Socket } from 'socket.io-client';
-import RoomDetails from './RoomDetails';
-import DetailRow from './DetailRow';
+import { Snackbar } from '@material-ui/core';
 import ShareLink from './ShareLink';
+import Alert from 'view/components/lib/helpers/Alert';
 
 jest.mock('socket.io-client', () => {
   const emit = jest.fn();
@@ -15,21 +15,15 @@ jest.mock('socket.io-client', () => {
 const mockedIO = io as jest.Mocked<typeof io>;
 const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
 
-describe('Room specific detail widget', () => {
-  it('renders default rows before getting details', () => {
-    const wrapper = shallow(<RoomDetails />);
-    expect(wrapper.find(DetailRow)).toHaveLength(0);
-    expect(wrapper.find(ShareLink)).toHaveLength(1);
-  });
-
-  it('updates rows when receiving new details', () => {
+describe('Share link', () => {
+  it('creates url with room id', () => {
     (mockedSocket.on as jest.Mock).mockImplementation((event, cb) => {
       if (event === 'updatedRoomInfo') {
         return cb({
         roomDetails: [
           {
             name: 'ID',
-            value: '#123-024',
+            value: '123-024',
           },
           {
             name: 'Room Name:',
@@ -44,7 +38,13 @@ describe('Room specific detail widget', () => {
       }
     });
 
-    const wrapper = mount(<RoomDetails />);
-    expect(wrapper.find(DetailRow)).toHaveLength(3);
+    const wrapper = mount(<ShareLink />);
+    expect(wrapper.find('input').props().value).toEqual('localhost:4242?roomId=123-024');
   });
+
+  it('shows snackbar on copy', () => {
+    const wrapper = shallow(<ShareLink />);
+    expect(wrapper.find(Snackbar)).toHaveLength(1);
+    expect(wrapper.find(Alert)).toHaveLength(1);
+  })
 });

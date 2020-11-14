@@ -15,8 +15,6 @@ export function chatMessage(
   socket.on(Events.chatMessage, (msg: string) => {
     const room: string = Container.get('roomUuid');
 
-    logger.info(msg);
-
     // broadcast to everyone in the room
 
     /*
@@ -48,7 +46,6 @@ export function userTyping(
 ) {
   socket.on(Events.userTyping, (isTyping: Boolean) => {
     const room: string = Container.get('roomUuid');
-    logger.info(`Someone typing: ${isTyping}`);
 
     // broadcast to others in the room
     socket.broadcast.to(room).emit(Events.userTyping, isTyping);

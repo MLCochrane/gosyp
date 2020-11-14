@@ -3,6 +3,7 @@ import React, {
   ChangeEvent,
   useState,
   useEffect,
+  useCallback,
 } from 'react';
 import {
   Container,
@@ -38,21 +39,28 @@ const Form = ({
 }) => {
   const classes = useStyles();
 
-  const mappedFields: FormFields = {};
-  fields.forEach((el) => {
-    mappedFields[el.name] = {
-      value: '',
-      isRequired: el.required,
-      errors: {
-        valid: !el.required,
-        message: '',
-      },
-    };
-  });
+  const mapFields = useCallback(() => {
+    const mappedFields: FormFields = {};
+    fields.forEach((el) => {
+      mappedFields[el.name] = {
+        value: el.value || '',
+        isRequired: el.required,
+        errors: {
+          valid: true,
+          message: '',
+        },
+      };
+    });
 
-  const [formFields, setFormFields] = useState<FormFields>(mappedFields);
+    return mappedFields;
+  }, [fields]);
 
-  // Copying empty form to set to later
+  useEffect(() => {
+    setFormFields(mapFields());
+  }, [fields, mapFields]);
+
+  const [formFields, setFormFields] = useState<FormFields>(mapFields());
+  // Copying initial fields to set to later
   const [defaultForms] = useState(formFields);
 
   const [disabledButton, setDisabled] = useState(true);
@@ -117,7 +125,7 @@ const Form = ({
           },
         });
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         setFormFields({
           ...formFields,
           [name]: {

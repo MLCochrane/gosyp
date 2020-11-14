@@ -22,7 +22,7 @@ const DetailsWidget = () => {
 
   return (
     <Paper
-      elevation={ 0 }
+      elevation={ 1 }
       className={ classes.paper }
     >
       <ErrorBoundry>
