@@ -5,13 +5,18 @@ import React, {
 import {
   Paper,
   Divider,
+  Grid,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import DetailRow from './DetailRow';
 import { RoomDetailsUpdated } from '../../lib/events/rooms';
 import ShareLink from './ShareLink';
+import LeaveRoom from '../LeaveRoom';
 
 const useStyles = makeStyles((theme) => ({
+  gridContainer: {
+    height: '100%',
+  },
   roomDetails: {
     padding: theme.spacing(2),
   },
@@ -55,21 +60,32 @@ const RoomDetails = () => {
   );
 
   return (
-    <Paper
-      elevation={ 0 }
-      className={ classes.roomDetails }
+    <Grid
+      container
+      alignContent="space-between"
+      className={ classes.gridContainer }
     >
-      { detailList() }
-      <Paper
-        elevation={ 0 }
-        className={ classes.divideWrapper }
-      >
-        <Divider
-          variant="middle"
-        />
-      </Paper>
-      <ShareLink />
-    </Paper>
+      <Grid item>
+        <Paper
+          elevation={ 0 }
+          className={ classes.roomDetails }
+          >
+          { detailList() }
+          <Paper
+            elevation={ 0 }
+            className={ classes.divideWrapper }
+            >
+            <Divider
+              variant="middle"
+              />
+          </Paper>
+          <ShareLink />
+        </Paper>
+      </Grid>
+      <Grid item>
+        <LeaveRoom />
+      </Grid>
+    </Grid>
   );
 };
 export default RoomDetails;

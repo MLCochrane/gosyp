@@ -1,5 +1,9 @@
 import reducer from './roomReducer';
-import { SET_CURRENT_ROOM, RECEIVE_ROOM_ID } from '../constants';
+import {
+  SET_CURRENT_ROOM,
+  RECEIVE_ROOM_ID,
+  LEAVE_ROOM,
+} from '../constants';
 
 const defaultState = {
   rooms: {},
@@ -76,6 +80,66 @@ describe('Room Reducer', () => {
           '515': '515',
         },
         currentRoom: '125',
+      }
+    );
+  });
+
+  it('should handle LEAVE_ROOM', () => {
+    expect(
+      reducer({
+        rooms: {
+          '41414': '41414',
+        },
+        currentRoom: '41414',
+      }, {
+        type: LEAVE_ROOM,
+        roomID: '41414'
+      })
+    ).toEqual(
+      {
+        rooms: {},
+        currentRoom: '',
+      }
+    );
+
+
+    expect(
+      reducer({
+        rooms: {
+          '125': '125',
+          '515': '515',
+        },
+        currentRoom: '515',
+      }, {
+        type: LEAVE_ROOM,
+        roomID: '515'
+      })
+    ).toEqual(
+      {
+        rooms: {
+          '125': '125',
+        },
+        currentRoom: '',
+      }
+    );
+
+    expect(
+      reducer({
+        rooms: {
+          '125': '125',
+          '515': '515',
+        },
+        currentRoom: '515',
+      }, {
+        type: LEAVE_ROOM,
+        roomID: '125'
+      })
+    ).toEqual(
+      {
+        rooms: {
+          '515': '515',
+        },
+        currentRoom: '515',
       }
     );
   });

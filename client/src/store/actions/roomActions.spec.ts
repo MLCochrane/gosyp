@@ -1,5 +1,5 @@
-import { addRoomID, setCurrentRoom } from './roomActions';
-import { SET_CURRENT_ROOM, RECEIVE_ROOM_ID } from '../constants';
+import { addRoomID, setCurrentRoom, leaveRoom } from './roomActions';
+import { SET_CURRENT_ROOM, RECEIVE_ROOM_ID, LEAVE_ROOM } from '../constants';
 
 describe('Room Actions', () => {
   it('should create an action to add a new room ID', () => {
@@ -25,5 +25,14 @@ describe('Room Actions', () => {
       roomID,
     };
     expect(setCurrentRoom(roomID)).toEqual(expectedAction);
+  });
+
+  it('should create an action to leave the room', () => {
+    const roomID = '151515'
+    const expectedAction = {
+      type: LEAVE_ROOM,
+      roomID,
+    };
+    expect(leaveRoom(roomID)).toEqual(expectedAction);
   });
 });

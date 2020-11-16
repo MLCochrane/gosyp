@@ -195,7 +195,7 @@ describe('Room CRUD', () => {
     userSocket.rooms = {'583': '583'};
 
     (userSocket.broadcast as any) = userSocket;
-    (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb({ 'room-id': '583' }));
+    (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb('583'));
     (userSocket.leave as jest.Mock).mockImplementationOnce((event, cb) => cb());
     (mockedRoomService.CheckForRoom as jest.Mock).mockReturnValue(true);
     (mockedRoomService.UpdateRoomUsers as jest.Mock).mockReturnValue(roomDetails);
@@ -206,6 +206,7 @@ describe('Room CRUD', () => {
     expect(userSocket.leave).toHaveBeenCalledWith('583', expect.anything());
     expect((userSocket.emit as jest.Mock).mock.calls).toEqual([
       ['removedFromRoom', true],
+      ['addedToRoom', false, '583'],
     ]);
     expect(mockedIO.to).toHaveBeenCalledWith('583');
     expect(mockedIO.emit).toHaveBeenCalledWith(

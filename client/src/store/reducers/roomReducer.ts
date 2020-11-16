@@ -1,5 +1,5 @@
 interface roomAction {
-  type: 'RECEIVE_ROOM_ID' | 'SET_CURRENT_ROOM',
+  type: 'RECEIVE_ROOM_ID' | 'SET_CURRENT_ROOM' | 'LEAVE_ROOM',
   roomID: string,
 }
 export default function reducer(state = {
@@ -17,6 +17,20 @@ export default function reducer(state = {
       return {
         ...state,
         currentRoom: action.roomID,
+      };
+    }
+    case 'LEAVE_ROOM': {
+      const actionRoom = action.roomID;
+      let clearCurrent = false;
+      if (actionRoom === state.currentRoom) {
+        clearCurrent = true;
+      }
+      const roomsCopy: {[key: string]: string} = {...state.rooms};
+      delete roomsCopy[actionRoom];
+      return {
+        ...state,
+        currentRoom: clearCurrent ? '' : state.currentRoom,
+        rooms: roomsCopy,
       };
     }
     default:

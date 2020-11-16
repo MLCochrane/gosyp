@@ -15,7 +15,6 @@ jest.mock('socket.io-client', () => {
 
 Enzyme.configure({ adapter: new Adapter() });
 
-
 let useSelectorSpy;
 const mockedIO = io as jest.Mocked<typeof io>;
 const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;

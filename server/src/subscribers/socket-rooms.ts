@@ -73,8 +73,6 @@ export function socketRequestsRoom(
       // Tell client they've been included
       socket.emit(Events.addUserToRoom, true, roomID);
 
-      console.table(socket.rooms);
-
       await updateRoom(
         Events.userJoined,
         roomID,
@@ -96,15 +94,14 @@ export function socketLeavesRoom(
   logger: Logger,
   io: Server,
 ) {
-  socket.on(Events.socketRequestsLeaveRoom, async (requestBody) => {
-    const roomID = requestBody['room-id'];
+  socket.on(Events.socketRequestsLeaveRoom, async (roomID: string) => {
     logger.info(`socket wants to leave room: ${roomID}`);
 
     /**
      * Check for room in DB
      */
     const roomExists = await roomService.CheckForRoom(roomID);
-    const socketInRoom = socket.rooms[roomID.toString()];
+    const socketInRoom = socket.rooms[roomID];
 
     // socket trying to leave invalid room
     if (!roomExists || !socketInRoom) {
@@ -115,6 +112,7 @@ export function socketLeavesRoom(
     socket.leave(roomID, async () => {
       // Tell client they've been removed
       socket.emit(Events.userRemovedFromRoom, true);
+      socket.emit(Events.addUserToRoom, false, roomID);
 
       await updateRoom(
         Events.userLeft,

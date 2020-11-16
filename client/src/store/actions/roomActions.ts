@@ -11,3 +11,11 @@ export function setCurrentRoom(roomID: string) {
     roomID,
   };
 }
+
+
+export function leaveRoom(roomID: string) {
+  return {
+    type: 'LEAVE_ROOM',
+    roomID,
+  };
+}
