@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import Chat from './Chat';
 import Feed from './Feed';
 import Form from './form/Form';
@@ -14,7 +14,7 @@ jest.mock('socket.io-client', () => {
 
 describe('Chat wrapper', () => {
   it('diplays children', () => {
-    const wrapper = mount(<Chat />);
+    const wrapper = shallow(<Chat />);
     expect(wrapper.find(Feed)).toHaveLength(1);
     expect(wrapper.find(Form)).toHaveLength(1);
     expect(wrapper.find(TypingAlert)).toHaveLength(1);

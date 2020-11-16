@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import 'socket.io-client';
 import Room from './Room';
 import Chat from './Chat';
@@ -13,7 +13,7 @@ jest.mock('socket.io-client', () => {
 
 describe('Room component', () => {
   it('displays children', () => {
-    const wrapper = mount(<Room />);
+    const wrapper = shallow(<Room />);
     expect(wrapper.find(Chat)).toHaveLength(1);
   });
 });

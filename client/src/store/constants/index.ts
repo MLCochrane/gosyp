@@ -1,0 +1,2 @@
+export const RECEIVE_ROOM_ID = 'RECEIVE_ROOM_ID';
+export const SET_CURRENT_ROOM = 'SET_CURRENT_ROOM';

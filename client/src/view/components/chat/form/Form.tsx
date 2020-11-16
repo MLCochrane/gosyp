@@ -1,12 +1,14 @@
 import React, { ChangeEvent, useState } from 'react';
 import {
+  useSelector,
+} from 'react-redux';
+import {
   TextField,
   Button,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { socket } from 'api';
 import Events from 'view/components/lib/events/eventTypes';
-import { HasAddedToRoom } from 'view/components/lib/events/rooms';
 
 const useStyles = makeStyles((theme) => (
   {
@@ -24,7 +26,7 @@ const useStyles = makeStyles((theme) => (
 
 const Form = () => {
   const classes = useStyles();
-  const [addedToRoom, roomID] = HasAddedToRoom();
+  const { currentRoom: roomID } = useSelector((state: any) => state.rooms);
   const [message, setMessage] = useState('');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

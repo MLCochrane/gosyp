@@ -1,5 +1,7 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import * as Redux from 'react-redux';
 import io, { Socket } from 'socket.io-client';
 import Form from './Form';
 
@@ -10,16 +12,31 @@ jest.mock('socket.io-client', () => {
   return jest.fn(() => socket);
 });
 
+
+Enzyme.configure({ adapter: new Adapter() });
+
+
+let useSelectorSpy;
 const mockedIO = io as jest.Mocked<typeof io>;
 const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
 
 describe('Chat input form', () => {
   beforeEach(() => {
     (mockedSocket.emit as jest.Mock).mockReset();
+
+    useSelectorSpy = jest.spyOn(Redux, 'useSelector');
+
+    const initialState = {
+      rooms: {
+        '5593': '5593',
+      },
+      currentRoom: '5593',
+    };
+
+    useSelectorSpy.mockReturnValue(initialState);
   });
 
   it('emits typing event on change and blur', () => {
-    (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb(false, '5593'));
     const mockedEmit = (mockedSocket.emit as jest.Mock).mockImplementationOnce(
       (event, message) => message,
     );
@@ -35,7 +52,6 @@ describe('Chat input form', () => {
   });
 
   it('emits message event on submit', () => {
-    (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb(false, '5593'));
     const mockedEmit = (mockedSocket.emit as jest.Mock).mockImplementationOnce(
       (event, message) => message,
     );
