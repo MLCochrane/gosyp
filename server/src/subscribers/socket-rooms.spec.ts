@@ -156,14 +156,16 @@ describe('Room CRUD', () => {
     expect(userSocket.join).toHaveBeenCalledWith('583', expect.anything());
     expect((userSocket.emit as jest.Mock).mock.calls).toEqual([
       ['addedToRoom', true],
-      ['userJoined', expect.objectContaining({
+    ]);
+    expect(mockedIO.to).toHaveBeenCalledWith('583');
+    expect(mockedIO.emit).toHaveBeenCalledWith(
+      'userJoined', expect.objectContaining({
         user: {
           id: '123',
           nickname: null,
         },
-      })],
-    ]);
-    expect(mockedIO.to).toHaveBeenCalledWith('583');
+      })
+    );
     expect(mockedIO.emit).toHaveBeenCalledWith(
       'updatedRoomInfo',
       { roomDetails },
@@ -204,14 +206,16 @@ describe('Room CRUD', () => {
     expect(userSocket.leave).toHaveBeenCalledWith('583', expect.anything());
     expect((userSocket.emit as jest.Mock).mock.calls).toEqual([
       ['removedFromRoom', true],
-      ['userLeft', expect.objectContaining({
+    ]);
+    expect(mockedIO.to).toHaveBeenCalledWith('583');
+    expect(mockedIO.emit).toHaveBeenCalledWith(
+      'userLeft', expect.objectContaining({
         user: {
           id: '123',
           nickname: null,
         },
-      })],
-    ]);
-    expect(mockedIO.to).toHaveBeenCalledWith('583');
+      }),
+    );
     expect(mockedIO.emit).toHaveBeenCalledWith(
       'updatedRoomInfo',
       { roomDetails },

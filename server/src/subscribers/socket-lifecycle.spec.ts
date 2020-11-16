@@ -32,7 +32,6 @@ describe('Room lifecycle', () => {
   beforeEach(() => {
     Container.set('io', mockedIO);
     Container.set('logger', mockedLogger);
-    Container.set('roomUuid', '12345');
     Container.set(RoomService, mockedRoomService);
   });
 
@@ -60,12 +59,13 @@ describe('Room lifecycle', () => {
       },
     ];
     const userSocket = mockedSocket as ExtendedSocket;
+    userSocket.rooms = {'12345': '12345'};
     (userSocket.on as jest.Mock).mockImplementation((event, cb) => cb());
     mockedRoomService.UpdateRoomUsers.mockResolvedValueOnce(roomDetailsStub);
 
     socketLifecycle({ socket: userSocket });
     await flushPromises();
-    expect(userSocket.on).toHaveBeenCalledWith('disconnect', expect.anything());
+    expect(userSocket.on).toHaveBeenCalledWith('disconnecting', expect.anything());
     expect(mockedRoomService.UpdateRoomUsers).toHaveBeenCalledTimes(1);
     expect(mockedIO.to).toHaveBeenCalledWith('12345');
     expect(mockedIO.emit).toHaveBeenCalledWith(
@@ -83,76 +83,19 @@ describe('Room lifecycle', () => {
         },
       }),
     );
-  });
-
-  it('sends room update if others in room and socket leaves', async () => {
-    const roomDetailsStub = [
-      {
-        name: 'Room ID',
-        value: '12345',
-      },
-      {
-        name: 'Room Name',
-        value: '',
-      },
-      {
-        name: 'Created At',
-        value: 'Thursday',
-      },
-      {
-        name: 'Active users',
-        value: 1,
-      },
-    ];
-    const userSocket = mockedSocket as ExtendedSocket;
-    (userSocket.on as jest.Mock).mockImplementation((event, cb) => cb());
-    mockedRoomService.UpdateRoomUsers.mockResolvedValueOnce(roomDetailsStub);
-
-    socketLifecycle({ socket: userSocket });
-    await flushPromises();
-    expect(userSocket.on).toHaveBeenCalledWith('disconnect', expect.anything());
-    expect(mockedRoomService.UpdateRoomUsers).toHaveBeenCalledTimes(1);
-    expect(mockedIO.to).toHaveBeenCalledWith('12345');
-    expect(mockedIO.emit).toHaveBeenCalledWith(
-      'updatedRoomInfo',
-      {
-        roomDetails: roomDetailsStub,
-      },
-    );
-    expect(mockedIO.emit).toHaveBeenCalledWith(
-      'userLeft',
-      expect.objectContaining({
-        user: {
-          id: '123',
-          nickname: '',
-        },
-      }),
-    );
-  });
-
-  it('returns if no room available to send updates to', async () => {
-    Container.remove('roomUuid');
-    const userSocket = mockedSocket as ExtendedSocket;
-    (userSocket.on as jest.Mock).mockImplementation((event, cb) => cb());
-    mockedRoomService.UpdateRoomUsers.mockResolvedValueOnce(false);
-
-    socketLifecycle({ socket: userSocket });
-    await flushPromises();
-
-    expect(userSocket.on).toHaveBeenCalledWith('disconnect', expect.anything());
-    expect(mockedRoomService.UpdateRoomUsers).toHaveBeenCalledTimes(0);
   });
 
   it('does not send any events if room no longer has anyone in it', async () => {
     const userSocket = mockedSocket as ExtendedSocket;
+    userSocket.rooms = {'548': '548'};
     (userSocket.on as jest.Mock).mockImplementation((event, cb) => cb());
     mockedRoomService.UpdateRoomUsers.mockResolvedValueOnce(false);
 
     socketLifecycle({ socket: userSocket });
     await flushPromises();
-    expect(userSocket.on).toHaveBeenCalledWith('disconnect', expect.anything());
+    expect(userSocket.on).toHaveBeenCalledWith('disconnecting', expect.anything());
     expect(mockedRoomService.UpdateRoomUsers).toHaveBeenCalledTimes(1);
-    expect(mockedIO.to).not.toHaveBeenCalledWith('12345');
+    expect(mockedIO.to).not.toHaveBeenCalledWith('548');
     expect(mockedIO.emit).not.toHaveBeenCalledWith(
       'updatedRoomInfo',
       expect.anything(),

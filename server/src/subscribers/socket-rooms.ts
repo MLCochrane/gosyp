@@ -5,7 +5,7 @@ import Events from './socket-event-names';
 import RoomService from '../services/room-service';
 import { ExtendedSocket } from '../types/global';
 
-async function updateRoom(
+export async function updateRoom(
   event: Events.userJoined | Events.userLeft,
   roomID: string,
   socket: ExtendedSocket,
@@ -15,6 +15,7 @@ async function updateRoom(
 ) {
   // Update room number and send room detail update
   const roomDetails = await roomService.UpdateRoomUsers(roomID, addToRoom);
+  if (typeof roomDetails === 'boolean') return;
 
   // Send room detail updates to erybody
   io.to(roomID).emit(Events.updatedRoomInfo, {
@@ -22,7 +23,7 @@ async function updateRoom(
   });
 
   // Let everyone else know they're in the room
-  socket.broadcast.to(roomID).emit(event, {
+  io.to(roomID).emit(event, {
     user: {
       id: socket.id,
       nickname: socket.nickname,
