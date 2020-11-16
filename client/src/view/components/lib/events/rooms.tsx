@@ -2,16 +2,18 @@ import { useEffect, useState } from 'react';
 import { socket } from 'api';
 import Events from './eventTypes';
 
-export const HasAddedToRoom = () : [boolean] => {
+export const HasAddedToRoom = () : [boolean, string] => {
   const [addedToRoom, setAddedToRoom] = useState(false);
+  const [roomID, setRoomID] = useState('');
 
   useEffect(() => {
-    socket.on(Events.addUserToRoom, (status: boolean) => {
+    socket.on(Events.addUserToRoom, (status: boolean, id: string) => {
       setAddedToRoom(status);
+      setRoomID(id);
     });
   }, []);
 
-  return [addedToRoom];
+  return [addedToRoom, roomID];
 };
 
 export const NotAddedToRoom = () : [boolean, string] => {

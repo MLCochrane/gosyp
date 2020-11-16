@@ -71,7 +71,7 @@ export function socketRequestsRoom(
       // eslint-disable-next-line no-param-reassign
       socket.nickname = requestBody.nickname || null;
       // Tell client they've been included
-      socket.emit(Events.addUserToRoom, true);
+      socket.emit(Events.addUserToRoom, true, roomID);
 
       console.table(socket.rooms);
 

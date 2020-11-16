@@ -155,7 +155,7 @@ describe('Room CRUD', () => {
 
     expect(userSocket.join).toHaveBeenCalledWith('583', expect.anything());
     expect((userSocket.emit as jest.Mock).mock.calls).toEqual([
-      ['addedToRoom', true],
+      ['addedToRoom', true, '583'],
     ]);
     expect(mockedIO.to).toHaveBeenCalledWith('583');
     expect(mockedIO.emit).toHaveBeenCalledWith(

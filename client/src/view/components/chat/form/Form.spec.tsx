@@ -19,6 +19,7 @@ describe('Chat input form', () => {
   });
 
   it('emits typing event on change and blur', () => {
+    (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb(false, '5593'));
     const mockedEmit = (mockedSocket.emit as jest.Mock).mockImplementationOnce(
       (event, message) => message,
     );
@@ -27,13 +28,14 @@ describe('Chat input form', () => {
     input.simulate('focus');
     input.simulate('change', { target: { value: 'My message' } });
     expect(mockedEmit).toHaveBeenCalledTimes(1);
-    expect(mockedEmit).toHaveBeenCalledWith('userTyping', true);
+    expect(mockedEmit).toHaveBeenCalledWith('userTyping', '5593', true);
     input.simulate('blur');
     expect(mockedEmit).toHaveBeenCalledTimes(2);
-    expect(mockedEmit).toHaveBeenCalledWith('userTyping', false);
+    expect(mockedEmit).toHaveBeenCalledWith('userTyping', '5593', false);
   });
 
   it('emits message event on submit', () => {
+    (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb(false, '5593'));
     const mockedEmit = (mockedSocket.emit as jest.Mock).mockImplementationOnce(
       (event, message) => message,
     );
@@ -45,8 +47,8 @@ describe('Chat input form', () => {
       target: { value: 'My message' },
     });
     expect(mockedEmit).toHaveBeenCalledTimes(3);
-    expect(mockedEmit).toHaveBeenCalledWith('userTyping', true);
-    expect(mockedEmit).toHaveBeenCalledWith('userTyping', false);
-    expect(mockedEmit).toHaveBeenCalledWith('chatMessage', 'My message');
+    expect(mockedEmit).toHaveBeenCalledWith('userTyping', '5593', true);
+    expect(mockedEmit).toHaveBeenCalledWith('userTyping', '5593', false);
+    expect(mockedEmit).toHaveBeenCalledWith('chatMessage', '5593', 'My message');
   });
 });

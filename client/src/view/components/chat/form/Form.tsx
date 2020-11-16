@@ -6,6 +6,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { socket } from 'api';
 import Events from 'view/components/lib/events/eventTypes';
+import { HasAddedToRoom } from 'view/components/lib/events/rooms';
 
 const useStyles = makeStyles((theme) => (
   {
@@ -23,23 +24,24 @@ const useStyles = makeStyles((theme) => (
 
 const Form = () => {
   const classes = useStyles();
+  const [addedToRoom, roomID] = HasAddedToRoom();
   const [message, setMessage] = useState('');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { target } = e;
     setMessage(target.value);
-    socket.emit(Events.userTyping, true);
+    socket.emit(Events.userTyping, roomID, true);
   };
 
   const handleBlur = () => {
-    socket.emit(Events.userTyping, false);
+    socket.emit(Events.userTyping, roomID, false);
   };
 
   const formSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (message === '') return;
-    socket.emit(Events.chatMessage, message);
-    socket.emit(Events.userTyping, false);
+    socket.emit(Events.chatMessage, roomID, message);
+    socket.emit(Events.userTyping, roomID, false);
     setMessage('');
   };
 
