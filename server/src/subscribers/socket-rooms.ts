@@ -5,6 +5,33 @@ import Events from './socket-event-names';
 import RoomService from '../services/room-service';
 import { ExtendedSocket } from '../types/global';
 
+export async function updateRoom(
+  event: Events.userJoined | Events.userLeft,
+  roomID: string,
+  socket: ExtendedSocket,
+  roomService: RoomService,
+  io: Server,
+  addToRoom: boolean,
+) {
+  // Update room number and send room detail update
+  const roomDetails = await roomService.UpdateRoomUsers(roomID, addToRoom);
+  if (typeof roomDetails === 'boolean') return;
+
+  // Send room detail updates to erybody
+  io.to(roomID).emit(Events.updatedRoomInfo, {
+    roomDetails,
+  });
+
+  // Let everyone else know they're in the room
+  io.to(roomID).emit(event, {
+    user: {
+      id: socket.id,
+      nickname: socket.nickname,
+    },
+    timestamp: Date.now(),
+  });
+}
+
 /**
    * Socket requests room access
    *
@@ -21,16 +48,16 @@ export function socketRequestsRoom(
   io: Server,
 ) {
   socket.on(Events.socketRequestsRoom, async (requestBody) => {
-    logger.info(`socket requests room access: ${requestBody['room-id']}`);
-    const room: string = Container.get('roomUuid');
+    const roomID = requestBody['room-id'];
+    logger.info(`socket requests room access: ${roomID}`);
 
     /**
      * Check for room in DB
      */
-    const roomExists = await roomService.CheckForRoom(requestBody['room-id']);
+    const room = await roomService.CheckForRoom(roomID);
 
     // Simply tell the socket there's no room
-    if (!roomExists) {
+    if (!room) {
       socket.emit(Events.socketDeniedRoomAccess, {
         // redundant to return true here
         status: true,
@@ -39,29 +66,62 @@ export function socketRequestsRoom(
       return;
     }
 
-    // Increase room number and send room detail update
-    const roomDetails = await roomService.UpdateRoomUsers(room, true);
-
     // If no errors, add the user to the room
-    socket.join(room, () => {
+    socket.join(roomID, async () => {
       // eslint-disable-next-line no-param-reassign
       socket.nickname = requestBody.nickname || null;
       // Tell client they've been included
-      socket.emit(Events.addUserToRoom, true);
+      socket.emit(Events.addUserToRoom, true, roomID);
 
-      // Send room detail updates to erybody
-      io.to(room).emit(Events.updatedRoomInfo, {
-        roomDetails,
-      });
+      await updateRoom(
+        Events.userJoined,
+        roomID,
+        socket,
+        roomService,
+        io,
+        true,
+      );
+    });
+  });
+}
 
-      // Let everyone else know they're in the room
-      socket.broadcast.to(room).emit(Events.userJoined, {
-        user: {
-          id: socket.id,
-          nickname: socket.nickname,
-        },
-        timestamp: Date.now(),
-      });
+/**
+ * Sent from client to leave a room.
+ */
+export function socketLeavesRoom(
+  socket: ExtendedSocket,
+  roomService: RoomService,
+  logger: Logger,
+  io: Server,
+) {
+  socket.on(Events.socketRequestsLeaveRoom, async (roomID: string) => {
+    logger.info(`socket wants to leave room: ${roomID}`);
+
+    /**
+     * Check for room in DB
+     */
+    const roomExists = await roomService.CheckForRoom(roomID);
+    const socketInRoom = socket.rooms[roomID];
+
+    // socket trying to leave invalid room
+    if (!roomExists || !socketInRoom) {
+      return;
+    }
+
+    // If no errors, add the user to the room
+    socket.leave(roomID, async () => {
+      // Tell client they've been removed
+      socket.emit(Events.userRemovedFromRoom, true);
+      socket.emit(Events.addUserToRoom, false, roomID);
+
+      await updateRoom(
+        Events.userLeft,
+        roomID,
+        socket,
+        roomService,
+        io,
+        false,
+      );
     });
   });
 }
@@ -85,7 +145,6 @@ export function socketCreateRoom(
         message: freshRoom,
       });
 
-      Container.set('roomUuid', freshRoom.uuid);
     } catch (err) {
       logger.info(err);
       socket.emit(Events.createRoomError, {
@@ -105,5 +164,6 @@ export default function socketRooms({
   const io: Server = Container.get('io');
 
   socketRequestsRoom(socket, roomService, logger, io);
+  socketLeavesRoom(socket, roomService, logger, io);
   socketCreateRoom(socket, roomService, logger);
 }

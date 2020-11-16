@@ -1,9 +1,10 @@
 import type { Server } from 'socket.io';
 import { Container } from 'typedi';
 import type { Logger } from 'winston';
+import { ExtendedSocket } from '../types/global';
 import Events from './socket-event-names';
 import RoomService from '../services/room-service';
-import { ExtendedSocket } from '../types/global';
+import { updateRoom } from './socket-rooms';
 
 export default function socketLifecycle({
   socket,
@@ -15,7 +16,7 @@ export default function socketLifecycle({
   const roomService = Container.get(RoomService);
 
   // When a socket disonnects...
-  socket.on('disconnect', async () => {
+  socket.on('disconnecting', async () => {
     logger.info('socket has disconnected');
 
     /**
@@ -23,33 +24,20 @@ export default function socketLifecycle({
      * disconnect without being in a room so we
      * need to check.
      */
-    logger.info('about to check for room in disonnect');
-    const roomCheck = Container.has('roomUuid');
-    if (!roomCheck) {
-      return;
-    }
-    logger.info('room check has passed so we can continue');
 
-    // Get room name
-    const room: string = Container.get('roomUuid');
+    if (socket.rooms === {} || socket.rooms == null) return;
+    const rooms = Object.keys(socket.rooms);
 
-    const roomDetails = await roomService.UpdateRoomUsers(room, false);
-    /**
-     * Send room details update to room
-     */
-    if (typeof roomDetails !== 'boolean') {
-      io.to(room).emit(Events.updatedRoomInfo, {
-        roomDetails,
+    // Filters out sockets default room and updates any others they are in
+    rooms.filter(id => id !== socket.id).forEach(async (roomID) => {
+      await updateRoom(
+        Events.userLeft,
+        roomID,
+        socket,
+        roomService,
+        io,
+        false,
+        );
       });
-
-      // Updates other users to user leaving
-      io.to(room).emit(Events.userLeft, {
-        user: {
-          id: socket.id,
-          nickname: socket.nickname,
-        },
-        timestamp: Date.now(),
-      });
-    }
   });
 }

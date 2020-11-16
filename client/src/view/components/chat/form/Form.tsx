@@ -1,5 +1,8 @@
 import React, { ChangeEvent, useState } from 'react';
 import {
+  useSelector,
+} from 'react-redux';
+import {
   TextField,
   Button,
 } from '@material-ui/core';
@@ -23,23 +26,24 @@ const useStyles = makeStyles((theme) => (
 
 const Form = () => {
   const classes = useStyles();
+  const { currentRoom: roomID } = useSelector((state: any) => state.rooms);
   const [message, setMessage] = useState('');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { target } = e;
     setMessage(target.value);
-    socket.emit(Events.userTyping, true);
+    socket.emit(Events.userTyping, roomID, true);
   };
 
   const handleBlur = () => {
-    socket.emit(Events.userTyping, false);
+    socket.emit(Events.userTyping, roomID, false);
   };
 
   const formSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (message === '') return;
-    socket.emit(Events.chatMessage, message);
-    socket.emit(Events.userTyping, false);
+    socket.emit(Events.chatMessage, roomID, message);
+    socket.emit(Events.userTyping, roomID, false);
     setMessage('');
   };
 

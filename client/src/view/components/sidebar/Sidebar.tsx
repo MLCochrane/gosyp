@@ -56,11 +56,11 @@ const Sidebar = () => {
     setMobileOpen(!mobileOpen);
   };
   const drawer = (
-    <div>
+    <>
       <div className={ classes.toolbar } />
       <Divider />
       <Details />
-    </div>
+    </>
   );
 
   return (
