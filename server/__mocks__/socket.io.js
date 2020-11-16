@@ -5,6 +5,7 @@ jest.mock('socket.io', () => {
     emit: jest.fn(),
     on: jest.fn(),
     join: jest.fn(),
+    leave: jest.fn(),
     to: jest.fn(),
   };
   const on = () => socket;

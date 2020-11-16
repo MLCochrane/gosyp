@@ -53,7 +53,7 @@ export default class RoomService {
     const roomRecord = await this.roomModel.findOne({ uuid: id });
     if (!roomRecord) return false;
 
-    return true;
+    return roomRecord;
   }
 
   /**

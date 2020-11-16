@@ -23,13 +23,10 @@ export default function socketLifecycle({
      * disconnect without being in a room so we
      * need to check.
      */
-    logger.info('about to check for room in disonnect');
     const roomCheck = Container.has('roomUuid');
     if (!roomCheck) {
       return;
     }
-    logger.info('room check has passed so we can continue');
-
     // Get room name
     const room: string = Container.get('roomUuid');
 
@@ -53,3 +50,18 @@ export default function socketLifecycle({
     }
   });
 }
+
+/**
+ * Need to add:
+ *
+ * 1. socket.on('disconnecting' () => ...)
+ * - check if room should be deleted
+ *
+ * 2. function updateRoomAfterLeave() {...}
+ * - called on both disconnecting and leave
+ *
+ * 3. socket.on('leaveRoom', () => {...})
+ * - should have socket leave room, call update room func
+ * - should possibly be moved into rooms events file and import updateRoomAfterLeave?
+ */
+//

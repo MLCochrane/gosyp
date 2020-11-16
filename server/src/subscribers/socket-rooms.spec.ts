@@ -6,6 +6,7 @@ import RoomService from '../services/room-service';
 import socketRooms, {
   socketCreateRoom,
   socketRequestsRoom,
+  socketLeavesRoom,
 } from './socket-rooms';
 import RoomModel from '../models/room';
 import { ExtendedSocket } from '../types/global';
@@ -35,7 +36,6 @@ describe('Room CRUD', () => {
   beforeEach(() => {
     Container.set('io', mockedIO);
     Container.set('logger', mockedLogger);
-    Container.set('roomUuid', '12345');
   });
 
   afterEach(() => {
@@ -44,11 +44,13 @@ describe('Room CRUD', () => {
 
   it('calls each socket funciton to bind', () => {
     const userSocket = mockedSocket as ExtendedSocket;
-    (userSocket.on as jest.Mock).mockImplementation((event, cb) => {
+    (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => {
       switch (event) {
         case 'addMeToRoom':
           return cb({});
         case 'createRoom':
+          return cb({});
+        case 'removeMeFromRoom':
           return cb({});
         default:
           return cb(null);
@@ -56,10 +58,11 @@ describe('Room CRUD', () => {
     });
     socketRooms({ socket: userSocket });
 
-    expect(userSocket.on).toBeCalledTimes(2);
+    expect(userSocket.on).toBeCalledTimes(3);
     expect((userSocket.on as any).mock.calls).toEqual(
       [
         ['addMeToRoom', expect.anything()],
+        ['removeMeFromRoom', expect.anything()],
         ['createRoom', expect.anything()],
       ],
     );
@@ -121,11 +124,11 @@ describe('Room CRUD', () => {
     expect(userSocket.join).toHaveBeenCalledTimes(0);
   });
 
-  it('if a room found add socket, send room details to everyone, and tell room someone joined', async () => {
+  it('if a room found: add socket, send room details to everyone, and tell room someone joined', async () => {
     const roomDetails = [
       {
         name: 'Room ID',
-        value: '12345',
+        value: '583',
       },
       {
         name: 'Room Name',
@@ -150,7 +153,7 @@ describe('Room CRUD', () => {
     socketRequestsRoom(userSocket, mockedRoomService, mockedLogger, mockedIO);
     await flushPromises();
 
-    expect(userSocket.join).toHaveBeenCalledWith('12345', expect.anything());
+    expect(userSocket.join).toHaveBeenCalledWith('583', expect.anything());
     expect((userSocket.emit as jest.Mock).mock.calls).toEqual([
       ['addedToRoom', true],
       ['userJoined', expect.objectContaining({
@@ -160,7 +163,55 @@ describe('Room CRUD', () => {
         },
       })],
     ]);
-    expect(mockedIO.to).toHaveBeenCalledWith('12345');
+    expect(mockedIO.to).toHaveBeenCalledWith('583');
+    expect(mockedIO.emit).toHaveBeenCalledWith(
+      'updatedRoomInfo',
+      { roomDetails },
+    );
+  });
+
+  it('sockets can leave a room and it notifies the room', async () => {
+    const roomDetails = [
+      {
+        name: 'Room ID',
+        value: '583',
+      },
+      {
+        name: 'Room Name',
+        value: '',
+      },
+      {
+        name: 'Created At',
+        value: 'Thursday',
+      },
+      {
+        name: 'Active users',
+        value: 1,
+      },
+    ];
+    const userSocket = mockedSocket as ExtendedSocket;
+    userSocket.rooms = {'583': '583'};
+
+    (userSocket.broadcast as any) = userSocket;
+    (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb({ 'room-id': '583' }));
+    (userSocket.leave as jest.Mock).mockImplementationOnce((event, cb) => cb());
+    (mockedRoomService.CheckForRoom as jest.Mock).mockReturnValue(true);
+    (mockedRoomService.UpdateRoomUsers as jest.Mock).mockReturnValue(roomDetails);
+
+    socketLeavesRoom(userSocket, mockedRoomService, mockedLogger, mockedIO);
+    await flushPromises();
+
+    expect(userSocket.leave).toHaveBeenCalledWith('583', expect.anything());
+    expect((userSocket.emit as jest.Mock).mock.calls).toEqual([
+      ['removedFromRoom', true],
+      ['userLeft', expect.objectContaining({
+        user: {
+          id: '123',
+          nickname: null,
+        },
+      })],
+    ]);
+    expect(mockedIO.to).toHaveBeenCalledWith('583');
     expect(mockedIO.emit).toHaveBeenCalledWith(
       'updatedRoomInfo',
       { roomDetails },
