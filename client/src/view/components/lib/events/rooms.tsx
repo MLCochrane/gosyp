@@ -7,10 +7,16 @@ export const HasAddedToRoom = () : [boolean, string] => {
   const [roomID, setRoomID] = useState('');
 
   useEffect(() => {
+    let mounted = true;
     socket.on(Events.addUserToRoom, (status: boolean, id: string) => {
-      setAddedToRoom(status);
-      setRoomID(id);
+      if (mounted) {
+        setAddedToRoom(status);
+        setRoomID(id);
+      }
     });
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return [addedToRoom, roomID];
@@ -21,6 +27,7 @@ export const NotAddedToRoom = () : [boolean, string] => {
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
+    let mounted = true;
     socket.on(Events.socketDeniedRoomAccess, ({
       status,
       message,
@@ -28,9 +35,14 @@ export const NotAddedToRoom = () : [boolean, string] => {
       status: boolean,
       message: string,
     }) => {
-      setNotAdded(status);
-      setErrorMessage(message);
+      if (mounted) {
+        setNotAdded(status);
+        setErrorMessage(message);
+      }
     });
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return [notAdded, errorMessage];
@@ -81,9 +93,15 @@ export const RoomDetailsUpdated = () : [RoomDetails] => {
   const [details, setDetails] = useState<RoomDetails>([]);
 
   useEffect(() => {
+    let mounted = true;
     socket.on(Events.updatedRoomInfo, ({ roomDetails }: { roomDetails: RoomDetails }) => {
-      setDetails(roomDetails);
+      if (mounted) {
+        setDetails(roomDetails);
+      }
     });
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return [details];

@@ -3,13 +3,26 @@ import {
   useSelector,
   useDispatch,
 } from 'react-redux';
-import { IconButton } from '@material-ui/core';
+import {
+  IconButton,
+  Tooltip,
+ } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { ExitToApp } from '@material-ui/icons';
 import { socket } from 'api';
 import Events from 'view/components/lib/events/eventTypes';
 import { leaveRoom } from 'store/actions/roomActions';
 
+const useStyles = makeStyles((theme) => (
+  {
+    icon: {
+      transform: 'rotate(180deg)',
+    },
+  }
+));
+
 const LeaveRoom = () => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const { currentRoom: roomID } = useSelector((state: any) => state.rooms);
 
@@ -19,11 +32,20 @@ const LeaveRoom = () => {
   };
 
   return (
-    <IconButton
-      onClick={ handleClick }
+    <Tooltip
+      title="Leave room"
+      placement="top"
     >
-      <ExitToApp />
-    </IconButton>
+      <IconButton
+        aria-label="leave current chat room"
+        onClick={ handleClick }
+      >
+        <ExitToApp
+          fontSize="large"
+          className={ classes.icon }
+        />
+      </IconButton>
+    </Tooltip>
   )
 }
 export default LeaveRoom;

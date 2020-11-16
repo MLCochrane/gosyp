@@ -1,5 +1,7 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import * as Redux from 'react-redux';
+import Enzyme, { shallow, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import io, { Socket } from 'socket.io-client';
 import RoomDetails from './RoomDetails';
 import DetailRow from './DetailRow';
@@ -12,10 +14,29 @@ jest.mock('socket.io-client', () => {
   return jest.fn(() => socket);
 });
 
+Enzyme.configure({ adapter: new Adapter() });
+
 const mockedIO = io as jest.Mocked<typeof io>;
 const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
 
 describe('Room specific detail widget', () => {
+  beforeEach(() => {
+    (mockedSocket.emit as jest.Mock).mockReset();
+    const useDispatchSpy = jest.spyOn(Redux, 'useDispatch');
+    useDispatchSpy.mockReturnValue(jest.fn());
+
+    const useSelectorSpy = jest.spyOn(Redux, 'useSelector');
+
+    const initialState = {
+      rooms: {
+        '5593': '5593',
+      },
+      currentRoom: '5593',
+    };
+
+    useSelectorSpy.mockReturnValue(initialState);
+  });
+
   it('renders default rows before getting details', () => {
     const wrapper = shallow(<RoomDetails />);
     expect(wrapper.find(DetailRow)).toHaveLength(0);

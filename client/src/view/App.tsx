@@ -18,7 +18,7 @@ const App = () => {
   useEffect(() => {
     dispatch(addRoomID(roomID));
     dispatch(setCurrentRoom(roomID));
-  }, [dispatch, roomID]);
+  }, [dispatch, roomID, addedToRoom]);
 
   return (
     <div className="app">
