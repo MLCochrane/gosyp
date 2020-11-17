@@ -80,7 +80,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "57:21:5c:59:63:ab:df:fa:08:9f:6d:82:55:eb:4b:fe"
+            - "35:34:58:07:07:41:58:98:12:72:1c:da:47:23:80:e3"
       - attach_workspace:
           at: .
       - run:
