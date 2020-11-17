@@ -4,6 +4,13 @@ jobs:
     # pre-built images: https://circleci.com/docs/2.0/circleci-images/
     docker:
       - image: cimg/node:14.13.0
+    environment:
+      REACT_APP_SERVER_URL: $SERVER_URL
+      REACT_APP_CLIENT_URL: $CLIENT_URL
+      NODE_ENV: production
+      MONGODB_URI: mongodb://$MONGO_USER:$MONGO_PW@$MONGO_URL/$MONGO_DB
+      PORT: 3000
+      LOG_LEVEL: debug
     steps:
       - checkout
       - run:
@@ -16,9 +23,6 @@ jobs:
           command: |
             cd client
             npm run build
-          environment:
-            REACT_APP_SERVER_URL: $SERVER_URL
-            REACT_APP_CLIENT_URL: $CLIENT_URL
       - run:
           name: Installing server
           command: |
@@ -29,11 +33,6 @@ jobs:
           command: |
             cd server
             npm run build
-          environment:
-            NODE_ENV: production
-            MONGODB_URI: mongodb://$MONGO_USER:$MONGO_PW@$MONGO_URL/$MONGO_DB
-            PORT: 3000
-            LOG_LEVEL: debug
       - run:
           name: Checking workspace
           command: ls -l
