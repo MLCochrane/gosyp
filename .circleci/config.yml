@@ -35,12 +35,12 @@ jobs:
           command: |
             echo 'Just confirming things build properly'
       - persist_to_workspace:
-        # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
-        # taken to be the root directory of the workspace.
-        root: .
-        paths:
-          - /client/build
-          - /server/lib
+          # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
+          # taken to be the root directory of the workspace.
+          root: .
+          paths:
+            - /client/build
+            - /server/lib
   test-client:
     docker:
       - image: cimg/node:14.13.0
