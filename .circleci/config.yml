@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Installing
+          name: Installing frontend
           command: |
             cd client
             npm ci
@@ -19,6 +19,11 @@ jobs:
           environment:
             REACT_APP_SERVER_URL: $SERVER_URL
             REACT_APP_CLIENT_URL: $CLIENT_URL
+      - run:
+          name: Installing server
+          command: |
+            cd server
+            npm ci
       - run:
           name: Creating server build
           command: |
@@ -32,10 +37,6 @@ jobs:
       - run:
           name: Checking workspace
           command: ls -l
-      - run:
-          name: Build Alert
-          command: |
-            echo 'Just confirming things build properly'
       - persist_to_workspace:
           # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
           # taken to be the root directory of the workspace.
