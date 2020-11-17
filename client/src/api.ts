@@ -2,10 +2,16 @@ import axios from 'axios';
 import io from 'socket.io-client';
 
 let url;
-if (process.env.NODE_ENV === 'test') {
-  url = '';
-} else {
-  url = process.env.REACT_APP_SERVER_URL;
+switch (process.env.NODE_ENV) {
+  case 'development':
+    url = 'localhost:3000';
+    break;
+  case 'production':
+    url = 'api.gosyp.io'
+    break;
+  default:
+    url = '';
+    break;
 }
 
 const api = axios.create({
