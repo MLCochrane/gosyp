@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import ErrorBoundry from './ErrorBoundry';
+import ErrorBoundary from './ErrorBoundary';
 
 describe('Error Boundry', () => {
   const Throw = () => {
@@ -22,31 +22,31 @@ describe('Error Boundry', () => {
 
   it('displays children if no error thrown', () => {
     const wrapper = mount(
-      <ErrorBoundry>
+      <ErrorBoundary>
         <div>
           No error
         </div>
-      </ErrorBoundry>,
+      </ErrorBoundary>,
     );
     expect(wrapper.contains('No error')).toEqual(true);
   });
 
   it('displays error if error thrown', () => {
     const wrapper = mount(
-      <ErrorBoundry>
+      <ErrorBoundary>
         <Throw />
-      </ErrorBoundry>,
+      </ErrorBoundary>,
     );
     expect(wrapper.contains('Something went wrong.')).toEqual(true);
   });
 
   it('displays optional prop instead of message if error thrown', () => {
     const wrapper = mount(
-      <ErrorBoundry
+      <ErrorBoundary
         errorDisplay={ <div className="error">I show message</div> }
       >
         <Throw />
-      </ErrorBoundry>,
+      </ErrorBoundary>,
     );
     expect(wrapper.contains('I show message')).toEqual(true);
   });

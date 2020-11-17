@@ -12,13 +12,7 @@ export function chatMessage(
   logger: Logger,
   io: Server,
 ) {
-  socket.on(Events.chatMessage, (msg: string) => {
-    const room: string = Container.get('roomName');
-
-    logger.info(msg);
-
-    // broadcast to everyone in the room
-
+  socket.on(Events.chatMessage, (room: string, msg: string) => {
     /*
     * Think it's best to send this even to socket who
     * wrote it so we don't have to deal with updating
@@ -46,10 +40,7 @@ export function userTyping(
   socket: ExtendedSocket,
   logger: Logger,
 ) {
-  socket.on(Events.userTyping, (isTyping: Boolean) => {
-    const room: string = Container.get('roomName');
-    logger.info(`Someone typing: ${isTyping}`);
-
+  socket.on(Events.userTyping, (room: string, isTyping: Boolean) => {
     // broadcast to others in the room
     socket.broadcast.to(room).emit(Events.userTyping, isTyping);
   });

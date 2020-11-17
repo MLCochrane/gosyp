@@ -13,9 +13,15 @@ export default () => {
     timestamp: new Date(''),
   });
   useEffect(() => {
+    let mounted = true;
     socket.on('chatMessage', (msg: ChatMessage) => {
-      setMessage({ ...msg, messageType: 'message' });
+      if (mounted) {
+        setMessage({ ...msg, messageType: 'message' });
+      }
     });
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return [message];

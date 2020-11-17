@@ -53,7 +53,7 @@ export default class RoomService {
     const roomRecord = await this.roomModel.findOne({ uuid: id });
     if (!roomRecord) return false;
 
-    return true;
+    return roomRecord;
   }
 
   /**
@@ -75,13 +75,21 @@ export default class RoomService {
       },
     );
 
+    console.log('in UpdateRoomUsers');
+    console.log(updatedRoom);
+
+    if (!updatedRoom) return false;
     if (updatedRoom && updatedRoom.userCount <= 0) {
       const removal = await this.RemoveRoom(uuid);
       return removal;
     }
+
+    // Format date
+    const formatDate = new Date((updatedRoom as any).createdAt);
+
     return [
       {
-        name: 'Room ID',
+        name: 'ID',
         value: updatedRoom?.uuid,
       },
       {
@@ -89,8 +97,8 @@ export default class RoomService {
         value: updatedRoom?.name || 'N/A',
       },
       {
-        name: 'Created At',
-        value: (updatedRoom as any).createdAt,
+        name: 'Created at',
+        value: formatDate.toLocaleString(),
       },
       {
         name: 'Active users',

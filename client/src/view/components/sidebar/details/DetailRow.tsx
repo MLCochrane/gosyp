@@ -1,4 +1,22 @@
 import React from 'react';
+import {
+  Grid,
+  Typography,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => (
+  {
+    detailName: {
+      fontSize: '1em',
+    },
+    detailValue: {
+      fontSize: '1em',
+      color: theme.palette.secondary.main,
+    },
+  }
+));
+
 
 const DetailRow = ({
   name,
@@ -6,10 +24,31 @@ const DetailRow = ({
 }: {
   name: string,
   value: string,
-}) => (
-  <div className="detail-row">
-    <p className="detail-row__name">{ name }</p>
-    <p className="detail-row__value">{ value }</p>
-  </div>
-);
+}) => {
+  const classes = useStyles();
+  return (
+    <Grid
+      className="detail-row"
+      container
+      justify="space-between"
+    >
+      <Grid item>
+        <Typography
+          variant="h5"
+          component="p"
+          className={ classes.detailName }>
+            { `${name}:` }
+          </Typography>
+      </Grid>
+      <Grid item>
+        <Typography
+          variant="h5"
+          component="p"
+          className={ classes.detailValue }>
+            { value }
+          </Typography>
+      </Grid>
+    </Grid>
+  )
+};
 export default DetailRow;

@@ -2,17 +2,34 @@ import React, {
   useState,
   useEffect,
 } from 'react';
+import {
+  Paper,
+  Divider,
+  Grid,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import DetailRow from './DetailRow';
 import { RoomDetailsUpdated } from '../../lib/events/rooms';
+import ShareLink from './ShareLink';
+import LeaveRoom from '../LeaveRoom';
+
+const useStyles = makeStyles((theme) => ({
+  gridContainer: {
+    height: '100%',
+  },
+  roomDetails: {
+    padding: theme.spacing(2),
+  },
+  divideWrapper: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  }
+}));
 
 const RoomDetails = () => {
+  const classes = useStyles();
   const [details] = RoomDetailsUpdated();
-  const [rows, setRows] = useState<RoomDetails>([
-    {
-      name: 'N/A',
-      value: 'N/A',
-    },
-  ]);
+  const [rows, setRows] = useState<RoomDetails>([]);
 
   useEffect(() => {
     /**
@@ -20,28 +37,55 @@ const RoomDetails = () => {
      * we're assuming that the server will be handling
      * when this should be updated and with what.
      */
-    if (details.length) {
+    if (details && details.length) {
       setRows(details);
     }
   }, [details]);
 
+  const detailList = () => (
+    <ul>
+    {
+      rows.map((row) => (
+        <li
+          key={ row.value }
+        >
+          <DetailRow
+            name={ row.name }
+            value={ row.value }
+          />
+        </li>
+      ))
+    }
+    </ul>
+  );
+
   return (
-    <div className="room-details">
-      <ul>
-        {
-        rows.map((row) => (
-          <li
-            key={ row.value }
+    <Grid
+      container
+      alignContent="space-between"
+      className={ classes.gridContainer }
+    >
+      <Grid item>
+        <Paper
+          elevation={ 0 }
+          className={ classes.roomDetails }
           >
-            <DetailRow
-              name={ row.name }
-              value={ row.value }
-            />
-          </li>
-        ))
-      }
-      </ul>
-    </div>
+          { detailList() }
+          <Paper
+            elevation={ 0 }
+            className={ classes.divideWrapper }
+            >
+            <Divider
+              variant="middle"
+              />
+          </Paper>
+          <ShareLink />
+        </Paper>
+      </Grid>
+      <Grid item>
+        <LeaveRoom />
+      </Grid>
+    </Grid>
   );
 };
 export default RoomDetails;

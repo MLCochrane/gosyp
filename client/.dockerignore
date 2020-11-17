@@ -1,0 +1,16 @@
+# Ensures not copying more than we need
+
+# Misc
+node_modules
+npm-debug.log
+Dockerfile
+.dockerignore
+.eslintrc.js
+.git
+.gitignore
+.tsconfig.json
+
+# Project specific
+__mocks__
+build
+

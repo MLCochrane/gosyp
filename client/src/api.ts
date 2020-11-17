@@ -5,14 +5,14 @@ let url;
 if (process.env.NODE_ENV === 'test') {
   url = '';
 } else {
-  url = 'localhost:3000';
+  url = process.env.REACT_APP_SERVER_URL;
 }
 
 const api = axios.create({
   baseURL: url,
 });
 
-const socket = io(url);
+const socket = io(url as string);
 
 export {
   api,

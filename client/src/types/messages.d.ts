@@ -4,6 +4,7 @@ interface ChatMessage {
   msg: string;
   user: User;
   timestamp: Date,
+  hideMeta?: boolean
 }
 
 interface StatusUpdate {

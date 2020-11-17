@@ -11,9 +11,15 @@ export const UserJoined = () => {
     timestamp: new Date(''),
   });
   useEffect(() => {
+    let mounted = true;
     socket.on(Events.userJoined, (data: UserAction) => {
-      setUser(data);
+      if (mounted) {
+        setUser(data);
+      }
     });
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return [user];
@@ -28,9 +34,15 @@ export const UserLeft = () => {
     timestamp: new Date(''),
   });
   useEffect(() => {
+    let mounted = true;
     socket.on(Events.userLeft, (data: UserAction) => {
-      setUser(data);
+      if (mounted) {
+        setUser(data);
+      }
     });
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return [user];

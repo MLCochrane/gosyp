@@ -3,44 +3,68 @@ import React, {
   ChangeEvent,
   useState,
   useEffect,
+  useCallback,
 } from 'react';
+import {
+  Container,
+  TextField,
+  Button,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { reach, ObjectSchema } from 'yup';
 
-import validator from './validator';
-import TextField from './TextField';
-import Button from './Button';
+const useStyles = makeStyles(() => ({
+  button: {
+    display: 'block',
+    margin: '0 auto',
+  },
+}));
 
 const Form = ({
   formName,
   fields,
+  buttonText,
   submissionCallback,
   wasSuccess,
   wasError,
+  schema,
 } : {
   formName: string,
   fields: FormProps[],
   submissionCallback: (body: FormBody) => void,
   wasSuccess: boolean,
   wasError: boolean,
+  buttonText: string,
+  schema: ObjectSchema,
 }) => {
-  const mappedFields: FormFields = {};
-  fields.forEach((el) => {
-    mappedFields[el.name] = {
-      value: '',
-      isRequired: el.required,
-      errors: {
-        valid: !el.required,
-        message: '',
-      },
-    };
-  });
+  const classes = useStyles();
 
-  const [formFields, setFormFields] = useState<FormFields>(mappedFields);
+  const mapFields = useCallback(() => {
+    const mappedFields: FormFields = {};
+    fields.forEach((el) => {
+      mappedFields[el.name] = {
+        value: el.value || '',
+        isRequired: el.required,
+        errors: {
+          valid: true,
+          message: '',
+        },
+      };
+    });
 
-  // Copying empty form to set to later
+    return mappedFields;
+  }, [fields]);
+
+  useEffect(() => {
+    setFormFields(mapFields());
+  }, [fields, mapFields]);
+
+  const [formFields, setFormFields] = useState<FormFields>(mapFields());
+  // Copying initial fields to set to later
   const [defaultForms] = useState(formFields);
 
   const [disabledButton, setDisabled] = useState(true);
-  const [butonText, setButtonText] = useState('Submit');
+  const [butonText, setButtonText] = useState(buttonText);
 
   const onSubmission = () => {
     setButtonText('Submitting...');
@@ -89,18 +113,28 @@ const Form = ({
     const { value }: { value: string } = e.target;
     const { name }: { name: string } = e.target;
 
-    const errorResult = formFields[name].isRequired
-      ? validator(name, value)
-      : { valid: true, message: '' };
-
-    setFormFields({
-      ...formFields,
-      [name]: {
-        ...formFields[name],
-        value,
-        errors: errorResult,
-      },
-    });
+    reach(schema, name)
+      .validate(value)
+      .then(() => {
+        setFormFields({
+          ...formFields,
+          [name]: {
+            ...formFields[name],
+            value,
+            errors: { valid: true, message: '' },
+          },
+        });
+      })
+      .catch((error: Error) => {
+        setFormFields({
+          ...formFields,
+          [name]: {
+            ...formFields[name],
+            value,
+            errors: { valid: false, message: error.message },
+          },
+        });
+      });
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -123,34 +157,42 @@ const Form = ({
   };
 
   return (
-    <form className={ `${formName}-form` } noValidate onSubmit={ handleSubmit }>
-      {
-        fields.map((el) => (
-          <TextField
-            key={ el.name }
-            inputName={ el.name }
-            id={ `${formName}-${el.name}` }
-            label={ el.name.toUpperCase() }
-            value={ formFields[el.name].value }
-            errors={ !formFields[el.name].errors.valid }
-            errorMessage={ formFields[el.name].errors.message }
-            handleChange={ handleChange }
-            placeholder=""
-            required
-          />
-        ))
-      }
-
-      <div className="contact-form__btn-wrap">
+    <Container>
+      <form className={ `${formName}-form` } noValidate onSubmit={ handleSubmit }>
+        {
+          fields.map((el) => (
+            <TextField
+              fullWidth
+              margin="normal"
+              required={ el.required }
+              key={ el.name }
+              name={ el.name }
+              id={ `${formName}-${el.name}` }
+              label={ el.label }
+              value={ formFields[el.name].value }
+              variant="outlined"
+              error={ !formFields[el.name].errors.valid }
+              helperText={
+                formFields[el.name].errors.valid
+                  ? el.helperText
+                  : formFields[el.name].errors.message
+              }
+              onChange={ handleChange }
+            />
+          ))
+        }
         <Button
-          className="button--pri"
           type="submit"
           disabled={ disabledButton }
+          variant="contained"
+          color="primary"
+          size="large"
+          className={ classes.button }
         >
           { butonText }
         </Button>
-      </div>
-    </form>
+      </form>
+    </Container>
   );
 };
 

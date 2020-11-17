@@ -3,14 +3,27 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
+import { Paper } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import ChatMessage from 'view/components/lib/events/chatMessage';
 import { UserJoined, UserLeft } from 'view/components/lib/events/lifeCycle';
 import UserMessage from './messages/UserMessage';
 import StatusMessage from './messages/StatusMessage';
 
-import './feed.scss';
+const useStyles = makeStyles((theme) => (
+  {
+    feed: {
+      flexGrow: 1,
+      overflowY: 'auto',
+    },
+    firstMessage: {
+      paddingTop: theme.spacing(8)
+    }
+  }
+));
 
 const Feed = () => {
+  const classes = useStyles();
   const [messages, setMessages] = useState<Messages>([]);
   const [newMessage] = ChatMessage();
   const [userHasJoined] = UserJoined();
@@ -20,7 +33,7 @@ const Feed = () => {
   useEffect(() => {
     // Simply checks if the message event has content and adds to feed
     if (newMessage.msg !== '') {
-      setMessages((currentMessages) => [...currentMessages, newMessage]);
+      setMessages((currentMessages: Messages) => [...currentMessages, newMessage]);
     }
   }, [newMessage]);
 
@@ -34,7 +47,7 @@ const Feed = () => {
         timestamp: userHasJoined.timestamp,
       };
 
-      setMessages((currentMessages) => [...currentMessages, status]);
+      setMessages((currentMessages: Messages) => [...currentMessages, status]);
     }
   }, [userHasJoined]);
 
@@ -48,7 +61,7 @@ const Feed = () => {
         timestamp: userHasLeft.timestamp,
       };
 
-      setMessages((currentMessages) => [...currentMessages, status]);
+      setMessages((currentMessages: Messages) => [...currentMessages, status]);
     }
   }, [userHasLeft]);
 
@@ -71,27 +84,65 @@ const Feed = () => {
     }
   }, [messages]);
 
+  const messageBody = (message: ChatMessage | StatusUpdate, index: number) => {
+    if (message.messageType === 'message') {
+      let hideMeta = false;
+      const prevMessage = messages[index - 1] ? messages[index - 1] : null;
+      if (
+        prevMessage
+        && prevMessage.messageType === 'message'
+        && prevMessage.user.id === message.user.id
+      ) {
+        hideMeta = true;
+      }
+
+      return (
+        <UserMessage
+          hideMeta={ hideMeta }
+          { ...message }
+        />
+      );
+    }
+    return <StatusMessage { ...message } />;
+  };
+
+  const placeholderMessage = () => {
+    const message = "No one's talking... awkward"
+
+    return (
+      <h1>
+        { message }
+      </h1>
+    )
+  };
+
+  const messageList = () => (
+    <ul>
+    {
+      messages.map((el, index) => (
+        <li
+          className={ index === 0 ? classes.firstMessage : undefined }
+          key={ el.id }
+        >
+          { messageBody(el, index) }
+        </li>
+      ))
+    }
+  </ul>
+  );
+
   return (
-    <div
+    <Paper
+      elevation={ 0 }
       ref={ feedRef }
-      className="feed chat__component"
+      className={ classes.feed }
     >
-      <ul>
-        {
-          messages.map((el) => (
-            <li
-              key={ el.id }
-            >
-              {
-                el.messageType === 'message'
-                  ? <UserMessage { ...el } />
-                  : <StatusMessage { ...el } />
-              }
-            </li>
-          ))
-        }
-      </ul>
-    </div>
+      {
+        !messages.length
+        ? placeholderMessage()
+        : messageList()
+      }
+    </Paper>
   );
 };
 export default Feed;

@@ -7,26 +7,8 @@ import socketClientMessages, {
 } from './socket-client-messages';
 import { ExtendedSocket } from '../types/global';
 
-jest.mock('socket.io', () => {
-  const socket = {
-    id: '123',
-    nickname: '',
-    emit: jest.fn(),
-    on: jest.fn(),
-  };
-  const on = () => socket;
-  const to = jest.fn();
-  const emit = jest.fn();
-  return jest.fn(() => ({ on, to, emit }));
-});
-
-jest.mock('winston', () => {
-  const info = jest.fn();
-  const createLogger = () => ({ info });
-  return {
-    createLogger,
-  };
-});
+jest.mock('socket.io');
+jest.mock('winston');
 
 const mockedLogger = winston.createLogger() as jest.Mocked<Logger>;
 
@@ -37,8 +19,6 @@ describe('Chat messages', () => {
   beforeAll(() => {
     Container.set('io', mockedIO);
     Container.set('logger', mockedLogger);
-    Container.set('roomName', '12345');
-
     mockedSocket = (mockedIO.on as jest.Mock)();
 
     /**
@@ -74,12 +54,12 @@ describe('Chat messages', () => {
   it('takes message from client and emits to the room', () => {
     const userSocket = mockedSocket as ExtendedSocket;
     (userSocket.on as jest.Mock)
-      .mockImplementationOnce((event, cb) => cb('My message'))
-      .mockImplementationOnce((event, cb) => cb('My Second Message!'));
+      .mockImplementationOnce((event, cb) => cb('782', 'My message'))
+      .mockImplementationOnce((event, cb) => cb('782', 'My Second Message!'));
     chatMessage(userSocket, mockedLogger, mockedIO);
 
     expect(userSocket.on).toHaveBeenCalledWith('chatMessage', expect.anything());
-    expect(mockedIO.to).toHaveBeenCalledWith('12345');
+    expect(mockedIO.to).toHaveBeenCalledWith('782');
     expect(mockedIO.emit).toHaveBeenCalledWith(
       'chatMessage',
       expect.objectContaining({
@@ -89,7 +69,7 @@ describe('Chat messages', () => {
 
     chatMessage(userSocket, mockedLogger, mockedIO);
     expect(userSocket.on).toHaveBeenCalledWith('chatMessage', expect.anything());
-    expect(mockedIO.to).toHaveBeenCalledWith('12345');
+    expect(mockedIO.to).toHaveBeenCalledWith('782');
     expect(mockedIO.emit).toHaveBeenCalledWith(
       'chatMessage',
       expect.objectContaining({
@@ -107,12 +87,12 @@ describe('Chat messages', () => {
      */
     (userSocket.broadcast as any) = mockedIO;
     (userSocket.on as jest.Mock)
-      .mockImplementationOnce((event, cb) => cb(true))
-      .mockImplementationOnce((event, cb) => cb(false));
+      .mockImplementationOnce((event, cb) => cb('89991', true))
+      .mockImplementationOnce((event, cb) => cb('89991', false));
 
     userTyping(userSocket, mockedLogger);
     expect(userSocket.on).toHaveBeenCalledWith('userTyping', expect.anything());
-    expect(userSocket.broadcast.to).toHaveBeenCalledWith('12345');
+    expect(userSocket.broadcast.to).toHaveBeenCalledWith('89991');
     expect(userSocket.broadcast.emit).toHaveBeenCalledWith(
       'userTyping',
       true,
@@ -120,7 +100,7 @@ describe('Chat messages', () => {
 
     userTyping(userSocket, mockedLogger);
     expect(userSocket.on).toHaveBeenCalledWith('userTyping', expect.anything());
-    expect(userSocket.broadcast.to).toHaveBeenCalledWith('12345');
+    expect(userSocket.broadcast.to).toHaveBeenCalledWith('89991');
     expect(userSocket.broadcast.emit).toHaveBeenCalledWith(
       'userTyping',
       false,

@@ -5,16 +5,34 @@ import Events from './socket-event-names';
 import RoomService from '../services/room-service';
 import { ExtendedSocket } from '../types/global';
 
-export default function socketRooms({
-  socket,
-}: {
+export async function updateRoom(
+  event: Events.userJoined | Events.userLeft,
+  roomID: string,
   socket: ExtendedSocket,
-}) {
-  const logger: Logger = Container.get('logger');
-  const roomService = Container.get(RoomService);
-  const io: Server = Container.get('io');
+  roomService: RoomService,
+  io: Server,
+  addToRoom: boolean,
+) {
+  // Update room number and send room detail update
+  const roomDetails = await roomService.UpdateRoomUsers(roomID, addToRoom);
+  if (typeof roomDetails === 'boolean') return;
 
-  /**
+  // Send room detail updates to erybody
+  io.to(roomID).emit(Events.updatedRoomInfo, {
+    roomDetails,
+  });
+
+  // Let everyone else know they're in the room
+  io.to(roomID).emit(event, {
+    user: {
+      id: socket.id,
+      nickname: socket.nickname,
+    },
+    timestamp: Date.now(),
+  });
+}
+
+/**
    * Socket requests room access
    *
    * Will check for room and add if the room
@@ -23,17 +41,23 @@ export default function socketRooms({
    * Could add additional checks to rooms service
    * if need be such as additional authentication.
    */
+export function socketRequestsRoom(
+  socket: ExtendedSocket,
+  roomService: RoomService,
+  logger: Logger,
+  io: Server,
+) {
   socket.on(Events.socketRequestsRoom, async (requestBody) => {
-    logger.info('socket requests room access');
-    const room: string = Container.get('roomName');
+    const roomID = requestBody['room-id'];
+    logger.info(`socket requests room access: ${roomID}`);
 
     /**
      * Check for room in DB
      */
-    const roomExists = await roomService.CheckForRoom(requestBody['room-id']);
+    const room = await roomService.CheckForRoom(roomID);
 
     // Simply tell the socket there's no room
-    if (!roomExists) {
+    if (!room) {
       socket.emit(Events.socketDeniedRoomAccess, {
         // redundant to return true here
         status: true,
@@ -42,43 +66,85 @@ export default function socketRooms({
       return;
     }
 
-    // Increase room number and send room detail update
-    const roomDetails = await roomService.UpdateRoomUsers(room, true);
-
     // If no errors, add the user to the room
-    socket.join(room, () => {
+    socket.join(roomID, async () => {
       // eslint-disable-next-line no-param-reassign
       socket.nickname = requestBody.nickname || null;
       // Tell client they've been included
-      socket.emit(Events.addUserToRoom, true);
+      socket.emit(Events.addUserToRoom, true, roomID);
 
-      // Send room detail updates to erybody
-      io.to(room).emit(Events.updatedRoomInfo, {
-        roomDetails,
-      });
-
-      // Let everyone else know they're in the room
-      socket.broadcast.to(room).emit(Events.userJoined, {
-        user: {
-          id: socket.id,
-          nickname: socket.nickname,
-        },
-        timestamp: Date.now(),
-      });
-
-      // Broadcast updated room details here
+      await updateRoom(
+        Events.userJoined,
+        roomID,
+        socket,
+        roomService,
+        io,
+        true,
+      );
     });
   });
+}
 
+/**
+ * Sent from client to leave a room.
+ */
+export function socketLeavesRoom(
+  socket: ExtendedSocket,
+  roomService: RoomService,
+  logger: Logger,
+  io: Server,
+) {
+  socket.on(Events.socketRequestsLeaveRoom, async (roomID: string) => {
+    logger.info(`socket wants to leave room: ${roomID}`);
+
+    /**
+     * Check for room in DB
+     */
+    const roomExists = await roomService.CheckForRoom(roomID);
+    const socketInRoom = socket.rooms[roomID];
+
+    // socket trying to leave invalid room
+    if (!roomExists || !socketInRoom) {
+      return;
+    }
+
+    // If no errors, add the user to the room
+    socket.leave(roomID, async () => {
+      // Tell client they've been removed
+      socket.emit(Events.userRemovedFromRoom, true);
+      socket.emit(Events.addUserToRoom, false, roomID);
+
+      await updateRoom(
+        Events.userLeft,
+        roomID,
+        socket,
+        roomService,
+        io,
+        false,
+      );
+    });
+  });
+}
+
+/**
+ * Sent from client to create new room.
+ */
+export function socketCreateRoom(
+  socket: ExtendedSocket,
+  roomService: RoomService,
+  logger: Logger,
+) {
   socket.on(Events.socketCreateRoom, async (requestBody) => {
-    const { name } = requestBody;
+    const { name, nickname } = requestBody;
+    let freshRoom;
     try {
-      const freshRoom = await roomService.CreateRoom(name);
+      freshRoom = await roomService.CreateRoom(name);
+      // Add on user nickname
+      freshRoom.nickname = nickname;
       socket.emit(Events.createRoomSuccess, {
         message: freshRoom,
       });
 
-      Container.set('roomName', freshRoom.uuid);
     } catch (err) {
       logger.info(err);
       socket.emit(Events.createRoomError, {
@@ -88,4 +154,16 @@ export default function socketRooms({
   });
 }
 
-// let currentRoom = io.sockets.adapter.rooms[room];
+export default function socketRooms({
+  socket,
+}: {
+  socket: ExtendedSocket,
+}) {
+  const logger: Logger = Container.get('logger');
+  const roomService = Container.get(RoomService);
+  const io: Server = Container.get('io');
+
+  socketRequestsRoom(socket, roomService, logger, io);
+  socketLeavesRoom(socket, roomService, logger, io);
+  socketCreateRoom(socket, roomService, logger);
+}

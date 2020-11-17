@@ -160,7 +160,7 @@ describe('Room service', () => {
       expect(updatedRoom).toEqual(
         [
           {
-            name: 'Room ID',
+            name: 'ID',
             value: mockedUUID,
           },
           {
@@ -168,8 +168,8 @@ describe('Room service', () => {
             value: 'Big S3crets',
           },
           {
-            name: 'Created At',
-            value: 'Thu Jul 09 2020 20:26:30',
+            name: 'Created at',
+            value: '7/9/2020, 8:26:30 PM',
           },
           {
             name: 'Active users',

@@ -13,7 +13,10 @@ type FormFields = {
 
 type FormProps = {
   name: string,
+  label: string,
+  helperText: string,
   required: boolean,
+  value?: any,
 };
 
 type FormBody = {
