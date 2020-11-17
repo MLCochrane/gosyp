@@ -16,9 +16,6 @@ jobs:
           command: |
             cd client
             npm run build
-          environment:
-            REACT_APP_SERVER_URL: $SERVER_URL
-            REACT_APP_CLIENT_URL: $CLIENT_URL
       - run:
           name: Installing server
           command: |
@@ -29,14 +26,6 @@ jobs:
           command: |
             cd server
             npm run build
-          environment:
-            NODE_ENV: production
-            MONGODB_URI: mongodb://$MONGO_USER:$MONGO_PW@$MONGO_URL/$MONGO_DB
-            PORT: 3000
-            LOG_LEVEL: debug
-      - run:
-          name: Checking workspace
-          command: ls -l
       - persist_to_workspace:
           # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
           # taken to be the root directory of the workspace.
@@ -44,6 +33,9 @@ jobs:
           paths:
             - client/build
             - server/lib
+            - server/node_modules
+            - server/package.json
+            - server/package-lock.json
   test-client:
     docker:
       - image: cimg/node:14.13.0
@@ -91,7 +83,7 @@ jobs:
       - run:
           name: Deploy CMS
           command: |
-            rsync -r ./server/lib/ $SSH_USER@$SSH_HOST:~/gosyp/server
+            rsync -r ./server/ $SSH_USER@$SSH_HOST:~/gosyp/server
 
 workflows:
   build-test-and-deploy:

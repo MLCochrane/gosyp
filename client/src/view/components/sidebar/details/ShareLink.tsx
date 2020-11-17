@@ -36,7 +36,7 @@ const ShareLink = () => {
 
   const generateLink = () => {
     const [roomID] = roomDetails;
-    const host = process.env.NODE_ENV === 'test' ? 'localhost:4242' : process.env.REACT_APP_CLIENT_URL;
+    const host = process.env.NODE_ENV === 'test' ? 'localhost:4242' : 'gosyp.io';
     return roomID ? `${host}?roomId=${roomID.value}` : ''
   }
 
