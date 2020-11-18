@@ -20,11 +20,7 @@ async function startServer() {
   });
 
   httpServer.listen(config.port, () => {
-    Logger.info(`
-      ################################################
-      🛡️  Server listening on port: ${config.port} 🛡️
-      ################################################
-    `);
+    Logger.info(`Server listening on port: ${config.port}`);
   });
 
   httpServer.on('error', (err: Error) => {
