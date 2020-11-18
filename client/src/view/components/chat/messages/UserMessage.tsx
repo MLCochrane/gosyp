@@ -9,13 +9,16 @@ import { socket } from 'api';
 const useStyles = makeStyles((theme) => (
   {
     currentSocketMessage: {
-      color: theme.palette.secondary.light,
+      color: theme.palette.primary.main,
     },
     meta: {
       justifyContent: 'space-between',
     },
     hideMeta: {
       display: 'none',
+    },
+    messagePadding: {
+      paddingTop: theme.spacing(2),
     },
   }
 ));
@@ -34,7 +37,7 @@ const UserMessage = ({
     return timeToShow.toLocaleTimeString();
   };
   return (
-    <div className={`message message--user user-message ${ socket.id === user.id ? classes.currentSocketMessage : '' }`}>
+    <div className={`message message--user ${!hideMeta ? classes.messagePadding : ''} ${ socket.id === user.id ? classes.currentSocketMessage : '' }`}>
       <Grid
         container
         className={ `${classes.meta} ${hideMeta ? classes.hideMeta : ''}` }
