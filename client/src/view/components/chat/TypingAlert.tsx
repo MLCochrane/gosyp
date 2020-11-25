@@ -1,6 +1,9 @@
 import React, {
   useEffect, useState,
 } from 'react';
+import {
+  Typography,
+} from '@material-ui/core';
 import TypingUpdate from 'view/components/lib/events/typingStatus';
 
 const TypingStatus = () => {
@@ -16,7 +19,9 @@ const TypingStatus = () => {
   }, [isTyping]);
   return (
     <div className="typing-status chat__component alt-type">
-      { typingStatus }
+      <Typography>
+        { typingStatus }
+      </Typography>
     </div>
   );
 };
