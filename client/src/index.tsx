@@ -4,13 +4,14 @@ import { Provider } from 'react-redux';
 import {
   MuiThemeProvider,
   createMuiTheme,
+  responsiveFontSizes,
 } from '@material-ui/core/styles';
 import store from './store';
 import App from './view/App';
 
 import './scss/theme.scss';
 
-const theme = createMuiTheme({
+const theme = responsiveFontSizes(createMuiTheme({
   typography: {
     h1: {
       fontFamily: 't26-carbon',
@@ -19,6 +20,12 @@ const theme = createMuiTheme({
       fontFamily: 't26-carbon',
     },
     h5: {
+      fontFamily: 't26-carbon',
+    },
+    h6: {
+      fontFamily: 't26-carbon',
+    },
+    body1: {
       fontFamily: 't26-carbon',
     },
     subtitle1: {
@@ -38,7 +45,7 @@ const theme = createMuiTheme({
       dark: '#00a371',
     },
   },
-});
+}));
 
 ReactDOM.render(
   <MuiThemeProvider theme={ theme }>

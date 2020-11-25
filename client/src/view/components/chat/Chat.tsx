@@ -8,7 +8,7 @@ import TypingAlert from './TypingAlert';
 const useStyles = makeStyles((theme) => ({
   paper: {
     width: '100%',
-    height: '100%',
+    height: '100vh',
     display: 'flex',
     flexDirection: 'column',
     padding: theme.spacing(2),
