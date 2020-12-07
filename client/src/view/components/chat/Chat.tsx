@@ -1,4 +1,7 @@
 import React from 'react';
+import {
+  useSelector,
+} from 'react-redux';
 import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Feed from './Feed';
@@ -16,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Chat = () => {
+  const { currentRoom: roomID } = useSelector((state: any) => state.rooms);
   const classes = useStyles();
   return (
     <Paper
