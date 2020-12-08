@@ -22,12 +22,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Chat = () => {
-  const { needsResize } = useSelector((state: any) => state.global);
-  const [windowHeight, setWindowHeight] = useState(0);
+  const { needsResize, isMobile } = useSelector((state: any) => state.global);
+  const [mobileStyle, setMobileStyle] = useState({});
 
   useEffect(() => {
-    setWindowHeight(window.innerHeight);
-  }, [needsResize]);
+    if (needsResize && isMobile) setMobileStyle({
+      height: window.innerHeight + 'px',
+    });
+  }, [needsResize, isMobile]);
 
   const classes = useStyles();
   return (
@@ -35,9 +37,7 @@ const Chat = () => {
       elevation={ 0 }
       className={ classes.paper }
       square
-      style={{
-        height: windowHeight + 'px',
-      }}
+      style={ mobileStyle }
     >
       <Feed />
       <TypingAlert />

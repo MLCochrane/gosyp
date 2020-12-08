@@ -1,5 +1,7 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import * as Redux from 'react-redux';
+import Enzyme, { shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import Chat from './Chat';
 import Feed from './Feed';
 import Form from './form/Form';
@@ -12,7 +14,19 @@ jest.mock('socket.io-client', () => {
   return jest.fn(() => socket);
 });
 
+Enzyme.configure({ adapter: new Adapter() });
+let useSelectorSpy: any;
+
 describe('Chat wrapper', () => {
+  beforeEach(() => {
+    useSelectorSpy = jest.spyOn(Redux, 'useSelector');
+    const initialState = {
+      isMobile: false,
+      needsResize: false,
+    };
+    useSelectorSpy.mockReturnValue(initialState);
+  });
+
   it('diplays children', () => {
     const wrapper = shallow(<Chat />);
     expect(wrapper.find(Feed)).toHaveLength(1);

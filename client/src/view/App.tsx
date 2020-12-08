@@ -12,13 +12,16 @@ import Home from './components/homepage/Home';
 import Room from './components/chat/Room';
 import { HasAddedToRoom } from './components/lib/events/rooms';
 import { addRoomID, setCurrentRoom } from 'store/actions/roomActions';
-import { setNeedsResize } from 'store/actions/globalActions';
+import {
+  setNeedsResize,
+  mobileDetect,
+} from 'store/actions/globalActions';
 import { MobileCheck } from './components/lib/helpers/windowEvents';
 
 const App = () => {
   const [addedToRoom, roomID] = HasAddedToRoom();
-  const [isMobile] = MobileCheck();
-  const { needsResize } = useSelector((state: any) => state.global);
+  const [smallScreen] = MobileCheck();
+  const { needsResize, isMobile } = useSelector((state: any) => state.global);
   const [mobileStyle, setMobileStyle] = useState({});
   const dispatch = useDispatch();
 
@@ -28,20 +31,22 @@ const App = () => {
   }, [dispatch, roomID, addedToRoom]);
 
   useEffect(() => {
-    if (isMobile) {
+    if (smallScreen) {
+      dispatch(mobileDetect(true));
       dispatch(setNeedsResize(true));
     } else {
       dispatch(setNeedsResize(false));
+      dispatch(mobileDetect(false));
     }
-  }, [dispatch, isMobile]);
+  }, [dispatch, smallScreen]);
 
   useEffect(() => {
-    if (needsResize) {
+    if (needsResize && isMobile) {
       setMobileStyle({
         height: window.innerHeight + 'px',
       });
     }
-  }, [needsResize]);
+  }, [needsResize, isMobile]);
 
   return (
     <div
