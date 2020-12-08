@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 import {
   useDispatch,
+  useSelector,
 } from 'react-redux';
 import Sidebar from './components/sidebar/Sidebar';
 import SwitchView from './components/lib/helpers/SwitchView';
@@ -12,12 +13,13 @@ import Room from './components/chat/Room';
 import { HasAddedToRoom } from './components/lib/events/rooms';
 import { addRoomID, setCurrentRoom } from 'store/actions/roomActions';
 import { setNeedsResize } from 'store/actions/globalActions';
-import resizeEvent from './components/lib/helpers/windowEvents';
+import { MobileCheck } from './components/lib/helpers/windowEvents';
 
 const App = () => {
   const [addedToRoom, roomID] = HasAddedToRoom();
-  const [isResizing] = resizeEvent();
-  const [windowHeight, setWindowHeight] = useState(0);
+  const [isMobile] = MobileCheck();
+  const { needsResize } = useSelector((state: any) => state.global);
+  const [mobileStyle, setMobileStyle] = useState({});
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,23 +28,25 @@ const App = () => {
   }, [dispatch, roomID, addedToRoom]);
 
   useEffect(() => {
-    if (isResizing) {
+    if (isMobile) {
       dispatch(setNeedsResize(true));
     } else {
       dispatch(setNeedsResize(false));
     }
-  }, [dispatch, isResizing]);
+  }, [dispatch, isMobile]);
 
   useEffect(() => {
-    if(!isResizing) setWindowHeight(window.innerHeight);
-  }, [isResizing]);
+    if (needsResize) {
+      setMobileStyle({
+        height: window.innerHeight + 'px',
+      });
+    }
+  }, [needsResize]);
 
   return (
     <div
       className="app"
-      style={{
-        height: windowHeight + 'px',
-      }}
+      style={ mobileStyle }
     >
       <div className="page-content">
         <Sidebar />

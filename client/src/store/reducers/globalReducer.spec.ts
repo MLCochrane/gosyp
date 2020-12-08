@@ -5,6 +5,7 @@ import {
 
 const defaultState = {
   needsResize: false,
+  isMobile: false,
 };
 
 describe('Global Reducer', () => {
@@ -17,6 +18,7 @@ describe('Global Reducer', () => {
     ).toEqual(
       {
         needsResize: true,
+        isMobile: false,
       }
     );
 
@@ -28,6 +30,7 @@ describe('Global Reducer', () => {
     ).toEqual(
       {
         needsResize: false,
+        isMobile: false,
       }
     );
   });
