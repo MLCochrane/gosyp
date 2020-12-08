@@ -1,6 +1,13 @@
-export function setNeedsResize(resize: boolean) {
+export function setNeedsResize(needsResize: boolean) {
   return {
     type: 'SET_NEEDS_RESIZE',
-    resize,
+    needsResize,
   };
 };
+
+export function mobileDetect(isMobile: boolean) {
+  return {
+    type: 'SET_IS_MOBILE',
+    isMobile,
+  }
+}

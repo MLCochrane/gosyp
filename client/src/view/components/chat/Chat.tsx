@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {
+  useEffect,
+  useState,
+} from 'react';
 import {
   useSelector,
 } from 'react-redux';
@@ -19,13 +22,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Chat = () => {
-  const { currentRoom: roomID } = useSelector((state: any) => state.rooms);
+  const { needsResize } = useSelector((state: any) => state.global);
+  const [windowHeight, setWindowHeight] = useState(0);
+
+  useEffect(() => {
+    setWindowHeight(window.innerHeight);
+  }, [needsResize]);
+
   const classes = useStyles();
   return (
     <Paper
       elevation={ 0 }
       className={ classes.paper }
       square
+      style={{
+        height: windowHeight + 'px',
+      }}
     >
       <Feed />
       <TypingAlert />
