@@ -16,12 +16,16 @@ jest.mock('socket.io-client', () => {
 Enzyme.configure({ adapter: new Adapter() });
 
 let useSelectorSpy;
+let useDispatchSpy;
 const mockedIO = io as jest.Mocked<typeof io>;
 const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
 
 describe('Chat input form', () => {
   beforeEach(() => {
     (mockedSocket.emit as jest.Mock).mockReset();
+
+    useDispatchSpy = jest.spyOn(Redux, 'useDispatch');
+    useDispatchSpy.mockReturnValue(jest.fn());
 
     useSelectorSpy = jest.spyOn(Redux, 'useSelector');
 
