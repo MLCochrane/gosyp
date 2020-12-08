@@ -1,4 +1,10 @@
-import React from 'react';
+import React, {
+  useEffect,
+  useState,
+} from 'react';
+import {
+  useSelector,
+} from 'react-redux';
 import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Feed from './Feed';
@@ -16,12 +22,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Chat = () => {
+  const { needsResize, isMobile } = useSelector((state: any) => state.global);
+  const [mobileStyle, setMobileStyle] = useState({});
+
+  useEffect(() => {
+    if (needsResize && isMobile) setMobileStyle({
+      height: window.innerHeight + 'px',
+    });
+  }, [needsResize, isMobile]);
+
   const classes = useStyles();
   return (
     <Paper
       elevation={ 0 }
       className={ classes.paper }
       square
+      style={ mobileStyle }
     >
       <Feed />
       <TypingAlert />
