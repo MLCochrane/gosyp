@@ -12,7 +12,7 @@ describe('Global Actions', () => {
     const resize = true;
     const expectedAction = {
       type: SET_NEEDS_RESIZE,
-      resize,
+      needsResize: resize,
     };
     expect(setNeedsResize(true)).toEqual(expectedAction);
   });
