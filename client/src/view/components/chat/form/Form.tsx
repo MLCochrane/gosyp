@@ -36,7 +36,7 @@ const Form = () => {
   const dispatch = useDispatch();
 
   const handleFocus = () => {
-    dispatch(setNeedsResize(true));
+    dispatch(setNeedsResize());
   }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -47,7 +47,7 @@ const Form = () => {
 
   const handleBlur = () => {
     socket.emit(Events.userTyping, roomID, false);
-    dispatch(setNeedsResize(true));
+    dispatch(setNeedsResize());
   };
 
   const formSubmit = (e: React.FormEvent) => {
