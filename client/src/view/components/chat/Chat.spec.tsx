@@ -16,13 +16,19 @@ jest.mock('socket.io-client', () => {
 
 Enzyme.configure({ adapter: new Adapter() });
 let useSelectorSpy: any;
+let useDispatchSpy: any;
 
 describe('Chat wrapper', () => {
   beforeEach(() => {
+    useDispatchSpy = jest.spyOn(Redux, 'useDispatch');
+    useDispatchSpy.mockReturnValue(jest.fn());
+
     useSelectorSpy = jest.spyOn(Redux, 'useSelector');
     const initialState = {
       isMobile: false,
-      needsResize: false,
+      needsResize: 0,
+      shouldResize: 0,
+      hasResized: 0,
     };
     useSelectorSpy.mockReturnValue(initialState);
   });
