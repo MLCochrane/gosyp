@@ -33,9 +33,8 @@ const App = () => {
   useEffect(() => {
     if (smallScreen) {
       dispatch(mobileDetect(true));
-      dispatch(setNeedsResize(true));
+      dispatch(setNeedsResize());
     } else {
-      dispatch(setNeedsResize(false));
       dispatch(mobileDetect(false));
     }
   }, [dispatch, smallScreen]);
