@@ -9,6 +9,7 @@ import ChatMessage from 'view/components/lib/events/chatMessage';
 import { UserJoined, UserLeft } from 'view/components/lib/events/lifeCycle';
 import UserMessage from './messages/UserMessage';
 import StatusMessage from './messages/StatusMessage';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => (
   {
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => (
 
 const Feed = () => {
   const classes = useStyles();
+  const { hasResized } = useSelector((state: any) => state.global);
   const [messages, setMessages] = useState<Messages>([]);
   const [newMessage] = ChatMessage();
   const [userHasJoined] = UserJoined();
@@ -77,12 +79,12 @@ const Feed = () => {
       }
     };
 
-    if (messages) {
+    if (messages || hasResized) {
       handleScroll();
 
       // Could append additional logic here for when feed is updated.
     }
-  }, [messages]);
+  }, [messages, hasResized]);
 
   const messageBody = (message: ChatMessage | StatusUpdate, index: number) => {
     if (message.messageType === 'message') {

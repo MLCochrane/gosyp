@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Redux from 'react-redux';
 import io, { Socket } from 'socket.io-client';
 import { mount } from 'enzyme';
 import Feed from './Feed';
@@ -14,8 +15,19 @@ jest.mock('socket.io-client', () => {
 
 const mockedIO = io as jest.Mocked<typeof io>;
 const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
+let useSelectorSpy: any;
 
 describe('Feed', () => {
+  beforeEach(() => {
+    useSelectorSpy = jest.spyOn(Redux, 'useSelector');
+    const initialState = {
+      isMobile: false,
+      needsResize: 0,
+      shouldResize: 0,
+      hasResided: 0,
+    };
+    useSelectorSpy.mockReturnValue(initialState);
+  });
   afterEach(() => {
     jest.clearAllMocks();
   });

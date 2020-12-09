@@ -12,16 +12,11 @@ import Home from './components/homepage/Home';
 import Room from './components/chat/Room';
 import { HasAddedToRoom } from './components/lib/events/rooms';
 import { addRoomID, setCurrentRoom } from 'store/actions/roomActions';
-import {
-  setNeedsResize,
-  mobileDetect,
-} from 'store/actions/globalActions';
-import { MobileCheck } from './components/lib/helpers/windowEvents';
+import MobileViewUtility from './components/lib/helpers/MobileViewUtility';
 
 const App = () => {
   const [addedToRoom, roomID] = HasAddedToRoom();
-  const [smallScreen] = MobileCheck();
-  const { needsResize, isMobile } = useSelector((state: any) => state.global);
+  const { needsResize, shouldResize } = useSelector((state: any) => state.global);
   const [mobileStyle, setMobileStyle] = useState({});
   const dispatch = useDispatch();
 
@@ -31,21 +26,20 @@ const App = () => {
   }, [dispatch, roomID, addedToRoom]);
 
   useEffect(() => {
-    if (smallScreen) {
-      dispatch(mobileDetect(true));
-      dispatch(setNeedsResize());
-    } else {
-      dispatch(mobileDetect(false));
-    }
-  }, [dispatch, smallScreen]);
-
-  useEffect(() => {
-    if (needsResize && isMobile) {
+    /**
+     * Should set the height any time we've determined
+     * it's ready to update AND on the initial setResize.
+     * Initial set means we've loaded on a mobile device
+     * and that's about it. Perhaps switching this for
+     * something that's more clear would be a better
+     * approach.
+     */
+    if (shouldResize || needsResize === 1) {
       setMobileStyle({
         height: window.innerHeight + 'px',
       });
     }
-  }, [needsResize, isMobile]);
+  }, [shouldResize, needsResize]);
 
   return (
     <div
@@ -61,6 +55,7 @@ const App = () => {
           useAnimation={ false }
         />
       </div>
+      <MobileViewUtility />
     </div>
   );
 };
