@@ -26,6 +26,7 @@ const Chat = () => {
   const [mobileStyle, setMobileStyle] = useState({});
 
   useEffect(() => {
+    console.log('something changed!')
     if (needsResize && isMobile) setMobileStyle({
       height: window.innerHeight + 'px',
     });

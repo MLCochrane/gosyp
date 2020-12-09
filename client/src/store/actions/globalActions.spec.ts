@@ -8,13 +8,11 @@ import {
 } from '../constants';
 
 describe('Global Actions', () => {
-  it('should create an action to set our resize boolean', () => {
-    const resize = true;
+  it('should create an action to increase our resize counter', () => {
     const expectedAction = {
       type: SET_NEEDS_RESIZE,
-      needsResize: resize,
     };
-    expect(setNeedsResize(true)).toEqual(expectedAction);
+    expect(setNeedsResize()).toEqual(expectedAction);
   });
 
   it('should create an action to set our moible boolean', () => {

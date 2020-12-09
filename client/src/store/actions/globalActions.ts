@@ -1,7 +1,6 @@
-export function setNeedsResize(needsResize: boolean) {
+export function setNeedsResize() {
   return {
     type: 'SET_NEEDS_RESIZE',
-    needsResize,
   };
 };
 
