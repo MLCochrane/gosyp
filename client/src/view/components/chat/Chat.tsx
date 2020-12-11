@@ -25,17 +25,17 @@ const useStyles = makeStyles((theme) => ({
 
 const Chat = () => {
   const dispatch = useDispatch();
-  const { shouldResize } = useSelector((state: any) => state.global);
+  const { shouldResize, needsResize } = useSelector((state: any) => state.global);
   const [mobileStyle, setMobileStyle] = useState({});
 
   useEffect(() => {
-    if (shouldResize) {
+    if (shouldResize || needsResize === 1) {
       setMobileStyle({
         height: window.innerHeight + 'px',
       });
       dispatch(setHasResized());
     }
-  }, [shouldResize, dispatch]);
+  }, [shouldResize, needsResize, dispatch]);
 
   const classes = useStyles();
   return (
