@@ -5,7 +5,7 @@ import {
   useDispatch,
   useSelector,
 } from 'react-redux';
-import { MobileCheck, ResizeHandler } from './windowEvents';
+import { MobileCheck } from './windowEvents';
 import {
   setNeedsResize,
   setShouldResize,
@@ -14,7 +14,6 @@ import {
 
 const MobileViewUtility = () => {
   const [smallScreen] = MobileCheck();
-  const [isResizing] = ResizeHandler();
   const { needsResize, isMobile } = useSelector((state: any) => state.global);
 
   const dispatch = useDispatch();
@@ -34,16 +33,40 @@ const MobileViewUtility = () => {
    * This should check to make sure we're only resizing
    * content when the page has actually changed.
    *
-   * The resize event should be called on mobile when
-   * the keyboard opens/closes and changes the window
-   * size, so we don't need any additional logic for
-   * that.
+   * There can be timing discrepencies between when the
+   * resizing is called and when the actual browser window
+   * has changed. For example, setting the new height as
+   * soon as a form has focus will set the height BEFORE
+   * the mobile keyboard is active.
+   *
+   * Definitely open to doing this a different way, but don't
+   * think there's any great way to determine when mobile
+   * keyboards are open or not..
    */
   useEffect(() => {
-    if (needsResize && isMobile && isResizing) {
-      setShouldResize();
-    }
-  }, [needsResize, isMobile, isResizing, dispatch]);
+    if (needsResize && isMobile) {
+
+      console.log('Howdy');
+      let iterationCount = 0;
+      let prevHeight = window.innerHeight;
+      let heightCheckInterval: NodeJS.Timeout;
+
+      heightCheckInterval = setInterval(() => {
+        const currentHeight = window.innerHeight;
+        // if we've run this 50 times then stop
+        if (iterationCount >= 50) clearInterval(heightCheckInterval);
+
+        // If change detected than resize with our new height
+        if (currentHeight !== prevHeight) {
+          console.log('will set shouldresize')
+          dispatch(setShouldResize());
+          clearInterval(heightCheckInterval);
+        } else {
+          // Can just increment our counter and keep prevHeight as is
+          iterationCount++;
+        }
+      }, 10);}
+  }, [needsResize, isMobile, dispatch]);
   return (
     <>
     </>
