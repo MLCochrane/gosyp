@@ -13,7 +13,7 @@ export const ResizeHandler = () => {
       window.clearTimeout(timeout.current);
       timeout.current = window.setTimeout(() => {
         setIsResizing(false);
-      }, 100);
+      }, 50);
     };
 
     window.addEventListener('resize', callback);
