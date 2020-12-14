@@ -28,6 +28,12 @@ const Chat = () => {
   const { shouldResize, needsResize } = useSelector((state: any) => state.global);
   const [mobileStyle, setMobileStyle] = useState({});
 
+  /**
+   * This should update the height on page load and
+   * any time that the window sends a "resize" event.
+   * On mobile, I believe the resize event is sent
+   * when the keyboard opens/closes and on rotate.
+   */
   useEffect(() => {
     if (shouldResize || needsResize === 1) {
       setMobileStyle({

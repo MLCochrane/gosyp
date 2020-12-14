@@ -15,7 +15,7 @@ import {
 const MobileViewUtility = () => {
   const [smallScreen] = MobileCheck();
   const [isResizing] = ResizeHandler();
-  const { needsResize, isMobile } = useSelector((state: any) => state.global);
+  const { isMobile } = useSelector((state: any) => state.global);
 
   const dispatch = useDispatch();
   /**
@@ -40,10 +40,10 @@ const MobileViewUtility = () => {
    * that.
    */
   useEffect(() => {
-    if (needsResize && isMobile && isResizing) {
-      setShouldResize();
+    if (isMobile && isResizing) {
+      dispatch(setShouldResize());
     }
-  }, [needsResize, isMobile, isResizing, dispatch]);
+  }, [isMobile, isResizing, dispatch]);
   return (
     <>
     </>

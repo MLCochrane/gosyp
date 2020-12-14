@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import {
   useSelector,
-  useDispatch,
 } from 'react-redux';
 import {
   TextField,
@@ -10,9 +9,6 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { socket } from 'api';
 import Events from 'view/components/lib/events/eventTypes';
-import {
-  setNeedsResize,
-} from 'store/actions/globalActions';
 
 const useStyles = makeStyles((theme) => (
   {
@@ -33,12 +29,6 @@ const Form = () => {
   const { currentRoom: roomID } = useSelector((state: any) => state.rooms);
   const [message, setMessage] = useState('');
 
-  const dispatch = useDispatch();
-
-  const handleFocus = () => {
-    dispatch(setNeedsResize());
-  }
-
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { target } = e;
     setMessage(target.value);
@@ -47,7 +37,6 @@ const Form = () => {
 
   const handleBlur = () => {
     socket.emit(Events.userTyping, roomID, false);
-    dispatch(setNeedsResize());
   };
 
   const formSubmit = (e: React.FormEvent) => {
@@ -67,7 +56,6 @@ const Form = () => {
       >
         <TextField
           className={ classes.field }
-          onFocus={ handleFocus }
           onChange={ handleChange }
           onBlur={ handleBlur }
           value={ message }
