@@ -16,7 +16,7 @@ import MobileViewUtility from './components/lib/helpers/MobileViewUtility';
 
 const App = () => {
   const [addedToRoom, roomID] = HasAddedToRoom();
-  const { needsResize, shouldResize } = useSelector((state: any) => state.global);
+  const { needsResize } = useSelector((state: any) => state.global);
   const [mobileStyle, setMobileStyle] = useState({});
   const dispatch = useDispatch();
 
@@ -26,20 +26,12 @@ const App = () => {
   }, [dispatch, roomID, addedToRoom]);
 
   useEffect(() => {
-    /**
-     * Should set the height any time we've determined
-     * it's ready to update AND on the initial setResize.
-     * Initial set means we've loaded on a mobile device
-     * and that's about it. Perhaps switching this for
-     * something that's more clear would be a better
-     * approach.
-     */
-    if (shouldResize || needsResize === 1) {
+    if (needsResize === 1) {
       setMobileStyle({
         height: window.innerHeight + 'px',
       });
     }
-  }, [shouldResize, needsResize]);
+  }, [needsResize]);
 
   return (
     <div

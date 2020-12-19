@@ -3,7 +3,6 @@ import React, {
   useState,
 } from 'react';
 import {
-  useDispatch,
   useSelector,
 } from 'react-redux';
 import { Paper } from '@material-ui/core';
@@ -11,7 +10,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Feed from './Feed';
 import MessageForm from './form/Form';
 import TypingAlert from './TypingAlert';
-import { setHasResized } from 'store/actions/globalActions';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -24,8 +22,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Chat = () => {
-  const dispatch = useDispatch();
-  const { shouldResize, needsResize } = useSelector((state: any) => state.global);
+  // const dispatch = useDispatch();
+  const { needsResize } = useSelector((state: any) => state.global);
   const [mobileStyle, setMobileStyle] = useState({});
 
   /**
@@ -35,13 +33,13 @@ const Chat = () => {
    * when the keyboard opens/closes and on rotate.
    */
   useEffect(() => {
-    if (shouldResize || needsResize === 1) {
+    if (needsResize === 1) {
       setMobileStyle({
         height: window.innerHeight + 'px',
       });
-      dispatch(setHasResized());
+      // dispatch(setHasResized());
     }
-  }, [shouldResize, needsResize, dispatch]);
+  }, [needsResize]);
 
   const classes = useStyles();
   return (
