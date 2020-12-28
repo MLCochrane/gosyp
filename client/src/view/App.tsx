@@ -16,7 +16,7 @@ import MobileViewUtility from './components/lib/helpers/MobileViewUtility';
 
 const App = () => {
   const [addedToRoom, roomID] = HasAddedToRoom();
-  const { needsResize } = useSelector((state: any) => state.global);
+  const { needsResize, appHeight } = useSelector((state: any) => state.global);
   const [mobileStyle, setMobileStyle] = useState({});
   const dispatch = useDispatch();
 
@@ -28,10 +28,10 @@ const App = () => {
   useEffect(() => {
     if (needsResize === 1) {
       setMobileStyle({
-        height: window.innerHeight + 'px',
+        height: appHeight + 'px',
       });
     }
-  }, [needsResize]);
+  }, [needsResize, appHeight]);
 
   return (
     <div
