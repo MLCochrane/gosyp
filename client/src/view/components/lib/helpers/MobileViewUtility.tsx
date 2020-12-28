@@ -10,6 +10,7 @@ import {
   setNeedsResize,
   setShouldResize,
   mobileDetect,
+  setAppHeight,
 } from 'store/actions/globalActions';
 
 const MobileViewUtility = () => {
@@ -25,6 +26,7 @@ const MobileViewUtility = () => {
     if (smallScreen) {
       dispatch(mobileDetect(true));
       dispatch(setNeedsResize());
+      dispatch(setAppHeight(window.innerHeight));
     } else {
       dispatch(mobileDetect(false));
     }

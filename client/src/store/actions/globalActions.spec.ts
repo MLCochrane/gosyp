@@ -3,12 +3,14 @@ import {
   setShouldResize,
   mobileDetect,
   setHasResized,
+  setAppHeight,
 } from './globalActions';
 import {
   SET_IS_MOBILE,
   SET_NEEDS_RESIZE,
   SET_SHOULD_RESIZE,
   SET_HAS_RESIZED,
+  SET_APP_HEIGHT,
 } from '../constants';
 
 describe('Global Actions', () => {
@@ -17,6 +19,14 @@ describe('Global Actions', () => {
       type: SET_NEEDS_RESIZE,
     };
     expect(setNeedsResize()).toEqual(expectedAction);
+  });
+
+  it('should create an action for SET_APP_HEIGHT', () => {
+    const expectedAction = {
+      type: SET_APP_HEIGHT,
+      height: 100,
+    };
+    expect(setAppHeight(100)).toEqual(expectedAction);
   });
 
   it('should create an action for SET_SHOULD_RESIZE', () => {

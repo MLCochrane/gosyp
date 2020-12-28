@@ -22,8 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Chat = () => {
-  // const dispatch = useDispatch();
-  const { needsResize } = useSelector((state: any) => state.global);
+  const { needsResize, appHeight } = useSelector((state: any) => state.global);
   const [mobileStyle, setMobileStyle] = useState({});
 
   /**
@@ -35,11 +34,10 @@ const Chat = () => {
   useEffect(() => {
     if (needsResize === 1) {
       setMobileStyle({
-        height: window.innerHeight + 'px',
+        height: appHeight + 'px',
       });
-      // dispatch(setHasResized());
     }
-  }, [needsResize]);
+  }, [needsResize, appHeight]);
 
   const classes = useStyles();
   return (

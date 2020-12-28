@@ -7,3 +7,4 @@ export const SET_SHOULD_RESIZE = 'SET_SHOULD_RESIZE';
 export const SET_HAS_RESIZED = 'SET_HAS_RESIZED';
 
 export const SET_IS_MOBILE = 'SET_IS_MOBILE';
+export const SET_APP_HEIGHT = 'SET_APP_HEIGHT';
