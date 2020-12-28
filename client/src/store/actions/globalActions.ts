@@ -4,6 +4,12 @@ export function setNeedsResize() {
   };
 };
 
+export function setAppHeight(height: number) {
+  return {
+    type: 'SET_APP_HEIGHT',
+    height,
+  };
+};
 export function setShouldResize() {
   return {
     type: 'SET_SHOULD_RESIZE',

@@ -1,11 +1,13 @@
 interface globalAction  {
-  type: 'SET_NEEDS_RESIZE' | 'SET_SHOULD_RESIZE' | 'SET_HAS_RESIZED' | 'SET_IS_MOBILE',
+  type: 'SET_NEEDS_RESIZE' | 'SET_SHOULD_RESIZE' | 'SET_HAS_RESIZED' | 'SET_IS_MOBILE' | 'SET_APP_HEIGHT',
   isMobile?: boolean,
+  height?: number,
 }
 export default function reducer(state = {
   needsResize: 0,
   shouldResize: 0,
   hasResized: 0,
+  appHeight: 0,
   isMobile: false,
 }, action: globalAction) {
   switch (action.type) {
@@ -27,6 +29,12 @@ export default function reducer(state = {
         ...state,
         needsResize: state.needsResize + 1,
       };
+    }
+    case 'SET_APP_HEIGHT': {
+      return {
+        ...state,
+        appHeight: action.height,
+      }
     }
     case 'SET_SHOULD_RESIZE' : {
       return {
