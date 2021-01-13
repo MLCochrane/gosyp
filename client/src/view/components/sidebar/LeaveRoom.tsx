@@ -6,6 +6,7 @@ import {
 import {
   IconButton,
   Tooltip,
+  Typography,
  } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { ExitToApp } from '@material-ui/icons';
@@ -18,6 +19,11 @@ const useStyles = makeStyles((theme) => (
     icon: {
       transform: 'rotate(180deg)',
     },
+    buttonText: {
+      [theme.breakpoints.up('lg')]: {
+        display: 'none',
+      },
+    }
   }
 ));
 
@@ -44,6 +50,11 @@ const LeaveRoom = () => {
           fontSize="large"
           className={ classes.icon }
         />
+        <Typography
+          className={ classes.buttonText }
+        >
+          Leave Room
+        </Typography>
       </IconButton>
     </Tooltip>
   )
