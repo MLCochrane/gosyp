@@ -8,6 +8,7 @@ import {
   Hidden,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Close } from '@material-ui/icons'
 import Details from './details/DetailWidget';
 import Burger from './Burger';
 
@@ -35,6 +36,10 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  closeButton: {
+    display: 'block',
+    marginLeft: 'auto',
+  },
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
@@ -55,13 +60,32 @@ const Sidebar = () => {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  const drawer = (
-    <>
-      <div className={ classes.toolbar } />
-      <Divider />
-      <Details />
-    </>
-  );
+
+  const drawer = (hasButton: boolean) => {
+    return (
+      <>
+        <div className={ classes.toolbar }>
+          {
+            hasButton
+            ? (
+            <IconButton
+              color="inherit"
+              aria-label="close drawer"
+              edge="start"
+              onClick={ handleDrawerToggle }
+              className={ classes.closeButton }
+            >
+              <Close />
+            </IconButton>
+            )
+            : null
+          }
+        </div>
+        <Divider />
+        <Details />
+      </>
+    )
+  };
 
   return (
     <>
@@ -97,7 +121,7 @@ const Sidebar = () => {
               keepMounted: true, // Better open performance on mobile.
             } }
           >
-            { drawer }
+            { drawer(true) }
           </Drawer>
         </Hidden>
         <Hidden mdDown implementation="css">
@@ -108,7 +132,7 @@ const Sidebar = () => {
             variant="permanent"
             open
           >
-            { drawer }
+            { drawer(false) }
           </Drawer>
         </Hidden>
       </nav>
