@@ -10,16 +10,16 @@ export default (
   models: IModelArray[],
 ) => {
   Container.set('logger', LoggerInstance);
-  LoggerInstance.info('✌️ Logger injected into container');
+  LoggerInstance.info('Logger injected into container');
 
   Container.set('io', SocketServer);
-  LoggerInstance.info('✌️ Socket server injected into container');
+  LoggerInstance.info('Socket server injected into container');
 
   Container.set('Db', MongoDB);
-  LoggerInstance.info('✌️ Db injected into container');
+  LoggerInstance.info('Db injected into container');
 
   models.forEach((el) => {
     Container.set(el.name, el.model);
   });
-  LoggerInstance.info('✌️ Models injected into container');
+  LoggerInstance.info('Models injected into container');
 };
