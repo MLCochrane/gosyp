@@ -118,7 +118,7 @@ export default class RoomService {
        * Not yet sure what is best to do here. The removal
        * is only ever called server side and the issue we'd
        * catch here is if a user leaves a room that doesn't
-       * exist. Only dev in dev with the client open
+       * exist. Only in dev with the client open
        * and server restarting would the client disconnect
        * before connection.
        *
