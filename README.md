@@ -3,7 +3,7 @@
 
 <!-- [![Downloads](http://pepy.tech/badge/stronghold)](http://pepy.tech/count/stronghold) -->
 
-`Gosyp` is a simple web-based chat app that doesn't retain any user data. Built with Node, Express, socket.io and React, it was made as a way to explore new technologies, tools and techniquies.
+[`gosyp.io`](https://gosyp.io/) is a simple web-based chat app that doesn't retain any user data. Built with Node, Express, socket.io and React, it was made as a way to explore new technologies, tools and techniquies.
 
 ## **Installation Options**
 We're currently using docker and docker compose to spin up our development environment. Should go without saying that you will need to have docker and bit of knowledge of the tool to use this. Tips for getting started at [docker.com](https://www.docker.com/get-started). We're using 3 containers: 1 for mongodb, 1 for server, 1 for web server.
@@ -82,4 +82,4 @@ There are no grand plans right now but would be interesting to possibly include:
 Please read [CONTRIBUTING.md](https://github.com/MLCochrane/gosyp/blob/master/CONTRIBUTING.md)
 
 ## **License**
-MIT
+[MIT](https://github.com/MLCochrane/gosyp/blob/master/LICENSE.md)
