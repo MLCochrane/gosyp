@@ -50,7 +50,7 @@ jobs:
           name: Running Test suite
           command: |
             cd client
-            npm run test
+            npm run test NODE_ENV="test"
   test-server:
     docker:
       - image: cimg/node:14.13.0
