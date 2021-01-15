@@ -36,7 +36,7 @@ const ShareLink = () => {
 
   const generateLink = () => {
     const [roomID] = roomDetails;
-    const host = process.env.NODE_ENV === 'test' ? process.env.REACT_APP_CLIENT_URL : window.location.origin;
+    const host = process.env.NODE_ENV === 'production' ? window.location.origin : process.env.REACT_APP_CLIENT_URL;
     return roomID ? `${host}?roomId=${roomID.value}` : ''
   }
 
