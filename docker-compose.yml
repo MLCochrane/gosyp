@@ -38,8 +38,6 @@ services:
       - "3000"
     ports:
       - "3000:3000"
-    environment:
-      MONGODB_URI: mongodb://superuser:secretpassword@mongo:27017/gosyp_db
 
   web:
     container_name: 'gosyp-client'
