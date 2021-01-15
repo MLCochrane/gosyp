@@ -37,6 +37,8 @@ jobs:
             - server/package.json
             - server/package-lock.json
   test-client:
+    environment:
+      NODE_ENV: test
     docker:
       - image: cimg/node:14.13.0
     steps:
@@ -50,7 +52,7 @@ jobs:
           name: Running Test suite
           command: |
             cd client
-            npm run test NODE_ENV="test"
+            npm run test
   test-server:
     docker:
       - image: cimg/node:14.13.0
