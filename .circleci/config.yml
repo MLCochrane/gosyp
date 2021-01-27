@@ -39,6 +39,8 @@ jobs:
   test-client:
     environment:
       NODE_ENV: test
+      REACT_APP_SERVER_URL: "localhost:3000"
+      REACT_APP_CLIENT_URL: "localhost:4242"
     docker:
       - image: cimg/node:14.13.0
     steps:
