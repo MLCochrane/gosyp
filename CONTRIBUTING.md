@@ -4,7 +4,7 @@
 
 * Fork the project from the `master` branch and submit a Pull Request (PR)
   * Fully explain what the PR adds or fixes
-* Be sensible in the number and clarity of your commits
+* Ensure your commits are clear and reasonable
   * sqashing locally makes things nicer to review
 ## Considerations
 * Is this a bug?

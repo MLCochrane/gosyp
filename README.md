@@ -3,7 +3,7 @@
 
 <!-- [![Downloads](http://pepy.tech/badge/stronghold)](http://pepy.tech/count/stronghold) -->
 
-`Gosyp` is a simple web-based chat app that doesn't retain any user data. Built with Node, Express, socket.io and React, it was made as a way to explore new technologies, tools and techniquies.
+[`gosyp.io`](https://gosyp.io/) is a simple web-based chat app that doesn't retain any user data. Built with Node, Express, socket.io and React, it was made as a way to explore new technologies, tools and techniquies.
 
 ## **Installation Options**
 We're currently using docker and docker compose to spin up our development environment. Should go without saying that you will need to have docker and bit of knowledge of the tool to use this. Tips for getting started at [docker.com](https://www.docker.com/get-started). We're using 3 containers: 1 for mongodb, 1 for server, 1 for web server.
@@ -14,11 +14,13 @@ git clone https://github.com/MLCochrane/gosyp.git
 # Change to root directory
 cd gosyp
 
+# Update .env files in root, client and server dirs
+
 # Spin up environment
 docker-compose up
 ```
 
-The web server should then be accessible from `localhost:4242`.
+The web server should then be accessible from `localhost:[whatever port you've picked]`.
 ## **Testing**
 We have two separate test suites: one for the server, one for the frontend. To run tests locally you'll need to `npm install` in both folders.
 
@@ -66,12 +68,18 @@ const TypingStatus = () => {
 Listening to changes is as simple as adding in our custom hook to our component and adding it as a dependency to a `useEffect` hook. This should mean that any other component that needs to know about someone typing in the room can easily do so, and new components that rely on already established events can be easily built.
 
 ## **Roadmap/Considerations**
-There are no grand plans right now but would be interesting to include new clients. Namely:
-- mobile clients (React Native)
-- desktop client (Electron)
+There are no grand plans right now but would be interesting to possibly include:
+
+- Expand on containerization so we could deploy via kubernetes
+- Support for multiple rooms
+- Customization
+  - picking a color for messages or user icon?
+- Additional clients
+  - mobile clients (React Native)
+  - desktop client (Electron)
 
 ## **Contributing**
 Please read [CONTRIBUTING.md](https://github.com/MLCochrane/gosyp/blob/master/CONTRIBUTING.md)
 
 ## **License**
-MIT
+[MIT](https://github.com/MLCochrane/gosyp/blob/master/LICENSE.md)

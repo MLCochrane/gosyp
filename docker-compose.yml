@@ -13,7 +13,6 @@ services:
     ports:
       - 27017:27017
     volumes:
-      # - data:/data/db
       - ./mongo-init:/docker-entrypoint-initdb.d/
 
   mongo-express:
@@ -39,8 +38,6 @@ services:
       - "3000"
     ports:
       - "3000:3000"
-    environment:
-      MONGODB_URI: mongodb://superuser:secretpassword@mongo:27017/gosyp_db
 
   web:
     container_name: 'gosyp-client'
@@ -60,5 +57,4 @@ services:
       - "4242:4242"
 
 volumes:
-  data:
   mongo-init:

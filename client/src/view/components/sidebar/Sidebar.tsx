@@ -40,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'block',
     marginLeft: 'auto',
   },
-  // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     padding: theme.spacing(2),
@@ -107,7 +106,6 @@ const Sidebar = () => {
         </Toolbar>
       </AppBar>
       <nav className={ classes.drawer } aria-label="mailbox folders">
-        { /* The implementation can be swapped with js to avoid SEO duplication of links. */ }
         <Hidden lgUp implementation="css">
           <Drawer
             variant="temporary"
@@ -118,7 +116,7 @@ const Sidebar = () => {
               paper: classes.drawerPaper,
             } }
             ModalProps={ {
-              keepMounted: true, // Better open performance on mobile.
+              keepMounted: true,
             } }
           >
             { drawer(true) }

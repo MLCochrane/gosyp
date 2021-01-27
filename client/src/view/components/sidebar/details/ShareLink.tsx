@@ -36,14 +36,16 @@ const ShareLink = () => {
 
   const generateLink = () => {
     const [roomID] = roomDetails;
-    const host = process.env.NODE_ENV === 'test' ? 'localhost:4242' : 'gosyp.io';
+    const host = process.env.NODE_ENV === 'production' ? window.location.origin : process.env.REACT_APP_CLIENT_URL;
     return roomID ? `${host}?roomId=${roomID.value}` : ''
   }
 
   const handleClickCopy = (e: MouseEvent) => {
     if (inputRef != null && inputRef.current != null) {
-      (inputRef.current as any).querySelector('input').select();
+      const input = (inputRef.current as any).querySelector('input');
+      input.select();
       document.execCommand("copy");
+      input.blur();
       setSnackbarOpen(true);
     }
   }
