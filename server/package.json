@@ -49,7 +49,7 @@
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.7",
     "reflect-metadata": "^0.1.13",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.4.0",
     "typedi": "^0.8.0",
     "uuid": "^8.3.0",
     "winston": "^3.3.3"
