@@ -2,6 +2,18 @@ import { v4 as uuidv4 } from 'uuid';
 import { Service, Container } from 'typedi';
 import RoomModel from '../models/room';
 
+export interface RoomFieldsInterface {
+  uuid: string;
+  userCount: number;
+  name?: string;
+  nickname?: string;
+}
+
+export interface RoomRecordObjectInterface extends RoomFieldsInterface {
+  _id: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
 /**
  * Handles interaction with the Room model
  * for managing room CRUD.
@@ -20,14 +32,14 @@ export default class RoomService {
    */
   public async CreateRoom(
     name?: string,
-  ) {
+  ): Promise<Error | RoomRecordObjectInterface> {
     // Quick name check
     if (name) {
       const roomExists = await this.roomModel.findOne({ name });
       if (roomExists) throw new Error('Room with that name already exists');
     }
 
-    const roomFields: any = {
+    const roomFields: RoomFieldsInterface = {
       uuid: uuidv4(),
       userCount: 0,
     };

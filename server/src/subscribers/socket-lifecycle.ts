@@ -25,8 +25,8 @@ export default function socketLifecycle({
      * need to check.
      */
 
-    if (socket.rooms === {} || socket.rooms == null) return;
-    const rooms = Object.keys(socket.rooms);
+    if (socket.rooms.size === 0 || socket.rooms == null) return;
+    const rooms = Array.from(socket.rooms);
 
     // Filters out sockets default room and updates any others they are in
     rooms.filter(id => id !== socket.id).forEach(async (roomID) => {

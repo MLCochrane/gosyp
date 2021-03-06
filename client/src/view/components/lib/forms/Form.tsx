@@ -11,7 +11,7 @@ import {
   Button,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { reach, ObjectSchema } from 'yup';
+import { reach, AnyObjectSchema } from 'yup';
 
 const useStyles = makeStyles(() => ({
   button: {
@@ -35,7 +35,7 @@ const Form = ({
   wasSuccess: boolean,
   wasError: boolean,
   buttonText: string,
-  schema: ObjectSchema,
+  schema: AnyObjectSchema,
 }) => {
   const classes = useStyles();
 

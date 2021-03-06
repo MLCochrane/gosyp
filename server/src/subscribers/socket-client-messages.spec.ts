@@ -1,5 +1,5 @@
 import { Container } from 'typedi';
-import IOServer, { Server } from 'socket.io';
+import { Server } from 'socket.io';
 import winston, { Logger } from 'winston';
 import socketClientMessages, {
   chatMessage,
@@ -13,7 +13,7 @@ jest.mock('winston');
 const mockedLogger = winston.createLogger() as jest.Mocked<Logger>;
 
 let mockedSocket: ExtendedSocket;
-const mockedIO = new IOServer() as jest.Mocked<Server>;
+const mockedIO = new Server() as jest.Mocked<Server>;
 
 describe('Chat messages', () => {
   beforeAll(() => {
