@@ -1,7 +1,6 @@
 import React from 'react';
 import * as Redux from 'react-redux';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { mount } from 'enzyme';
 import io, { Socket } from 'socket.io-client';
 import DetailWidget from './DetailWidget';
 import SwitchView from '../../lib/helpers/SwitchView';
@@ -12,8 +11,6 @@ jest.mock('socket.io-client', () => {
   const socket = { emit, on };
   return jest.fn(() => socket);
 });
-
-Enzyme.configure({ adapter: new Adapter() });
 
 const mockedIO = io as jest.Mocked<typeof io>;
 const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;

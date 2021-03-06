@@ -68,7 +68,7 @@ const Home = () => {
           trigger={formToggle }
           current={ JoinFrom }
           next={ CreateForm }
-          useAnimation={ false }
+          useAnimation
         />
         <Button
           color="primary"

@@ -1,7 +1,6 @@
 import React from 'react';
 import * as Redux from 'react-redux';
-import Enzyme, { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { shallow } from 'enzyme';
 import Chat from './Chat';
 import Feed from './Feed';
 import Form from './form/Form';
@@ -14,7 +13,6 @@ jest.mock('socket.io-client', () => {
   return jest.fn(() => socket);
 });
 
-Enzyme.configure({ adapter: new Adapter() });
 let useSelectorSpy: any;
 
 describe('Chat wrapper', () => {
