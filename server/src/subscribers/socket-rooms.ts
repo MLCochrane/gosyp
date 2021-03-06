@@ -2,7 +2,7 @@ import type { Server } from 'socket.io';
 import { Container } from 'typedi';
 import type { Logger } from 'winston';
 import Events from './socket-event-names';
-import RoomService from '../services/room-service';
+import RoomService, { RoomRecordObjectInterface } from '../services/room-service';
 import { ExtendedSocket } from '../types/global';
 
 export async function updateRoom(
@@ -137,10 +137,10 @@ export function socketCreateRoom(
   logger: Logger,
 ) {
   socket.on(Events.socketCreateRoom, async (requestBody) => {
-    const { name, nickname } = requestBody;
-    let freshRoom;
+    const { name, nickname }: {name: string, nickname: string} = requestBody;
+    let freshRoom: RoomRecordObjectInterface;
     try {
-      freshRoom = await roomService.CreateRoom(name);
+      freshRoom = await roomService.CreateRoom(name) as RoomRecordObjectInterface;
       // Add on user nickname
       freshRoom.nickname = nickname;
       socket.emit(Events.createRoomSuccess, {

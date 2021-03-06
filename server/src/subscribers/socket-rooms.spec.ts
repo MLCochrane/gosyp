@@ -38,6 +38,7 @@ describe('Room CRUD', () => {
   beforeEach(() => {
     Container.set('io', mockedIO);
     Container.set('logger', mockedLogger);
+    Container.set(RoomService, mockedRoomService);
   });
 
   afterEach(() => {
@@ -193,7 +194,7 @@ describe('Room CRUD', () => {
         value: 1,
       },
     ];
-    const userSocket = mockedSocket as any;
+    const userSocket = mockedSocket as ExtendedSocket;
     userSocket.rooms = new Set(['583']);
 
     (userSocket.broadcast as any) = userSocket;
