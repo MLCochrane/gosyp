@@ -1,7 +1,6 @@
 import React from 'react';
 import * as Redux from 'react-redux';
-import Enzyme, { shallow, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { shallow, mount } from 'enzyme';
 import io, { Socket } from 'socket.io-client';
 import LeaveRoom from './LeaveRoom';
 import { IconButton } from '@material-ui/core';
@@ -14,8 +13,6 @@ jest.mock('socket.io-client', () => {
   const socket = { emit, on };
   return jest.fn(() => socket);
 });
-
-Enzyme.configure({ adapter: new Adapter() });
 
 let useSelectorSpy: any;
 let useDispatchSpy: any;

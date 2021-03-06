@@ -2,7 +2,7 @@ import type { Server } from 'socket.io';
 import { Container } from 'typedi';
 import type { Logger } from 'winston';
 import Events from './socket-event-names';
-import RoomService from '../services/room-service';
+import RoomService, { RoomRecordObjectInterface } from '../services/room-service';
 import { ExtendedSocket } from '../types/global';
 
 export async function updateRoom(
@@ -67,7 +67,8 @@ export function socketRequestsRoom(
     }
 
     // If no errors, add the user to the room
-    socket.join(roomID, async () => {
+    socket.join(roomID);
+    (async () => {
       // eslint-disable-next-line no-param-reassign
       socket.nickname = requestBody.nickname || null;
       // Tell client they've been included
@@ -81,7 +82,7 @@ export function socketRequestsRoom(
         io,
         true,
       );
-    });
+    })();
   });
 }
 
@@ -101,7 +102,7 @@ export function socketLeavesRoom(
      * Check for room in DB
      */
     const roomExists = await roomService.CheckForRoom(roomID);
-    const socketInRoom = socket.rooms[roomID];
+    const socketInRoom = socket.rooms.has(roomID);
 
     // socket trying to leave invalid room
     if (!roomExists || !socketInRoom) {
@@ -109,7 +110,8 @@ export function socketLeavesRoom(
     }
 
     // If no errors, add the user to the room
-    socket.leave(roomID, async () => {
+    socket.leave(roomID);
+    (async () => {
       // Tell client they've been removed
       socket.emit(Events.userRemovedFromRoom, true);
       socket.emit(Events.addUserToRoom, false, roomID);
@@ -122,7 +124,7 @@ export function socketLeavesRoom(
         io,
         false,
       );
-    });
+    })();
   });
 }
 
@@ -135,10 +137,10 @@ export function socketCreateRoom(
   logger: Logger,
 ) {
   socket.on(Events.socketCreateRoom, async (requestBody) => {
-    const { name, nickname } = requestBody;
-    let freshRoom;
+    const { name, nickname }: {name: string, nickname: string} = requestBody;
+    let freshRoom: RoomRecordObjectInterface;
     try {
-      freshRoom = await roomService.CreateRoom(name);
+      freshRoom = await roomService.CreateRoom(name) as RoomRecordObjectInterface;
       // Add on user nickname
       freshRoom.nickname = nickname;
       socket.emit(Events.createRoomSuccess, {

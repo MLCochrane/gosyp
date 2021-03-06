@@ -1,6 +1,5 @@
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { mount } from 'enzyme';
 import * as Redux from 'react-redux';
 import io, { Socket } from 'socket.io-client';
 import Form from './Form';
@@ -12,8 +11,6 @@ jest.mock('socket.io-client', () => {
   return jest.fn(() => socket);
 });
 
-
-Enzyme.configure({ adapter: new Adapter() });
 
 let useSelectorSpy;
 const mockedIO = io as jest.Mocked<typeof io>;

@@ -31,4 +31,6 @@ export default {
   api: {
     prefix: '/api',
   },
+
+  frontendUrl: process.env.FRONTEND_URL,
 };
