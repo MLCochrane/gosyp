@@ -1,5 +1,5 @@
 import { Container } from 'typedi';
-import IOServer, { Server } from 'socket.io';
+import { Server } from 'socket.io';
 import winston, { Logger } from 'winston';
 import flushPromises from 'flush-promises';
 import RoomService from '../services/room-service';
@@ -13,7 +13,7 @@ jest.mock('winston');
 jest.mock('../services/room-service');
 
 let mockedSocket: ExtendedSocket;
-const mockedIO = new IOServer() as jest.Mocked<Server>;
+const mockedIO = new Server() as jest.Mocked<Server>;
 const mockedLogger = winston.createLogger() as jest.Mocked<Logger>;
 const mockedRoomService = new RoomService(RoomModel) as jest.Mocked<RoomService>;
 
@@ -59,7 +59,7 @@ describe('Room lifecycle', () => {
       },
     ];
     const userSocket = mockedSocket as ExtendedSocket;
-    userSocket.rooms = {'12345': '12345'};
+    userSocket.rooms = new Set(['12345']);
     (userSocket.on as jest.Mock).mockImplementation((event, cb) => cb());
     mockedRoomService.UpdateRoomUsers.mockResolvedValueOnce(roomDetailsStub);
 
@@ -87,7 +87,7 @@ describe('Room lifecycle', () => {
 
   it('does not send any events if room no longer has anyone in it', async () => {
     const userSocket = mockedSocket as ExtendedSocket;
-    userSocket.rooms = {'548': '548'};
+    userSocket.rooms = new Set(['548']);
     (userSocket.on as jest.Mock).mockImplementation((event, cb) => cb());
     mockedRoomService.UpdateRoomUsers.mockResolvedValueOnce(false);
 

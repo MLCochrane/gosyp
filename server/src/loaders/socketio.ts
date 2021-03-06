@@ -1,9 +1,13 @@
 import type { Server } from 'http';
-import IOServer from 'socket.io';
+import {Server as SocketServer} from 'socket.io';
+import config from '../config';
 
 export default async ({ httpServer }: { httpServer: Server }) => {
-  const io = new IOServer(httpServer);
-  // can add middleware with io.use((socket, next) => {});
-  // https://socket.io/docs/namespaces/
+  const io = new SocketServer(httpServer, {
+    cors: {
+      origin: config.frontendUrl,
+      methods: ["GET", "POST"]
+    }
+  });
   return io;
 };

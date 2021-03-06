@@ -67,7 +67,8 @@ export function socketRequestsRoom(
     }
 
     // If no errors, add the user to the room
-    socket.join(roomID, async () => {
+    socket.join(roomID);
+    (async () => {
       // eslint-disable-next-line no-param-reassign
       socket.nickname = requestBody.nickname || null;
       // Tell client they've been included
@@ -81,7 +82,7 @@ export function socketRequestsRoom(
         io,
         true,
       );
-    });
+    })();
   });
 }
 
@@ -101,7 +102,7 @@ export function socketLeavesRoom(
      * Check for room in DB
      */
     const roomExists = await roomService.CheckForRoom(roomID);
-    const socketInRoom = socket.rooms[roomID];
+    const socketInRoom = socket.rooms.has(roomID);
 
     // socket trying to leave invalid room
     if (!roomExists || !socketInRoom) {
@@ -109,7 +110,8 @@ export function socketLeavesRoom(
     }
 
     // If no errors, add the user to the room
-    socket.leave(roomID, async () => {
+    socket.leave(roomID);
+    (async () => {
       // Tell client they've been removed
       socket.emit(Events.userRemovedFromRoom, true);
       socket.emit(Events.addUserToRoom, false, roomID);
@@ -122,7 +124,7 @@ export function socketLeavesRoom(
         io,
         false,
       );
-    });
+    })();
   });
 }
 

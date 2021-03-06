@@ -11,7 +11,7 @@ jest.mock('socket.io', () => {
   const on = () => socket;
   const to = jest.fn();
   const emit = jest.fn();
-  return jest.fn(() => ({ on, to, emit }));
+  return {Server: jest.fn(() => ({ on, to, emit }))};
 });
 
 module.exports = require('socket.io');

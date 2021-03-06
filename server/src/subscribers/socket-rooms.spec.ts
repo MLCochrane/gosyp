@@ -1,5 +1,6 @@
 import { Container } from 'typedi';
-import IOServer, { Server } from 'socket.io';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 import winston, { Logger } from 'winston';
 import flushPromises from 'flush-promises';
 import RoomService from '../services/room-service';
@@ -16,12 +17,13 @@ jest.mock('socket.io');
 jest.mock('winston');
 jest.mock('../services/room-service');
 
-let mockedSocket: ExtendedSocket;
-const mockedIO = new IOServer() as jest.Mocked<Server>;
-const mockedLogger = winston.createLogger() as jest.Mocked<Logger>;
-const mockedRoomService = new RoomService(RoomModel) as jest.Mocked<RoomService>;
 
+let mockedSocket: ExtendedSocket;
 describe('Room CRUD', () => {
+  const httpServer = createServer();
+  const mockedIO = new Server(httpServer) as jest.Mocked<Server>;
+  const mockedLogger = winston.createLogger() as jest.Mocked<Logger>;
+  const mockedRoomService = new RoomService(RoomModel) as jest.Mocked<RoomService>;
   beforeAll(() => {
     mockedSocket = (mockedIO.on as jest.Mock)();
     (mockedSocket?.to as jest.Mock).mockImplementation(() => mockedSocket);
@@ -146,14 +148,14 @@ describe('Room CRUD', () => {
     const userSocket = mockedSocket as ExtendedSocket;
     (userSocket.broadcast as any) = userSocket;
     (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb({ 'room-id': '583' }));
-    (userSocket.join as jest.Mock).mockImplementationOnce((event, cb) => cb());
+    (userSocket.join as jest.Mock).mockImplementationOnce((event) => null);
     (mockedRoomService.CheckForRoom as jest.Mock).mockReturnValue(true);
     (mockedRoomService.UpdateRoomUsers as jest.Mock).mockReturnValue(roomDetails);
 
     socketRequestsRoom(userSocket, mockedRoomService, mockedLogger, mockedIO);
     await flushPromises();
 
-    expect(userSocket.join).toHaveBeenCalledWith('583', expect.anything());
+    expect(userSocket.join).toHaveBeenCalledWith('583');
     expect((userSocket.emit as jest.Mock).mock.calls).toEqual([
       ['addedToRoom', true, '583'],
     ]);
@@ -191,25 +193,26 @@ describe('Room CRUD', () => {
         value: 1,
       },
     ];
-    const userSocket = mockedSocket as ExtendedSocket;
-    userSocket.rooms = {'583': '583'};
+    const userSocket = mockedSocket as any;
+    userSocket.rooms = new Set(['583']);
 
     (userSocket.broadcast as any) = userSocket;
     (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb('583'));
-    (userSocket.leave as jest.Mock).mockImplementationOnce((event, cb) => cb());
+    (userSocket.leave as jest.Mock).mockImplementationOnce((event) => null);
     (mockedRoomService.CheckForRoom as jest.Mock).mockReturnValue(true);
     (mockedRoomService.UpdateRoomUsers as jest.Mock).mockReturnValue(roomDetails);
 
     socketLeavesRoom(userSocket, mockedRoomService, mockedLogger, mockedIO);
     await flushPromises();
 
-    expect(userSocket.leave).toHaveBeenCalledWith('583', expect.anything());
+    expect(userSocket.leave).toHaveBeenCalledWith('583');
     expect((userSocket.emit as jest.Mock).mock.calls).toEqual([
       ['removedFromRoom', true],
       ['addedToRoom', false, '583'],
     ]);
     expect(mockedIO.to).toHaveBeenCalledWith('583');
-    expect(mockedIO.emit).toHaveBeenCalledWith(
+    expect(mockedIO.emit).toHaveBeenNthCalledWith(
+      2,
       'userLeft', expect.objectContaining({
         user: {
           id: '123',
@@ -217,7 +220,8 @@ describe('Room CRUD', () => {
         },
       }),
     );
-    expect(mockedIO.emit).toHaveBeenCalledWith(
+    expect(mockedIO.emit).toHaveBeenNthCalledWith(
+      1,
       'updatedRoomInfo',
       { roomDetails },
     );
