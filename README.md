@@ -79,7 +79,7 @@ There are no grand plans right now but would be interesting to possibly include:
   - desktop client (Electron)
 
 ## **Contributing**
-Please read [CONTRIBUTING.md](https://github.com/MLCochrane/gosyp/blob/master/CONTRIBUTING.md)
+Please read [CONTRIBUTING.md](https://github.com/MLCochrane/gosyp/blob/master/.github/CONTRIBUTING.md)
 
 ## **License**
-[MIT](https://github.com/MLCochrane/gosyp/blob/master/LICENSE.md)
+[MIT](https://github.com/MLCochrane/gosyp/blob/master/.github/LICENSE.md)
