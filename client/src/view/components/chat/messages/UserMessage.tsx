@@ -28,7 +28,7 @@ const UserMessage = ({
   msg,
   timestamp,
   hideMeta,
-} : ChatMessage) => {
+} : ChatMessage): JSX.Element => {
   const classes = useStyles();
   const displayName = user.nickname || user.id;
 
@@ -37,7 +37,7 @@ const UserMessage = ({
     return timeToShow.toLocaleTimeString();
   };
   return (
-    <div className={`message message--user ${!hideMeta ? classes.messagePadding : ''} ${ socket.id === user.id ? classes.currentSocketMessage : '' }`}>
+    <div className={ `message message--user ${!hideMeta ? classes.messagePadding : ''} ${socket.id === user.id ? classes.currentSocketMessage : ''}` }>
       <Grid
         container
         className={ `${classes.meta} ${hideMeta ? classes.hideMeta : ''}` }

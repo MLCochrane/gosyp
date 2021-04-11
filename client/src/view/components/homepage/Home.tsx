@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: any) => ({
   },
 }));
 
-const Home = () => {
+const Home = (): JSX.Element => {
   const classes = useStyles();
   const [formToggle, setFormToggle] = useState(false);
   const handleClick = () => {
@@ -60,12 +60,12 @@ const Home = () => {
         >
           {
             !formToggle
-            ? "Join Room"
-            : "Create Room"
+              ? 'Join Room'
+              : 'Create Room'
           }
         </Typography>
         <SwitchView
-          trigger={formToggle }
+          trigger={ formToggle }
           current={ JoinFrom }
           next={ CreateForm }
           useAnimation

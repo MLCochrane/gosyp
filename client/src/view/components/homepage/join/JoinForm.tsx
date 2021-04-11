@@ -11,13 +11,12 @@ import { NotAddedToRoom } from 'view/components/lib/events/rooms';
 import Events from 'view/components/lib/events/eventTypes';
 import Form from 'view/components/lib/forms/Form';
 
-
-const JoinForm = () => {
-  const [prePopulateId, setPrePopulateId ] = useState('');
+const JoinForm = (): JSX.Element => {
+  const [prePopulateId, setPrePopulateId] = useState('');
   const [notAddedToRoom] = NotAddedToRoom();
 
   useEffect(() => {
-    const [roomIdParam] = window.location.search.slice(1).split('&').map(el => {
+    const [roomIdParam] = window.location.search.slice(1).split('&').map((el) => {
       const query = el.split('=');
       return (query[0] === 'roomId') ? query[1] : null;
     });
@@ -45,7 +44,7 @@ const JoinForm = () => {
             label: 'Room ID',
             helperText: 'Room ID that has been shared with you',
             required: true,
-            value: prePopulateId
+            value: prePopulateId,
           },
           {
             name: 'nickname',

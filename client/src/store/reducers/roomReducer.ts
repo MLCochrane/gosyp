@@ -2,6 +2,14 @@ interface roomAction {
   type: 'RECEIVE_ROOM_ID' | 'SET_CURRENT_ROOM' | 'LEAVE_ROOM',
   roomID: string,
 }
+
+export interface RoomsReducerInterface {
+  rooms: {
+    [key: string]: string,
+  },
+  currentRoom: string,
+}
+
 export default function reducer(state = {
   rooms: {},
   currentRoom: '',
@@ -10,7 +18,7 @@ export default function reducer(state = {
     case 'RECEIVE_ROOM_ID': {
       return {
         ...state,
-        rooms: Object.assign({}, state.rooms, { [action.roomID]: action.roomID }),
+        rooms: { ...state.rooms, [action.roomID]: action.roomID },
       };
     }
     case 'SET_CURRENT_ROOM': {
@@ -25,7 +33,7 @@ export default function reducer(state = {
       if (actionRoom === state.currentRoom) {
         clearCurrent = true;
       }
-      const roomsCopy: {[key: string]: string} = {...state.rooms};
+      const roomsCopy: {[key: string]: string} = { ...state.rooms };
       delete roomsCopy[actionRoom];
       return {
         ...state,

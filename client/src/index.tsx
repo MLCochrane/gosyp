@@ -30,7 +30,7 @@ const theme = responsiveFontSizes(createMuiTheme({
     },
     subtitle1: {
       fontFamily: 't26-carbon',
-    }
+    },
   },
   palette: {
     type: 'dark',

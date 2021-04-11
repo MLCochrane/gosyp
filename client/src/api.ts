@@ -7,7 +7,7 @@ switch (process.env.NODE_ENV) {
     url = 'localhost:3000';
     break;
   case 'production':
-    url = 'api.gosyp.io'
+    url = 'api.gosyp.io';
     break;
   default:
     url = '';

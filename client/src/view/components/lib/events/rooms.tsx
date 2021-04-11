@@ -73,14 +73,14 @@ export const CreateRoomSuccess = () : [any] => {
   return [responseMessage];
 };
 
-export const CreateRoomError = () : [any] => {
-  const [errorMessage, setErrorMessage] = useState<any>({});
+export const CreateRoomError = () : [string] => {
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
     socket.on(Events.createRoomError, ({
       message,
     } : {
-      message: any,
+      message: string,
     }) => {
       setErrorMessage(message);
     });

@@ -7,12 +7,13 @@ import {
   IconButton,
   Tooltip,
   Typography,
- } from '@material-ui/core';
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { ExitToApp } from '@material-ui/icons';
 import { socket } from 'api';
 import Events from 'view/components/lib/events/eventTypes';
 import { leaveRoom } from 'store/actions/roomActions';
+import { AppState } from 'store/reducers';
 
 const useStyles = makeStyles((theme) => (
   {
@@ -23,14 +24,14 @@ const useStyles = makeStyles((theme) => (
       [theme.breakpoints.up('lg')]: {
         display: 'none',
       },
-    }
+    },
   }
 ));
 
-const LeaveRoom = () => {
+const LeaveRoom = (): JSX.Element => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { currentRoom: roomID } = useSelector((state: any) => state.rooms);
+  const { currentRoom: roomID } = useSelector((state: AppState) => state.rooms);
 
   const handleClick = () => {
     socket.emit(Events.socketRequestsLeaveRoom, roomID);
@@ -57,6 +58,6 @@ const LeaveRoom = () => {
         </Typography>
       </IconButton>
     </Tooltip>
-  )
-}
+  );
+};
 export default LeaveRoom;

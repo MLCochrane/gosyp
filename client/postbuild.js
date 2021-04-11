@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
+
 const readDir = util.promisify(fs.readdir);
 const copyFile = util.promisify(fs.copyFile);
 
@@ -21,11 +22,11 @@ const finalPath = './build/seo';
     const seoFiles = await readDir(seoFolder);
     if (seoFiles) {
       // Wait to copy over all files to new dest
-      Promise.all(seoFiles.map(file => {
+      Promise.all(seoFiles.map((file) => {
         copyFile(path.join(__dirname, seoFolder, file), path.join(__dirname, dest, file));
       }));
     }
   } catch (err) {
     console.log(err);
   }
-})(folderPath, finalPath);
+}(folderPath, finalPath));

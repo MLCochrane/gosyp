@@ -25,7 +25,7 @@ describe('Detail widget wrapper', () => {
 
     const initialState = {
       rooms: {
-        '5593': '5593',
+        5593: '5593',
       },
       currentRoom: '5593',
     };

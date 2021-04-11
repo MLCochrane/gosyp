@@ -24,9 +24,9 @@ const useStyles = makeStyles((theme) => (
   }
 ));
 
-const Form = () => {
+const Form = (): JSX.Element => {
   const classes = useStyles();
-  const { currentRoom: roomID } = useSelector((state: any) => state.rooms);
+  const { currentRoom: roomID } = useSelector((state: AppState) => state.rooms);
   const [message, setMessage] = useState('');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

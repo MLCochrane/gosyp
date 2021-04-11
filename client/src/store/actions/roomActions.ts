@@ -12,7 +12,6 @@ export function setCurrentRoom(roomID: string) {
   };
 }
 
-
 export function leaveRoom(roomID: string) {
   return {
     type: 'LEAVE_ROOM',

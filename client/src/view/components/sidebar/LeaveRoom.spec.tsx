@@ -2,10 +2,10 @@ import React from 'react';
 import * as Redux from 'react-redux';
 import { shallow, mount } from 'enzyme';
 import io, { Socket } from 'socket.io-client';
-import LeaveRoom from './LeaveRoom';
 import { IconButton } from '@material-ui/core';
 import { ExitToApp } from '@material-ui/icons';
 import { leaveRoom } from 'store/actions/roomActions';
+import LeaveRoom from './LeaveRoom';
 
 jest.mock('socket.io-client', () => {
   const emit = jest.fn();
@@ -14,8 +14,8 @@ jest.mock('socket.io-client', () => {
   return jest.fn(() => socket);
 });
 
-let useSelectorSpy: any;
-let useDispatchSpy: any;
+let useSelectorSpy: jest.SpyInstance;
+let useDispatchSpy: jest.SpyInstance;
 const mockedIO = io as jest.Mocked<typeof io>;
 const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
 
@@ -29,7 +29,7 @@ describe('Leave room button', () => {
     useSelectorSpy = jest.spyOn(Redux, 'useSelector');
     const initialState = {
       rooms: {
-        '5593': '5593',
+        5593: '5593',
       },
       currentRoom: '5593',
     };
@@ -48,11 +48,10 @@ describe('Leave room button', () => {
     const wrapper = mount(<LeaveRoom />);
     const mockedEmit = (mockedSocket.emit as jest.Mock).mockImplementationOnce(
       (event, message) => message,
-      );
+    );
     wrapper.find(IconButton).simulate('click');
     expect(mockedEmit).toHaveBeenCalledTimes(1);
     expect(mockedEmit).toHaveBeenCalledWith('removeMeFromRoom', '5593');
-
   });
 
   it('sends dispatch event to clear rooms from state', () => {

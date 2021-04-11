@@ -23,10 +23,10 @@ const useStyles = makeStyles((theme) => ({
   divideWrapper: {
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
-  }
+  },
 }));
 
-const RoomDetails = () => {
+const RoomDetails = (): JSX.Element => {
   const classes = useStyles();
   const [details] = RoomDetailsUpdated();
   const [rows, setRows] = useState<RoomDetails>([]);
@@ -44,7 +44,7 @@ const RoomDetails = () => {
 
   const detailList = () => (
     <ul>
-    {
+      {
       rows.map((row) => (
         <li
           key={ row.value }
@@ -69,15 +69,15 @@ const RoomDetails = () => {
         <Paper
           elevation={ 0 }
           className={ classes.roomDetails }
-          >
+        >
           { detailList() }
           <Paper
             elevation={ 0 }
             className={ classes.divideWrapper }
-            >
+          >
             <Divider
               variant="middle"
-              />
+            />
           </Paper>
           <ShareLink />
         </Paper>

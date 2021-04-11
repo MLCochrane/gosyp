@@ -20,7 +20,7 @@ describe('Global Reducer', () => {
     expect(
       reducer(defaultState, {
         type: SET_NEEDS_RESIZE,
-      })
+      }),
     ).toEqual(
       {
         needsResize: 1,
@@ -28,7 +28,7 @@ describe('Global Reducer', () => {
         hasResized: 0,
         isMobile: false,
         appHeight: 0,
-      }
+      },
     );
 
     expect(
@@ -40,7 +40,7 @@ describe('Global Reducer', () => {
         appHeight: 0,
       }, {
         type: SET_NEEDS_RESIZE,
-      })
+      }),
     ).toEqual(
       {
         needsResize: 2,
@@ -48,7 +48,7 @@ describe('Global Reducer', () => {
         hasResized: 0,
         isMobile: false,
         appHeight: 0,
-      }
+      },
     );
   });
 
@@ -56,7 +56,7 @@ describe('Global Reducer', () => {
     expect(
       reducer(defaultState, {
         type: SET_SHOULD_RESIZE,
-      })
+      }),
     ).toEqual(
       {
         needsResize: 0,
@@ -64,7 +64,7 @@ describe('Global Reducer', () => {
         hasResized: 0,
         isMobile: false,
         appHeight: 0,
-      }
+      },
     );
 
     expect(
@@ -76,7 +76,7 @@ describe('Global Reducer', () => {
         appHeight: 0,
       }, {
         type: SET_SHOULD_RESIZE,
-      })
+      }),
     ).toEqual(
       {
         needsResize: 1,
@@ -84,7 +84,7 @@ describe('Global Reducer', () => {
         hasResized: 0,
         isMobile: false,
         appHeight: 0,
-      }
+      },
     );
   });
 
@@ -92,7 +92,7 @@ describe('Global Reducer', () => {
     expect(
       reducer(defaultState, {
         type: SET_HAS_RESIZED,
-      })
+      }),
     ).toEqual(
       {
         needsResize: 0,
@@ -100,7 +100,7 @@ describe('Global Reducer', () => {
         hasResized: 1,
         isMobile: false,
         appHeight: 0,
-      }
+      },
     );
 
     expect(
@@ -112,7 +112,7 @@ describe('Global Reducer', () => {
         appHeight: 0,
       }, {
         type: SET_HAS_RESIZED,
-      })
+      }),
     ).toEqual(
       {
         needsResize: 1,
@@ -120,7 +120,7 @@ describe('Global Reducer', () => {
         hasResized: 1,
         isMobile: false,
         appHeight: 0,
-      }
+      },
     );
   });
 
@@ -129,7 +129,7 @@ describe('Global Reducer', () => {
       reducer(defaultState, {
         type: SET_IS_MOBILE,
         isMobile: false,
-      })
+      }),
     ).toEqual(
       {
         needsResize: 0,
@@ -137,7 +137,7 @@ describe('Global Reducer', () => {
         hasResized: 0,
         isMobile: false,
         appHeight: 0,
-      }
+      },
     );
 
     expect(
@@ -150,7 +150,7 @@ describe('Global Reducer', () => {
       }, {
         type: SET_IS_MOBILE,
         isMobile: true,
-      })
+      }),
     ).toEqual(
       {
         needsResize: 1,
@@ -158,7 +158,7 @@ describe('Global Reducer', () => {
         hasResized: 0,
         isMobile: true,
         appHeight: 0,
-      }
+      },
     );
   });
 
@@ -167,7 +167,7 @@ describe('Global Reducer', () => {
       reducer(defaultState, {
         type: SET_APP_HEIGHT,
         height: 123,
-      })
+      }),
     ).toEqual(
       {
         needsResize: 0,
@@ -175,7 +175,7 @@ describe('Global Reducer', () => {
         hasResized: 0,
         isMobile: false,
         appHeight: 123,
-      }
+      },
     );
 
     expect(
@@ -188,7 +188,7 @@ describe('Global Reducer', () => {
       }, {
         type: SET_APP_HEIGHT,
         height: 723,
-      })
+      }),
     ).toEqual(
       {
         needsResize: 1,
@@ -196,7 +196,7 @@ describe('Global Reducer', () => {
         hasResized: 0,
         isMobile: false,
         appHeight: 723,
-      }
+      },
     );
   });
 });

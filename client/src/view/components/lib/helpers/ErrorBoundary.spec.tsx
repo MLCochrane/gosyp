@@ -7,13 +7,13 @@ describe('Error Boundry', () => {
     throw new Error('bad');
   };
 
-  let spy: any;
+  let spy: jest.SpyInstance;
   beforeEach(() => {
     /**
      * Provides unnecessary noise if we don't silence the console.
      */
     spy = jest.spyOn(console, 'error');
-    spy.mockImplementation(() => {});
+    spy.mockImplementation(() => ({ log() { return null; } }));
   });
 
   afterEach(() => {
