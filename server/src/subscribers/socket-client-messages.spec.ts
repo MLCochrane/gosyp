@@ -5,7 +5,7 @@ import socketClientMessages, {
   chatMessage,
   userTyping,
 } from './socket-client-messages';
-import { ExtendedSocket } from '../types/global';
+import { ExtendedSocket } from '../types/global.d';
 
 jest.mock('socket.io');
 jest.mock('winston');
@@ -43,7 +43,7 @@ describe('Chat messages', () => {
     socketClientMessages({ socket: userSocket });
 
     expect(userSocket.on).toBeCalledTimes(2);
-    expect((userSocket.on as any).mock.calls).toEqual(
+    expect((userSocket.on as jest.Mock).mock.calls).toEqual(
       [
         ['chatMessage', expect.anything()],
         ['userTyping', expect.anything()],
@@ -56,7 +56,7 @@ describe('Chat messages', () => {
     (userSocket.on as jest.Mock)
       .mockImplementationOnce((event, cb) => cb('782', 'My message'))
       .mockImplementationOnce((event, cb) => cb('782', 'My Second Message!'));
-    chatMessage(userSocket, mockedLogger, mockedIO);
+    chatMessage(userSocket, mockedIO);
 
     expect(userSocket.on).toHaveBeenCalledWith('chatMessage', expect.anything());
     expect(mockedIO.to).toHaveBeenCalledWith('782');
@@ -67,7 +67,7 @@ describe('Chat messages', () => {
       }),
     );
 
-    chatMessage(userSocket, mockedLogger, mockedIO);
+    chatMessage(userSocket, mockedIO);
     expect(userSocket.on).toHaveBeenCalledWith('chatMessage', expect.anything());
     expect(mockedIO.to).toHaveBeenCalledWith('782');
     expect(mockedIO.emit).toHaveBeenCalledWith(
@@ -85,12 +85,12 @@ describe('Chat messages', () => {
      * concerned with the function calling with the correct things
      * rather than the implementation being the same.
      */
-    (userSocket.broadcast as any) = mockedIO;
+    (userSocket.broadcast as unknown) = mockedIO;
     (userSocket.on as jest.Mock)
       .mockImplementationOnce((event, cb) => cb('89991', true))
       .mockImplementationOnce((event, cb) => cb('89991', false));
 
-    userTyping(userSocket, mockedLogger);
+    userTyping(userSocket);
     expect(userSocket.on).toHaveBeenCalledWith('userTyping', expect.anything());
     expect(userSocket.broadcast.to).toHaveBeenCalledWith('89991');
     expect(userSocket.broadcast.emit).toHaveBeenCalledWith(
@@ -98,7 +98,7 @@ describe('Chat messages', () => {
       true,
     );
 
-    userTyping(userSocket, mockedLogger);
+    userTyping(userSocket);
     expect(userSocket.on).toHaveBeenCalledWith('userTyping', expect.anything());
     expect(userSocket.broadcast.to).toHaveBeenCalledWith('89991');
     expect(userSocket.broadcast.emit).toHaveBeenCalledWith(

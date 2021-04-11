@@ -1,17 +1,15 @@
 import type { Server } from 'socket.io';
 import { Container } from 'typedi';
-import type { Logger } from 'winston';
 import Events from './socket-event-names';
-import { ExtendedSocket } from '../types/global';
+import { ExtendedSocket } from '../types/global.d';
 
 /**
  * Defauilt chat message.
  */
 export function chatMessage(
   socket: ExtendedSocket,
-  logger: Logger,
   io: Server,
-) {
+): void {
   socket.on(Events.chatMessage, (room: string, msg: string) => {
     /*
     * Think it's best to send this even to socket who
@@ -38,9 +36,8 @@ export function chatMessage(
  */
 export function userTyping(
   socket: ExtendedSocket,
-  logger: Logger,
-) {
-  socket.on(Events.userTyping, (room: string, isTyping: Boolean) => {
+): void {
+  socket.on(Events.userTyping, (room: string, isTyping: boolean) => {
     // broadcast to others in the room
     socket.broadcast.to(room).emit(Events.userTyping, isTyping);
   });
@@ -50,11 +47,10 @@ export default function socketClientMessages({
   socket,
 }: {
   socket: ExtendedSocket,
-}) {
-  const logger: Logger = Container.get('logger');
+}): void {
   const io: Server = Container.get('io');
 
   // Separating events and calling here so it's easier to test each one
-  chatMessage(socket, logger, io);
-  userTyping(socket, logger);
+  chatMessage(socket, io);
+  userTyping(socket);
 }
