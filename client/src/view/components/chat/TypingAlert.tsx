@@ -6,9 +6,9 @@ import {
 } from '@material-ui/core';
 import TypingUpdate from 'view/components/lib/events/typingStatus';
 
-const TypingStatus = () => {
+const TypingStatus = (): JSX.Element => {
   const [isTyping] = TypingUpdate();
-  const [typingStatus, setTypingStatus] = useState<String>('');
+  const [typingStatus, setTypingStatus] = useState<string>('');
 
   useEffect(() => {
     if (isTyping) {

@@ -15,3 +15,14 @@ interface StatusUpdate {
 }
 
 type Messages = Array<ChatMessage | StatusUpdate>;
+
+interface DefaultMessage {
+  message: string;
+}
+
+interface RoomFieldsInterface {
+  uuid: string;
+  userCount: number;
+  name?: string;
+  nickname?: string | null;
+}

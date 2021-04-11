@@ -8,7 +8,7 @@ import { CreateRoomSuccess, CreateRoomError } from 'view/components/lib/events/r
 import Events from 'view/components/lib/events/eventTypes';
 import Form from 'view/components/lib/forms/Form';
 
-const CreateForm = () => {
+const CreateForm = (): JSX.Element => {
   const [roomSuccess] = CreateRoomSuccess();
   const [roomError] = CreateRoomError();
 

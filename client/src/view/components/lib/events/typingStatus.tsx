@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { socket } from 'api';
 
-export default () => {
-  const [typing, setTyping] = useState<Boolean>(false);
+export default (): [boolean] => {
+  const [typing, setTyping] = useState<boolean>(false);
   useEffect(() => {
     let mounted = true;
-    socket.on('userTyping', (isTyping: Boolean) => {
+    socket.on('userTyping', (isTyping: boolean) => {
       if (mounted) {
         setTyping(isTyping);
       }

@@ -11,7 +11,6 @@ jest.mock('socket.io-client', () => {
   return jest.fn(() => socket);
 });
 
-
 let useSelectorSpy;
 const mockedIO = io as jest.Mocked<typeof io>;
 const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
@@ -24,7 +23,7 @@ describe('Chat input form', () => {
 
     const initialState = {
       rooms: {
-        '5593': '5593',
+        5593: '5593',
       },
       currentRoom: '5593',
     };
@@ -55,7 +54,7 @@ describe('Chat input form', () => {
     const input = wrapper.find('input');
     input.simulate('change', { target: { value: 'My message' } });
     input.simulate('submit', {
-      preventDefault: () => {},
+      preventDefault: () => null,
       target: { value: 'My message' },
     });
     expect(mockedEmit).toHaveBeenCalledTimes(3);

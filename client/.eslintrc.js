@@ -4,7 +4,11 @@ module.exports = {
     es6: true,
     jest: true,
   },
-  extends: 'airbnb',
+  extends: [
+    'airbnb',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+  ],
   parser: '@typescript-eslint/parser',
   globals: {
     Atomics: 'readonly',
@@ -37,32 +41,36 @@ module.exports = {
     'new-cap': 0,
     'react/jsx-props-no-spreading': 0,
     'react/no-array-index-key': 0,
-    'react/button-has-type' : 0,
-    "import/extensions": ["error", "ignorePackages", {
-      "js": "never",
-      "jsx": "never",
-      "ts": "never",
-      "tsx": "never",
-      "mjs": "never"
+    'react/button-has-type': 0,
+    'import/extensions': ['error', 'ignorePackages', {
+      js: 'never',
+      jsx: 'never',
+      ts: 'never',
+      tsx: 'never',
+      mjs: 'never',
     }],
-    "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": ["error"]
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error'],
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"]
   },
-  "settings": {
-    "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"]
+  settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
     },
-    "import/resolver": {
-      "node": {
-        "extensions": [
-          ".ts",
-          ".tsx"
-        ]
+    'import/resolver': {
+      node: {
+        extensions: [
+          '.ts',
+          '.tsx',
+        ],
       },
       // use <root>/tsconfig.json
-      "typescript": {
-        "alwaysTryTypes": true // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+      typescript: {
+        alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
       },
-    }
-  }
+    },
+  },
 };

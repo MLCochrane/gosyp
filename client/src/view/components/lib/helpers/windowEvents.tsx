@@ -4,7 +4,7 @@ import {
   useState,
 } from 'react';
 
-export const ResizeHandler = () => {
+export const ResizeHandler = (): [boolean] => {
   const timeout = useRef(0);
   const [isResizing, setIsResizing] = useState(false);
   useEffect(() => {
@@ -23,9 +23,9 @@ export const ResizeHandler = () => {
   }, []);
 
   return [isResizing];
-}
+};
 
-export const MobileCheck = () => {
+export const MobileCheck = (): [boolean] => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -40,8 +40,8 @@ export const MobileCheck = () => {
      */
     if (window.screen.width < 1000) {
       setIsMobile(true);
-    };
+    }
   }, []);
 
   return [isMobile];
-}
+};

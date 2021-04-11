@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { socket } from 'api';
 import Events from './eventTypes';
 
-export const UserJoined = () => {
+export const UserJoined = (): [UserAction] => {
   const [user, setUser] = useState<UserAction>({
     user: {
       id: null,
@@ -10,6 +10,7 @@ export const UserJoined = () => {
     },
     timestamp: new Date(''),
   });
+
   useEffect(() => {
     let mounted = true;
     socket.on(Events.userJoined, (data: UserAction) => {
@@ -25,7 +26,7 @@ export const UserJoined = () => {
   return [user];
 };
 
-export const UserLeft = () => {
+export const UserLeft = (): [UserAction] => {
   const [user, setUser] = useState<UserAction>({
     user: {
       id: null,

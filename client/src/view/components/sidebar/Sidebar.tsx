@@ -8,7 +8,7 @@ import {
   Hidden,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons'
+import { Close } from '@material-ui/icons';
 import Details from './details/DetailWidget';
 import Burger from './Burger';
 
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     [theme.breakpoints.up('lg')]: {
-      background: `linear-gradient(0, transparent, ${ theme.palette.background.paper })`,
+      background: `linear-gradient(0, transparent, ${theme.palette.background.paper})`,
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Sidebar = () => {
+const Sidebar = (): JSX.Element => {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -60,31 +60,29 @@ const Sidebar = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const drawer = (hasButton: boolean) => {
-    return (
-      <>
-        <div className={ classes.toolbar }>
-          {
+  const drawer = (hasButton: boolean) => (
+    <>
+      <div className={ classes.toolbar }>
+        {
             hasButton
-            ? (
-            <IconButton
-              color="inherit"
-              aria-label="close drawer"
-              edge="start"
-              onClick={ handleDrawerToggle }
-              className={ classes.closeButton }
-            >
-              <Close />
-            </IconButton>
-            )
-            : null
+              ? (
+                <IconButton
+                  color="inherit"
+                  aria-label="close drawer"
+                  edge="start"
+                  onClick={ handleDrawerToggle }
+                  className={ classes.closeButton }
+                >
+                  <Close />
+                </IconButton>
+              )
+              : null
           }
-        </div>
-        <Divider />
-        <Details />
-      </>
-    )
-  };
+      </div>
+      <Divider />
+      <Details />
+    </>
+  );
 
   return (
     <>

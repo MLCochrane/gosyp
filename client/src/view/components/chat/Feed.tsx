@@ -7,9 +7,10 @@ import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ChatMessage from 'view/components/lib/events/chatMessage';
 import { UserJoined, UserLeft } from 'view/components/lib/events/lifeCycle';
+import { useSelector } from 'react-redux';
+import { AppState } from 'store/reducers';
 import UserMessage from './messages/UserMessage';
 import StatusMessage from './messages/StatusMessage';
-import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => (
   {
@@ -18,14 +19,14 @@ const useStyles = makeStyles((theme) => (
       overflowY: 'auto',
     },
     firstMessage: {
-      paddingTop: theme.spacing(8)
-    }
+      paddingTop: theme.spacing(8),
+    },
   }
 ));
 
-const Feed = () => {
+const Feed = (): JSX.Element => {
   const classes = useStyles();
-  const { hasResized } = useSelector((state: any) => state.global);
+  const { hasResized } = useSelector((state: AppState) => state.global);
   const [messages, setMessages] = useState<Messages>([]);
   const [newMessage] = ChatMessage();
   const [userHasJoined] = UserJoined();
@@ -109,18 +110,18 @@ const Feed = () => {
   };
 
   const placeholderMessage = () => {
-    const message = "No one's talking... awkward"
+    const message = "No one's talking... awkward";
 
     return (
       <h1>
         { message }
       </h1>
-    )
+    );
   };
 
   const messageList = () => (
     <ul>
-    {
+      {
       messages.map((el, index) => (
         <li
           className={ index === 0 ? classes.firstMessage : undefined }
@@ -130,7 +131,7 @@ const Feed = () => {
         </li>
       ))
     }
-  </ul>
+    </ul>
   );
 
   return (
@@ -141,8 +142,8 @@ const Feed = () => {
     >
       {
         !messages.length
-        ? placeholderMessage()
-        : messageList()
+          ? placeholderMessage()
+          : messageList()
       }
     </Paper>
   );

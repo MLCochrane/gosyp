@@ -26,7 +26,7 @@ describe('Room specific detail widget', () => {
 
     const initialState = {
       rooms: {
-        '5593': '5593',
+        5593: '5593',
       },
       currentRoom: '5593',
     };
@@ -41,26 +41,22 @@ describe('Room specific detail widget', () => {
   });
 
   it('updates rows when receiving new details', () => {
-    (mockedSocket.on as jest.Mock).mockImplementation((event, cb) => {
-      if (event === 'updatedRoomInfo') {
-        return cb({
-        roomDetails: [
-          {
-            name: 'ID',
-            value: '#123-024',
-          },
-          {
-            name: 'Room Name:',
-            value: 'PopPop',
-          },
-          {
-            name: 'Created at:',
-            value: '12/24/20',
-          },
-        ]
-      });
-      }
-    });
+    (mockedSocket.on as jest.Mock).mockImplementation((event, cb) => cb({
+      roomDetails: [
+        {
+          name: 'ID',
+          value: '#123-024',
+        },
+        {
+          name: 'Room Name:',
+          value: 'PopPop',
+        },
+        {
+          name: 'Created at:',
+          value: '12/24/20',
+        },
+      ],
+    }));
 
     const wrapper = mount(<RoomDetails />);
     expect(wrapper.find(DetailRow)).toHaveLength(3);

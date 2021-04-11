@@ -16,36 +16,36 @@ describe('Room Reducer', () => {
     expect(
       reducer(defaultState, {
         type: RECEIVE_ROOM_ID,
-        roomID: '41414'
-      })
+        roomID: '41414',
+      }),
     ).toEqual(
       {
         rooms: {
-          '41414': '41414'
+          41414: '41414',
         },
         currentRoom: '',
-      }
+      },
     );
 
     // appending to existing
     expect(
       reducer({
         rooms: {
-          '125': '125',
+          125: '125',
         },
         currentRoom: '515',
       }, {
         type: RECEIVE_ROOM_ID,
-        roomID: '8585'
-      })
+        roomID: '8585',
+      }),
     ).toEqual(
       {
         rooms: {
-          '125': '125',
-          '8585': '8585'
+          125: '125',
+          8585: '8585',
         },
         currentRoom: '515',
-      }
+      },
     );
   });
 
@@ -53,34 +53,34 @@ describe('Room Reducer', () => {
     expect(
       reducer(defaultState, {
         type: SET_CURRENT_ROOM,
-        roomID: '41414'
-      })
+        roomID: '41414',
+      }),
     ).toEqual(
       {
         rooms: {},
         currentRoom: '41414',
-      }
+      },
     );
 
     expect(
       reducer({
         rooms: {
-          '125': '125',
-          '515': '515',
+          125: '125',
+          515: '515',
         },
         currentRoom: '515',
       }, {
         type: SET_CURRENT_ROOM,
-        roomID: '125'
-      })
+        roomID: '125',
+      }),
     ).toEqual(
       {
         rooms: {
-          '125': '125',
-          '515': '515',
+          125: '125',
+          515: '515',
         },
         currentRoom: '125',
-      }
+      },
     );
   });
 
@@ -88,59 +88,58 @@ describe('Room Reducer', () => {
     expect(
       reducer({
         rooms: {
-          '41414': '41414',
+          41414: '41414',
         },
         currentRoom: '41414',
       }, {
         type: LEAVE_ROOM,
-        roomID: '41414'
-      })
+        roomID: '41414',
+      }),
     ).toEqual(
       {
         rooms: {},
         currentRoom: '',
-      }
+      },
     );
-
 
     expect(
       reducer({
         rooms: {
-          '125': '125',
-          '515': '515',
+          125: '125',
+          515: '515',
         },
         currentRoom: '515',
       }, {
         type: LEAVE_ROOM,
-        roomID: '515'
-      })
+        roomID: '515',
+      }),
     ).toEqual(
       {
         rooms: {
-          '125': '125',
+          125: '125',
         },
         currentRoom: '',
-      }
+      },
     );
 
     expect(
       reducer({
         rooms: {
-          '125': '125',
-          '515': '515',
+          125: '125',
+          515: '515',
         },
         currentRoom: '515',
       }, {
         type: LEAVE_ROOM,
-        roomID: '125'
-      })
+        roomID: '125',
+      }),
     ).toEqual(
       {
         rooms: {
-          '515': '515',
+          515: '515',
         },
         currentRoom: '515',
-      }
+      },
     );
   });
 });

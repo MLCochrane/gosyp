@@ -13,7 +13,7 @@ jest.mock('socket.io-client', () => {
   return jest.fn(() => socket);
 });
 
-let useSelectorSpy: any;
+let useSelectorSpy: jest.SpyInstance;
 
 describe('Chat wrapper', () => {
   beforeEach(() => {

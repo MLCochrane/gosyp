@@ -36,9 +36,8 @@ const Form = ({
   wasError: boolean,
   buttonText: string,
   schema: AnyObjectSchema,
-}) => {
+}): JSX.Element => {
   const classes = useStyles();
-
   const mapFields = useCallback(() => {
     const mappedFields: FormFields = {};
     fields.forEach((el) => {
@@ -55,16 +54,16 @@ const Form = ({
     return mappedFields;
   }, [fields]);
 
-  useEffect(() => {
-    setFormFields(mapFields());
-  }, [fields, mapFields]);
-
   const [formFields, setFormFields] = useState<FormFields>(mapFields());
   // Copying initial fields to set to later
   const [defaultForms] = useState(formFields);
 
   const [disabledButton, setDisabled] = useState(true);
   const [butonText, setButtonText] = useState(buttonText);
+
+  useEffect(() => {
+    setFormFields(mapFields());
+  }, [fields, mapFields]);
 
   const onSubmission = () => {
     setButtonText('Submitting...');

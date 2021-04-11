@@ -6,17 +6,18 @@ import {
   useDispatch,
   useSelector,
 } from 'react-redux';
+import { addRoomID, setCurrentRoom } from 'store/actions/roomActions';
+import { AppState } from 'store/reducers';
 import Sidebar from './components/sidebar/Sidebar';
 import SwitchView from './components/lib/helpers/SwitchView';
 import Home from './components/homepage/Home';
 import Room from './components/chat/Room';
 import { HasAddedToRoom } from './components/lib/events/rooms';
-import { addRoomID, setCurrentRoom } from 'store/actions/roomActions';
 import MobileViewUtility from './components/lib/helpers/MobileViewUtility';
 
-const App = () => {
+const App = (): JSX.Element => {
   const [addedToRoom, roomID] = HasAddedToRoom();
-  const { needsResize, appHeight } = useSelector((state: any) => state.global);
+  const { needsResize, appHeight } = useSelector((state: AppState) => state.global);
   const [mobileStyle, setMobileStyle] = useState({});
   const dispatch = useDispatch();
 
@@ -28,7 +29,7 @@ const App = () => {
   useEffect(() => {
     if (needsResize === 1) {
       setMobileStyle({
-        height: appHeight + 'px',
+        height: `${appHeight}px`,
       });
     }
   }, [needsResize, appHeight]);

@@ -11,8 +11,8 @@ import Alert from './Alert';
 
 it('displays message', () => {
   const func = jest.fn();
-  expect(shallow(<Alert variant="success" message="Hi there" closeHandler={ func }/>).contains('Hi there')).toEqual(true);
-  expect(shallow(<Alert variant="success" message="Great job!" closeHandler={ func }/>).contains('Great job!')).toEqual(true);
+  expect(shallow(<Alert variant="success" message="Hi there" closeHandler={ func } />).contains('Hi there')).toEqual(true);
+  expect(shallow(<Alert variant="success" message="Great job!" closeHandler={ func } />).contains('Great job!')).toEqual(true);
 });
 
 it('displays clickable icon', () => {
@@ -22,7 +22,7 @@ it('displays clickable icon', () => {
       variant="success"
       message="Howdy hey!"
       closeHandler={ closeMock }
-    />
+    />,
   );
 
   expect(wrapper.contains('Howdy hey!')).toEqual(true);

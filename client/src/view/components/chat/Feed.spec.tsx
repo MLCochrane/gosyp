@@ -15,7 +15,7 @@ jest.mock('socket.io-client', () => {
 
 const mockedIO = io as jest.Mocked<typeof io>;
 const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
-let useSelectorSpy: any;
+let useSelectorSpy: jest.SpyInstance;
 
 describe('Feed', () => {
   beforeEach(() => {
