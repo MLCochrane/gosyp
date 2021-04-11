@@ -3,13 +3,14 @@ import {
   Container,
   Button,
   Typography,
+  Theme,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SwitchView from '../lib/helpers/SwitchView';
 import CreateForm from './create/CreateForm';
 import JoinFrom from './join/JoinForm';
 
-const useStyles = makeStyles((theme: any) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   home: {
     position: 'relative',
     height: '100%',

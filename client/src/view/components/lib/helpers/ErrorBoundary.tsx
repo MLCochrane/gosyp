@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component, ReactNode } from 'react';
 
 class ErrorBoundary extends Component<{

@@ -36,7 +36,7 @@ const Form = ({
   wasError: boolean,
   buttonText: string,
   schema: AnyObjectSchema,
-}) => {
+}): JSX.Element => {
   const classes = useStyles();
   const mapFields = useCallback(() => {
     const mappedFields: FormFields = {};

@@ -1,8 +1,4 @@
-interface globalAction {
-  type: 'SET_NEEDS_RESIZE' | 'SET_SHOULD_RESIZE' | 'SET_HAS_RESIZED' | 'SET_IS_MOBILE' | 'SET_APP_HEIGHT',
-  isMobile?: boolean,
-  height?: number,
-}
+import { GlobalActionInterface } from '../actions/globalActions';
 
 export interface GlobalReducerInterface {
   needsResize: number,
@@ -18,7 +14,7 @@ export default function reducer(state = {
   hasResized: 0,
   appHeight: 0,
   isMobile: false,
-}, action: globalAction) {
+}, action: GlobalActionInterface): GlobalReducerInterface {
   switch (action.type) {
     case 'SET_NEEDS_RESIZE': {
       return {
@@ -29,7 +25,7 @@ export default function reducer(state = {
     case 'SET_APP_HEIGHT': {
       return {
         ...state,
-        appHeight: action.height,
+        appHeight: action.height as number,
       };
     }
     case 'SET_SHOULD_RESIZE': {
@@ -47,7 +43,7 @@ export default function reducer(state = {
     case 'SET_IS_MOBILE': {
       return {
         ...state,
-        isMobile: action.isMobile,
+        isMobile: action.isMobile as boolean,
       };
     }
     default:

@@ -12,7 +12,6 @@
     "experimentalDecorators": true,
     "typeRoots": [
       "./node_modules/@types",
-      "./src/types"
     ],
     "jsx": "react-jsx",
     "lib": [
@@ -27,7 +26,5 @@
     "baseUrl": "./src",
     "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    "src",
-    "../types"  ]
+  "include": ["src"]
 }

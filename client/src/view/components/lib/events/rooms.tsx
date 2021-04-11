@@ -48,20 +48,23 @@ export const NotAddedToRoom = () : [boolean, string] => {
   return [notAdded, errorMessage];
 };
 
-export const CreateRoomSuccess = () : [any] => {
-  const [responseMessage, setResponseMessage] = useState<any>({});
+export const CreateRoomSuccess = () : [{ 'room-id': string, nickname: string | null }] => {
+  const [responseMessage, setResponseMessage] = useState<{ 'room-id': string, nickname: string | null }>({
+    'room-id': '',
+    nickname: null,
+  });
 
   useEffect(() => {
     let cancelled = false;
     socket.on(Events.createRoomSuccess, ({
       message,
     } : {
-      message: any,
+      message: RoomFieldsInterface,
     }) => {
       if (!cancelled) {
         setResponseMessage({
           'room-id': message.uuid,
-          nickname: message.nickname,
+          nickname: message.nickname || null,
         });
       }
     });
@@ -73,14 +76,14 @@ export const CreateRoomSuccess = () : [any] => {
   return [responseMessage];
 };
 
-export const CreateRoomError = () : [string] => {
-  const [errorMessage, setErrorMessage] = useState<string>('');
+export const CreateRoomError = () : [DefaultMessage] => {
+  const [errorMessage, setErrorMessage] = useState<DefaultMessage>({ message: '' });
 
   useEffect(() => {
     socket.on(Events.createRoomError, ({
       message,
     } : {
-      message: string,
+      message: DefaultMessage,
     }) => {
       setErrorMessage(message);
     });

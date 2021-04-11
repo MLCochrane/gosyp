@@ -1,7 +1,4 @@
-interface roomAction {
-  type: 'RECEIVE_ROOM_ID' | 'SET_CURRENT_ROOM' | 'LEAVE_ROOM',
-  roomID: string,
-}
+import { RoomActionInterface } from '../actions/roomActions';
 
 export interface RoomsReducerInterface {
   rooms: {
@@ -13,7 +10,7 @@ export interface RoomsReducerInterface {
 export default function reducer(state = {
   rooms: {},
   currentRoom: '',
-}, action: roomAction) {
+}, action: RoomActionInterface): RoomsReducerInterface {
   switch (action.type) {
     case 'RECEIVE_ROOM_ID': {
       return {

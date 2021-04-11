@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { socket } from 'api';
 
-export default () => {
+export default (): [boolean] => {
   const [typing, setTyping] = useState<boolean>(false);
   useEffect(() => {
     let mounted = true;
