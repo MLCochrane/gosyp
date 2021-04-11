@@ -8,6 +8,7 @@ module.exports = {
     'airbnb/base',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:import/typescript',
   ],
   parser: '@typescript-eslint/parser',
   globals: {
@@ -47,6 +48,9 @@ module.exports = {
     'import/resolver': {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+      typescript: {
+        project: './tsconfig.json',
       },
     },
   },

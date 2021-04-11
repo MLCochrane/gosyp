@@ -24,7 +24,10 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "baseUrl": "./src",
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "typings": ["../../typings"]
+    }
   },
-  "include": ["src"]
+  "include": ["src", "../typings"]
 }

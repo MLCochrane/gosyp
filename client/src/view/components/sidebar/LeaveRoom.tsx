@@ -11,7 +11,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { ExitToApp } from '@material-ui/icons';
 import { socket } from 'api';
-import Events from 'view/components/lib/events/eventTypes';
+import { EventNames as Events } from 'typings';
 import { leaveRoom } from 'store/actions/roomActions';
 import { AppState } from 'store/reducers';
 

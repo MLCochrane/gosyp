@@ -4,13 +4,14 @@ enum Events {
   chatMessage = 'chatMessage',
   userTyping = 'userTyping',
   addUserToRoom = 'addedToRoom',
-  updatedRoomInfo = 'updatedRoomInfo',
+  userRemovedFromRoom = 'removedFromRoom',
   socketCreateRoom = 'createRoom',
   createRoomError = 'createRoomError',
   createRoomSuccess = 'createRoomSuccess',
   socketRequestsRoom = 'addMeToRoom',
   socketRequestsLeaveRoom = 'removeMeFromRoom',
   socketDeniedRoomAccess = 'notAddedToRoom',
+  updatedRoomInfo = 'updatedRoomInfo',
 }
 
 export default Events;

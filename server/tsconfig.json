@@ -22,7 +22,10 @@
     "baseUrl": "./src",
     "typeRoots": [
       "./node_modules/@types",
-    ]
+    ],
+    "paths": {
+      "typings": ["../../typings"]
+    }
   },
-  "include": ["src"]
+  "include": ["src", "../typings"]
 }
