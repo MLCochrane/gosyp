@@ -1,7 +1,7 @@
 import type { Server } from 'socket.io';
 import { Container } from 'typedi';
 import type { Logger } from 'winston';
-import { EventNames as Events } from 'typings';
+import { EventNames as Events } from 'types';
 import { ExtendedSocket } from '../types/global.d';
 import RoomService from '../services/room-service';
 import { updateRoom } from './socket-rooms';

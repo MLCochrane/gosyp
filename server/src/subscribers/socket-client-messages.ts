@@ -1,6 +1,6 @@
 import type { Server } from 'socket.io';
 import { Container } from 'typedi';
-import { EventNames as Events } from 'typings';
+import { EventNames as Events } from 'types';
 import { ExtendedSocket } from '../types/global.d';
 
 /**

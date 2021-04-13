@@ -23,9 +23,6 @@
     "typeRoots": [
       "./node_modules/@types",
     ],
-    "paths": {
-      "typings": ["../../typings"]
-    }
   },
-  "include": ["src", "../typings"]
+  "include": ["src"]
 }

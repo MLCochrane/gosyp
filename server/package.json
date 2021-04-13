@@ -58,6 +58,9 @@
     "testEnvironment": "node",
     "modulePathIgnorePatterns": [
       "lib"
-    ]
+    ],
+    "moduleNameMapper": {
+        "^types$": "<rootDir>/src/types"
+    }
   }
 }
