@@ -68,7 +68,7 @@ module.exports = {
         ],
       },
       typescript: {
-        // project: './tsconfig.json',
+        project: './tsconfig.json',
         alwaysTryTypes: true,
       },
     },
