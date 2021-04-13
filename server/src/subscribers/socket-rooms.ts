@@ -1,9 +1,9 @@
 import type { Server } from 'socket.io';
 import { Container } from 'typedi';
 import type { Logger } from 'winston';
-import Events from './socket-event-names';
+import { EventNames as Events } from 'types';
 import RoomService, { RoomRecordObjectInterface } from '../services/room-service';
-import { ExtendedSocket } from '../types/global';
+import { ExtendedSocket } from '../types/global.d';
 
 export async function updateRoom(
   event: Events.userJoined | Events.userLeft,
@@ -12,7 +12,7 @@ export async function updateRoom(
   roomService: RoomService,
   io: Server,
   addToRoom: boolean,
-) {
+): Promise<void> {
   // Update room number and send room detail update
   const roomDetails = await roomService.UpdateRoomUsers(roomID, addToRoom);
   if (typeof roomDetails === 'boolean') return;
@@ -46,7 +46,7 @@ export function socketRequestsRoom(
   roomService: RoomService,
   logger: Logger,
   io: Server,
-) {
+): void {
   socket.on(Events.socketRequestsRoom, async (requestBody) => {
     const roomID = requestBody['room-id'];
     logger.info(`socket requests room access: ${roomID}`);
@@ -94,7 +94,7 @@ export function socketLeavesRoom(
   roomService: RoomService,
   logger: Logger,
   io: Server,
-) {
+): void {
   socket.on(Events.socketRequestsLeaveRoom, async (roomID: string) => {
     logger.info(`socket wants to leave room: ${roomID}`);
 
@@ -135,7 +135,7 @@ export function socketCreateRoom(
   socket: ExtendedSocket,
   roomService: RoomService,
   logger: Logger,
-) {
+): void {
   socket.on(Events.socketCreateRoom, async (requestBody) => {
     const { name, nickname }: {name: string, nickname: string} = requestBody;
     let freshRoom: RoomRecordObjectInterface;
@@ -146,7 +146,6 @@ export function socketCreateRoom(
       socket.emit(Events.createRoomSuccess, {
         message: freshRoom,
       });
-
     } catch (err) {
       logger.info(err);
       socket.emit(Events.createRoomError, {
@@ -160,7 +159,7 @@ export default function socketRooms({
   socket,
 }: {
   socket: ExtendedSocket,
-}) {
+}): void {
   const logger: Logger = Container.get('logger');
   const roomService = Container.get(RoomService);
   const io: Server = Container.get('io');

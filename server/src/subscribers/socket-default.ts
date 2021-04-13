@@ -4,9 +4,9 @@ import type { Logger } from 'winston';
 import socketLifecycle from './socket-lifecycle';
 import socketRooms from './socket-rooms';
 import socketClientMessages from './socket-client-messages';
-import { ExtendedSocket } from '../types/global';
+import { ExtendedSocket } from '../types/global.d';
 
-export default function DefaultSocket() {
+export default function DefaultSocket(): void {
   const logger: Logger = Container.get('logger');
   const io: Server = Container.get('io');
 

@@ -51,10 +51,10 @@ module.exports = {
     }],
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['error'],
-    "no-use-before-define": "off",
-    "@typescript-eslint/no-use-before-define": ["error"],
-    "no-shadow": "off",
-    "@typescript-eslint/no-shadow": ["error"]
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': ['error'],
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
   },
   settings: {
     'import/parsers': {
@@ -67,9 +67,9 @@ module.exports = {
           '.tsx',
         ],
       },
-      // use <root>/tsconfig.json
       typescript: {
-        alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+        project: './tsconfig.json',
+        alwaysTryTypes: true,
       },
     },
   },

@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Service, Container } from 'typedi';
+import type { Document } from 'mongoose';
 import RoomModel from '../models/room';
 
 export interface RoomFieldsInterface {
@@ -61,7 +62,7 @@ export default class RoomService {
    */
   public async CheckForRoom(
     id: string,
-  ) {
+  ): Promise<boolean | IRoom & Document> {
     const roomRecord = await this.roomModel.findOne({ uuid: id });
     if (!roomRecord) return false;
 
@@ -76,7 +77,7 @@ export default class RoomService {
   public async UpdateRoomUsers(
     uuid: string,
     increase: boolean,
-  ) {
+  ): Promise<ClientRoomInterface | boolean> {
     const incrementVal = increase ? 1 : -1;
     const updatedRoom = await this.roomModel.findOneAndUpdate(
       { uuid },
@@ -94,7 +95,7 @@ export default class RoomService {
     }
 
     // Format date
-    const formatDate = new Date((updatedRoom as any).createdAt);
+    const formatDate = new Date((updatedRoom as IRoom).createdAt);
 
     return [
       {
@@ -110,7 +111,7 @@ export default class RoomService {
         value: formatDate.toLocaleString(),
       },
       {
-        name: 'Active users',
+        name: 'Active Users',
         value: updatedRoom?.userCount,
       },
     ];
@@ -122,7 +123,7 @@ export default class RoomService {
    */
   public async RemoveRoom(
     id: string,
-  ) {
+  ): Promise<boolean> {
     try {
       await this.roomModel.deleteOne({ uuid: id });
     } catch (e) {
