@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { socket } from 'api';
-import { EventNames as Events } from 'typings';
+import Events from 'view/components/lib/events/eventTypes';
 
 export const HasAddedToRoom = () : [boolean, string] => {
   const [addedToRoom, setAddedToRoom] = useState(false);

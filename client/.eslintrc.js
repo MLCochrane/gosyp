@@ -51,10 +51,10 @@ module.exports = {
     }],
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['error'],
-    "no-use-before-define": "off",
-    "@typescript-eslint/no-use-before-define": ["error"],
-    "no-shadow": "off",
-    "@typescript-eslint/no-shadow": ["error"]
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': ['error'],
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
   },
   settings: {
     'import/parsers': {
@@ -68,7 +68,7 @@ module.exports = {
         ],
       },
       typescript: {
-        project: './tsconfig.json',
+        // project: './tsconfig.json',
         alwaysTryTypes: true,
       },
     },

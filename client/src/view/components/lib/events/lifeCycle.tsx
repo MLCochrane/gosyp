@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { socket } from 'api';
-import { EventNames as Events } from 'typings';
+import Events from 'view/components/lib/events/eventTypes';
 
 export const UserJoined = (): [UserAction] => {
   const [user, setUser] = useState<UserAction>({

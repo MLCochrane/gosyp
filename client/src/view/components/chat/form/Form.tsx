@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { socket } from 'api';
-import { EventNames as Events } from 'typings';
+import Events from 'view/components/lib/events/eventTypes';
 import { AppState } from 'store/reducers';
 
 const useStyles = makeStyles((theme) => (

@@ -8,7 +8,7 @@ import {
 } from 'yup';
 import { socket } from 'api';
 import { NotAddedToRoom } from 'view/components/lib/events/rooms';
-import { EventNames as Events } from 'typings';
+import Events from 'view/components/lib/events/eventTypes';
 import Form from 'view/components/lib/forms/Form';
 
 const JoinForm = (): JSX.Element => {

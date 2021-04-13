@@ -5,7 +5,7 @@ import {
 } from 'yup';
 import { socket } from 'api';
 import { CreateRoomSuccess, CreateRoomError } from 'view/components/lib/events/rooms';
-import { EventNames as Events } from 'typings';
+import Events from 'view/components/lib/events/eventTypes';
 import Form from 'view/components/lib/forms/Form';
 
 const CreateForm = (): JSX.Element => {
