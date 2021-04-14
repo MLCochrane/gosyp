@@ -1,3 +1,11 @@
+---
+name: Task/Subtask
+about: Set up task or sub task.
+title: ''
+labels: ''
+assignees: ''
+
+---
 # Task/Subtask
 _Description of task or subtask_
 
