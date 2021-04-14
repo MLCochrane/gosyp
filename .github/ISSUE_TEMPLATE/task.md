@@ -1,16 +1,16 @@
 ---
-name: Task/Subtask
-about: Set up task or sub task.
-title: ''
-labels: ''
+name: Task
+about: Set up parent task.
+title: 'Task: '
+labels: 'task'
 assignees: ''
 
 ---
-# Task/Subtask
-_Description of task or subtask_
+# Task
+_Description of task_
 
-# Subtasks/Steps
+# Subtasks
 - [ ] new subtasks will be added here and their PR linked to the issue
 
-# Workflow / Design 
-N\A
+# Workflow / Design
+_Attach any additional resources here_
