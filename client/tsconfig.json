@@ -26,5 +26,6 @@
     "baseUrl": "./src",
     "noFallthroughCasesInSwitch": true,
   },
+  "exclude": ["src/__mocks__"],
   "include": ["src"]
 }

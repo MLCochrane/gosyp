@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 const InfoBlock = (): JSX.Element => {
   const classes = useStyles();
   return (
-    <div className="info-block">
+    <div className="info-block" data-testid="info-block">
       <Paper
         className={ classes.paper }
         elevation={ 0 }

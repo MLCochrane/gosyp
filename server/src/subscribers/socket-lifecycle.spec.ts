@@ -2,10 +2,10 @@ import { Container } from 'typedi';
 import { Server } from 'socket.io';
 import winston, { Logger } from 'winston';
 import flushPromises from 'flush-promises';
+import { ExtendedSocket } from 'types/global.d';
 import RoomService from '../services/room-service';
 import socketLifecycle from './socket-lifecycle';
 import RoomModel from '../models/room';
-import { ExtendedSocket } from '../types/global.d';
 
 jest.mock('../models/room');
 jest.mock('socket.io');

@@ -1,11 +1,11 @@
 import { Container } from 'typedi';
 import { Server } from 'socket.io';
 import winston, { Logger } from 'winston';
+import { ExtendedSocket } from 'types/global.d';
 import socketClientMessages, {
   chatMessage,
   userTyping,
 } from './socket-client-messages';
-import { ExtendedSocket } from '../types/global.d';
 
 jest.mock('socket.io');
 jest.mock('winston');

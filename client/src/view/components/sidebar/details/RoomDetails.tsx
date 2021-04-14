@@ -64,6 +64,7 @@ const RoomDetails = (): JSX.Element => {
       container
       alignContent="space-between"
       className={ classes.gridContainer }
+      data-testid="room-details"
     >
       <Grid item>
         <Paper

@@ -1,7 +1,7 @@
 import type { Server } from 'socket.io';
 import { Container } from 'typedi';
-import { EventNames as Events } from 'types';
-import { ExtendedSocket } from '../types/global.d';
+import { ExtendedSocket } from 'types/global.d';
+import Events from './socket-event-names';
 
 /**
  * Defauilt chat message.
