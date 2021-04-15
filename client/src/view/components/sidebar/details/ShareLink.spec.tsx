@@ -1,8 +1,7 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import io, { Socket } from 'socket.io-client';
-import { Snackbar } from '@material-ui/core';
-import Alert from 'view/components/lib/helpers/Alert';
 import ShareLink from './ShareLink';
 
 jest.mock('socket.io-client', () => {
@@ -34,13 +33,22 @@ describe('Share link', () => {
       ],
     }));
 
-    const wrapper = mount(<ShareLink />);
-    expect(wrapper.find('input').props().value).toEqual('localhost:4242?roomId=123-024');
+    render(<ShareLink />);
+    expect(screen.getByDisplayValue('localhost:4242?roomId=123-024')).toBeDefined();
   });
 
-  it('shows snackbar on copy', () => {
-    const wrapper = shallow(<ShareLink />);
-    expect(wrapper.find(Snackbar)).toHaveLength(1);
-    expect(wrapper.find(Alert)).toHaveLength(1);
+  it('shows snackbar on copy and closes', async () => {
+    Object.defineProperty(global.document, 'execCommand', { value: jest.fn() });
+    render(<ShareLink />);
+    userEvent.click(screen.getByRole('button', { name: /copy invite link to clipboard/i }));
+
+    const movie = await screen.findByText('Copied to clipboard');
+    expect(movie).toBeDefined();
+
+    userEvent.click(screen.getByRole('button', { name: /close alert/i }));
+    await waitFor(() => {
+      expect(screen.queryByText('Copied to clipboard')).toBeFalsy();
+    // expect(screen.getByText('Copied to clipboard')).not.toBeDefined();
+    });
   });
 });

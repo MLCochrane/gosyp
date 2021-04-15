@@ -33,7 +33,7 @@ const InfoBlock = (): JSX.Element => {
         <Typography
           className={ classes.body }
         >
-          Once you&lsquo;re in a room you can see details about it here. Now go get chatting!
+          Once you&apos;re in a room you can see details about it here. Now go get chatting!
         </Typography>
       </Paper>
     </div>

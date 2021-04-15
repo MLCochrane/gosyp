@@ -98,6 +98,7 @@ const ShareLink = (): JSX.Element => {
         <Alert
           variant="success"
           message="Copied to clipboard"
+          closeAriaLabel="close alert"
           closeHandler={ handleClose }
         />
       </Snackbar>
