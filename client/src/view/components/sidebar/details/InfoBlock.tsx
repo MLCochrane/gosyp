@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 const InfoBlock = (): JSX.Element => {
   const classes = useStyles();
   return (
-    <div className="info-block">
+    <div className="info-block" data-testid="info-block">
       <Paper
         className={ classes.paper }
         elevation={ 0 }
@@ -33,7 +33,7 @@ const InfoBlock = (): JSX.Element => {
         <Typography
           className={ classes.body }
         >
-          Once you&lsquo;re in a room you can see details about it here. Now go get chatting!
+          Once you&apos;re in a room you can see details about it here. Now go get chatting!
         </Typography>
       </Paper>
     </div>

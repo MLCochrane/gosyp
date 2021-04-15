@@ -60,7 +60,7 @@
       "lib"
     ],
     "moduleNameMapper": {
-        "^types$": "<rootDir>/src/types"
+      "^types$": "<rootDir>/src/types"
     }
   }
 }

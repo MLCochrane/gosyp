@@ -1,55 +1,28 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import {
-  Close,
-} from '@material-ui/icons';
-import {
-  IconButton,
-  Paper,
-} from '@material-ui/core';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import Alert from './Alert';
 
 it('displays message', () => {
   const func = jest.fn();
-  expect(shallow(<Alert variant="success" message="Hi there" closeHandler={ func } />).contains('Hi there')).toEqual(true);
-  expect(shallow(<Alert variant="success" message="Great job!" closeHandler={ func } />).contains('Great job!')).toEqual(true);
+  render(<Alert variant="success" message="Hi there" closeAriaLabel="close" closeHandler={ func } />);
+  expect(screen.getByText('Hi there')).toBeDefined();
+
+  render(<Alert variant="success" message="Great Job" closeAriaLabel="close" closeHandler={ func } />);
+  expect(screen.getByText('Great Job')).toBeDefined();
 });
 
 it('displays clickable icon', () => {
   const closeMock = jest.fn();
-  const wrapper = shallow(
+  render(
     <Alert
-      variant="success"
+      variant="error"
       message="Howdy hey!"
+      closeAriaLabel="close me"
       closeHandler={ closeMock }
     />,
   );
 
-  expect(wrapper.contains('Howdy hey!')).toEqual(true);
-  expect(wrapper.find(IconButton)).toHaveLength(1);
-  expect(wrapper.find(Close)).toHaveLength(1);
-
-  wrapper.find(IconButton).simulate('click');
+  userEvent.click(screen.getByRole('button', { name: 'close me' }));
   expect(closeMock).toHaveBeenCalledTimes(1);
-});
-
-it('sets class based on variant', () => {
-  const closeMock = jest.fn();
-  const wrapper = shallow(<Alert
-    variant="error"
-    message="Howdy hey!"
-    closeHandler={ closeMock }
-  />);
-
-  expect(wrapper.find(Paper).props().className).toContain('error');
-  expect(wrapper.find(Paper).props().className).not.toContain('success');
-
-  const wrapperTwo = shallow(<Alert
-    variant="success"
-    message="Howdy hey!"
-    closeHandler={ closeMock }
-  />);
-
-  expect(wrapperTwo.find(Paper).props().className).toContain('success');
-  expect(wrapperTwo.find(Paper).props().className).not.toContain('error');
 });

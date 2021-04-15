@@ -1,21 +1,21 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import DetailRow from './DetailRow';
 
 it('displays name and value from props', () => {
-  const wrapper = shallow(<DetailRow
+  render(<DetailRow
     name="Id"
     value="#103-104"
   />);
 
-  expect(wrapper.contains('Id:')).toEqual(true);
-  expect(wrapper.contains('#103-104')).toEqual(true);
+  expect(screen.getByText('Id:')).toBeDefined();
+  expect(screen.getByText('#103-104')).toBeDefined();
 
-  const wrapperTwo = shallow(<DetailRow
+  render(<DetailRow
     name="Created at"
     value="08/13/20"
   />);
 
-  expect(wrapperTwo.contains('Created at:')).toEqual(true);
-  expect(wrapperTwo.contains('08/13/20')).toEqual(true);
+  expect(screen.getByText('Created at:')).toBeDefined();
+  expect(screen.getByText('08/13/20')).toBeDefined();
 });

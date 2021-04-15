@@ -3,6 +3,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import winston, { Logger } from 'winston';
 import flushPromises from 'flush-promises';
+import { ExtendedSocket } from 'types/global.d';
 import RoomService from '../services/room-service';
 import socketRooms, {
   socketCreateRoom,
@@ -10,7 +11,6 @@ import socketRooms, {
   socketLeavesRoom,
 } from './socket-rooms';
 import RoomModel from '../models/room';
-import { ExtendedSocket } from '../types/global.d';
 
 jest.mock('../models/room');
 jest.mock('socket.io');
