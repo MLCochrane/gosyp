@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import ErrorBoundary from './ErrorBoundary';
 
 describe('Error Boundry', () => {
@@ -21,33 +21,31 @@ describe('Error Boundry', () => {
   });
 
   it('displays children if no error thrown', () => {
-    const wrapper = mount(
+    render(
       <ErrorBoundary>
-        <div>
-          No error
-        </div>
+        <h1>No Error</h1>
       </ErrorBoundary>,
     );
-    expect(wrapper.contains('No error')).toEqual(true);
+    expect(screen.getByRole('heading').textContent).toBe('No Error');
   });
 
   it('displays error if error thrown', () => {
-    const wrapper = mount(
+    render(
       <ErrorBoundary>
         <Throw />
       </ErrorBoundary>,
     );
-    expect(wrapper.contains('Something went wrong.')).toEqual(true);
+    expect(screen.getByRole('heading').textContent).toBe('Something went wrong.');
   });
 
   it('displays optional prop instead of message if error thrown', () => {
-    const wrapper = mount(
+    render(
       <ErrorBoundary
-        errorDisplay={ <div className="error">I show message</div> }
+        errorDisplay={ <h1 className="error">I show message</h1> }
       >
         <Throw />
       </ErrorBoundary>,
     );
-    expect(wrapper.contains('I show message')).toEqual(true);
+    expect(screen.getByRole('heading').textContent).toBe('I show message');
   });
 });
