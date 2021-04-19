@@ -157,7 +157,7 @@ const Form = ({
 
   return (
     <Container>
-      <form className={ `${formName}-form` } noValidate onSubmit={ handleSubmit }>
+      <form className={ `${formName}-form` } noValidate onSubmit={ handleSubmit } aria-label="form">
         {
           fields.map((el) => (
             <TextField
