@@ -54,7 +54,6 @@ const SwitchView = ({
               unmountOnExit
               in={ !trigger }
               key="loaderKey"
-              // appear
               timeout={ useAnimation ? 300 : 0 }
               onEnter={ (node: Element) => enterView(node) }
               onExit={ (node: Element) => leaveView(node) }
@@ -67,7 +66,6 @@ const SwitchView = ({
               unmountOnExit
               in={ trigger }
               key="childKey"
-              // appear
               timeout={ useAnimation ? 300 : 0 }
               onEnter={ (node: Element) => enterView(node) }
               onExit={ (node: Element) => leaveView(node) }
