@@ -1,40 +1,50 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import UserMessage from './UserMessage';
 
-const props = {
-  id: 'random',
-  msg: 'Howdy',
-  timestamp: new Date('March 20, 2020'),
-  user: {
-    id: 'userid',
-    nickname: null,
-  },
-};
-
 it('renders props', () => {
-  const wrapper = shallow(<UserMessage
+  render(<UserMessage
     messageType="message"
-    { ...props }
+    id="random"
+    msg="Howdy"
+    timestamp={ new Date('March 20, 2020 23:12:00') }
+    user={ {
+      id: 'userid',
+      nickname: null,
+    } }
   />);
 
-  expect(wrapper.contains('12:00:00 AM')).toEqual(true);
-  expect(wrapper.contains('Howdy')).toEqual(true);
-  expect(wrapper.contains('userid')).toEqual(true);
+  expect(screen.getByText('11:12:00 PM')).toBeDefined();
+  expect(screen.getByText('Howdy')).toBeDefined();
+  expect(screen.getByText('userid')).toBeDefined();
 });
 
 it('displays nickname if provided', () => {
-  const wrapper = shallow(<UserMessage
+  render(<UserMessage
     messageType="message"
-    { ...props }
+    id="random"
+    msg="Oh hey there!"
+    timestamp={ new Date('March 20, 2020') }
     user={ {
       id: 'userid',
       nickname: 'Joe',
     } }
   />);
 
-  expect(wrapper.contains('12:00:00 AM')).toEqual(true);
-  expect(wrapper.contains('Howdy')).toEqual(true);
-  expect(wrapper.contains('userid')).toEqual(false);
-  expect(wrapper.contains('Joe')).toEqual(true);
+  expect(screen.getByText('12:00:00 AM')).toBeDefined();
+  expect(screen.getByText('Oh hey there!')).toBeDefined();
+  expect(screen.getByText('Joe')).toBeDefined();
+  expect(screen.queryByText('userid')).toBeFalsy();
+
+  render(<UserMessage
+    messageType="message"
+    id="random"
+    msg="How are things?"
+    timestamp={ new Date('March 20, 2020') }
+    user={ {
+      id: 'userid',
+      nickname: 'Joe',
+    } }
+    hideMeta
+  />);
 });
