@@ -1,5 +1,6 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import * as Redux from 'react-redux';
 import io, { Socket } from 'socket.io-client';
 import Form from './Form';
@@ -31,18 +32,21 @@ describe('Chat input form', () => {
     useSelectorSpy.mockReturnValue(initialState);
   });
 
-  it('emits typing event on change and blur', () => {
+  it('emits typing event on change and blur', async () => {
     const mockedEmit = (mockedSocket.emit as jest.Mock).mockImplementationOnce(
       (event, message) => message,
     );
-    const wrapper = mount(<Form />);
-    const input = wrapper.find('input');
-    input.simulate('focus');
-    input.simulate('change', { target: { value: 'My message' } });
-    expect(mockedEmit).toHaveBeenCalledTimes(1);
+    render(<Form />);
+    const inputElement = screen.getByRole('textbox');
+
+    // Typing in field
+    userEvent.type(inputElement, 'Hey there');
+
+    expect(mockedEmit).toHaveBeenCalledTimes(9);
     expect(mockedEmit).toHaveBeenCalledWith('userTyping', '5593', true);
-    input.simulate('blur');
-    expect(mockedEmit).toHaveBeenCalledTimes(2);
+    inputElement.dispatchEvent(new Event('blur'));
+
+    expect(mockedEmit).toHaveBeenCalledTimes(10);
     expect(mockedEmit).toHaveBeenCalledWith('userTyping', '5593', false);
   });
 
@@ -50,16 +54,24 @@ describe('Chat input form', () => {
     const mockedEmit = (mockedSocket.emit as jest.Mock).mockImplementationOnce(
       (event, message) => message,
     );
-    const wrapper = mount(<Form />);
-    const input = wrapper.find('input');
-    input.simulate('change', { target: { value: 'My message' } });
-    input.simulate('submit', {
-      preventDefault: () => null,
-      target: { value: 'My message' },
-    });
-    expect(mockedEmit).toHaveBeenCalledTimes(3);
+    const { rerender } = render(<Form />);
+    const inputElement = screen.getByRole('textbox');
+    const button = screen.getByRole('button', { name: 'Send' });
+
+    // Sends message
+    userEvent.type(inputElement, 'Hi');
+    userEvent.click(button);
+    expect(mockedEmit).toHaveBeenCalledTimes(5);
     expect(mockedEmit).toHaveBeenCalledWith('userTyping', '5593', true);
     expect(mockedEmit).toHaveBeenCalledWith('userTyping', '5593', false);
-    expect(mockedEmit).toHaveBeenCalledWith('chatMessage', '5593', 'My message');
+    expect(mockedEmit).toHaveBeenCalledWith('chatMessage', '5593', 'Hi');
+
+    // Test if disabled attr removed from button
+    rerender(<Form />);
+    const form = screen.getByRole('form');
+    form.dispatchEvent(new Event('submit'));
+
+    // Not called with empty form
+    expect(mockedEmit).toHaveBeenCalledTimes(5);
   });
 });
