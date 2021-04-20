@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -54,35 +54,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Sidebar = (): JSX.Element => {
   const classes = useStyles();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
-  const drawer = (hasButton: boolean) => (
-    <>
-      <div className={ classes.toolbar }>
-        {
-            hasButton
-              ? (
-                <IconButton
-                  color="inherit"
-                  aria-label="close drawer"
-                  edge="start"
-                  onClick={ handleDrawerToggle }
-                  className={ classes.closeButton }
-                >
-                  <Close />
-                </IconButton>
-              )
-              : null
-          }
-      </div>
-      <Divider />
-      <Details />
-    </>
-  );
 
   return (
     <>
@@ -103,24 +79,36 @@ const Sidebar = (): JSX.Element => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <nav className={ classes.drawer } aria-label="mailbox folders">
-        <Hidden lgUp implementation="css">
-          <Drawer
-            variant="temporary"
-            anchor="left"
-            open={ mobileOpen }
-            onClose={ handleDrawerToggle }
-            classes={ {
-              paper: classes.drawerPaper,
-            } }
-            ModalProps={ {
-              keepMounted: true,
-            } }
-          >
-            { drawer(true) }
-          </Drawer>
-        </Hidden>
-        <Hidden mdDown implementation="css">
+      <Hidden lgUp implementation="css">
+        <Drawer
+          variant="temporary"
+          anchor="left"
+          open={ mobileOpen }
+          onClose={ handleDrawerToggle }
+          classes={ {
+            paper: classes.drawerPaper,
+          } }
+          ModalProps={ {
+            keepMounted: true,
+          } }
+        >
+          <div className={ classes.toolbar }>
+            <IconButton
+              color="inherit"
+              aria-label="close drawer"
+              edge="start"
+              onClick={ handleDrawerToggle }
+              className={ classes.closeButton }
+            >
+              <Close />
+            </IconButton>
+          </div>
+          <Divider />
+          <Details />
+        </Drawer>
+      </Hidden>
+      <Hidden mdDown implementation="css">
+        <div className={ classes.drawer }>
           <Drawer
             classes={ {
               paper: classes.drawerPaper,
@@ -128,10 +116,11 @@ const Sidebar = (): JSX.Element => {
             variant="permanent"
             open
           >
-            { drawer(false) }
+            <Divider />
+            <Details />
           </Drawer>
-        </Hidden>
-      </nav>
+        </div>
+      </Hidden>
     </>
   );
 };

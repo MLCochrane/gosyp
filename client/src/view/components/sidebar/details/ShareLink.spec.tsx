@@ -42,8 +42,8 @@ describe('Share link', () => {
     render(<ShareLink />);
     userEvent.click(screen.getByRole('button', { name: /copy invite link to clipboard/i }));
 
-    const movie = await screen.findByText('Copied to clipboard');
-    expect(movie).toBeDefined();
+    const snackbar = await screen.findByText('Copied to clipboard');
+    expect(snackbar).toBeDefined();
 
     userEvent.click(screen.getByRole('button', { name: /close alert/i }));
     await waitFor(() => {

@@ -1,9 +1,9 @@
 import React from 'react';
 import * as Redux from 'react-redux';
-import { shallow, mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom';
 import io, { Socket } from 'socket.io-client';
-import { IconButton } from '@material-ui/core';
-import { ExitToApp } from '@material-ui/icons';
 import { leaveRoom } from 'store/actions/roomActions';
 import LeaveRoom from './LeaveRoom';
 
@@ -38,18 +38,17 @@ describe('Leave room button', () => {
   });
 
   it('renders icon button', () => {
-    const wrapper = shallow(<LeaveRoom />);
+    render(<LeaveRoom />);
 
-    expect(wrapper.find(IconButton)).toHaveLength(1);
-    expect(wrapper.find(ExitToApp)).toHaveLength(1);
+    expect(screen.getByRole('button', { name: /leave current chat room/i })).toBeDefined();
   });
 
   it('emits socket event for leaving room', () => {
-    const wrapper = mount(<LeaveRoom />);
+    render(<LeaveRoom />);
     const mockedEmit = (mockedSocket.emit as jest.Mock).mockImplementationOnce(
       (event, message) => message,
     );
-    wrapper.find(IconButton).simulate('click');
+    userEvent.click(screen.getByRole('button'));
     expect(mockedEmit).toHaveBeenCalledTimes(1);
     expect(mockedEmit).toHaveBeenCalledWith('removeMeFromRoom', '5593');
   });
@@ -57,9 +56,9 @@ describe('Leave room button', () => {
   it('sends dispatch event to clear rooms from state', () => {
     const ourSpy = jest.fn();
     useDispatchSpy.mockReturnValue(ourSpy);
-    const wrapper = mount(<LeaveRoom />);
+    render(<LeaveRoom />);
 
-    wrapper.find(IconButton).simulate('click');
+    userEvent.click(screen.getByRole('button'));
     expect(ourSpy).toHaveBeenCalledTimes(1);
     expect(ourSpy).toHaveBeenCalledWith(leaveRoom('5593'));
   });
