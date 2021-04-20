@@ -1,10 +1,8 @@
 import React from 'react';
 import * as Redux from 'react-redux';
 import io, { Socket } from 'socket.io-client';
-import { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import Feed from './Feed';
-import UserMessage from './messages/UserMessage';
-import StatusMessage from './messages/StatusMessage';
 
 jest.mock('socket.io-client', () => {
   const emit = jest.fn();
@@ -41,7 +39,7 @@ describe('Feed', () => {
               id: null,
               nickname: null,
             },
-            timestamp: new Date(''),
+            timestamp: new Date('June 20, 2021'),
           });
         case 'userJoined':
           return cb({
@@ -49,7 +47,7 @@ describe('Feed', () => {
               id: null,
               nickname: null,
             },
-            timestamp: new Date(''),
+            timestamp: new Date('June 20, 2021'),
           });
         case 'chatMessage':
           return cb({
@@ -58,15 +56,15 @@ describe('Feed', () => {
               nickname: null,
             },
             msg: '',
-            timestamp: new Date(''),
+            timestamp: new Date('June 20, 2021'),
           });
         default:
           return cb(null);
       }
     });
-    const wrapper = mount(<Feed />);
-    expect(wrapper.find(UserMessage)).toHaveLength(0);
-    expect(wrapper.find(StatusMessage)).toHaveLength(0);
+
+    render(<Feed />);
+    expect(screen.getByRole('heading').textContent).toBe('No one\'s talking... awkward');
   });
 
   it('displays user message when socket recieves chat message', () => {
@@ -80,7 +78,7 @@ describe('Feed', () => {
               nickname: null,
             },
             msg: 'Hi hi',
-            timestamp: new Date(''),
+            timestamp: new Date('June 20, 2021'),
           });
         default:
           return cb({
@@ -88,13 +86,12 @@ describe('Feed', () => {
               id: null,
               nickname: null,
             },
-            timestamp: new Date(''),
+            timestamp: new Date('June 20, 2021'),
           });
       }
     });
-    const wrapper = mount(<Feed />);
-    expect(wrapper.find(UserMessage)).toHaveLength(1);
-    expect(wrapper.find(StatusMessage)).toHaveLength(0);
+    render(<Feed />);
+    expect(screen.getByText('Hi hi')).toBeDefined();
   });
 
   it('displays both message types', () => {
@@ -106,15 +103,15 @@ describe('Feed', () => {
               id: '12345',
               nickname: null,
             },
-            timestamp: new Date(''),
+            timestamp: new Date('June 20, 2021'),
           });
         case 'userJoined':
           return cb({
             user: {
-              id: '12345',
+              id: '51515',
               nickname: null,
             },
-            timestamp: new Date(''),
+            timestamp: new Date('June 20, 2021'),
           });
         case 'chatMessage':
           return cb({
@@ -123,15 +120,16 @@ describe('Feed', () => {
               id: '12345',
               nickname: null,
             },
-            msg: 'Hi hi',
-            timestamp: new Date(''),
+            msg: 'How is everyone tonight??',
+            timestamp: new Date('June 20, 2021'),
           });
         default:
           return cb(null);
       }
     });
-    const wrapper = mount(<Feed />);
-    expect(wrapper.find(UserMessage)).toHaveLength(1);
-    expect(wrapper.find(StatusMessage)).toHaveLength(2);
+    render(<Feed />);
+    expect(screen.getByText('12345 has left the chat.')).toBeDefined();
+    expect(screen.getByText('51515 has joined the chat.')).toBeDefined();
+    expect(screen.getByText('How is everyone tonight??')).toBeDefined();
   });
 });

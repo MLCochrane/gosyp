@@ -54,6 +54,7 @@ const Form = (): JSX.Element => {
         className={ classes.form }
         onSubmit={ formSubmit }
         action=""
+        aria-label="form"
       >
         <TextField
           className={ classes.field }
@@ -62,6 +63,8 @@ const Form = (): JSX.Element => {
           value={ message }
           placeholder="Enter message..."
           variant="outlined"
+          name="message"
+          label="Message"
           fullWidth
         />
         <Button
