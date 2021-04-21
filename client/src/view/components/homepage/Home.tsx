@@ -73,6 +73,7 @@ const Home = (): JSX.Element => {
         />
         <Button
           color="primary"
+          data-testid="toggle-button"
           className={ classes.buttonToggle }
           onClick={ handleClick }
         >
