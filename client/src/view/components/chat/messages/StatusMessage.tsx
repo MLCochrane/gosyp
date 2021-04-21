@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => (
 const StatusMessage = ({
   msg,
   timestamp,
-}: StatusUpdate) => {
+}: StatusUpdate): JSX.Element => {
   const classes = useStyles();
 
   const showTime = () => {

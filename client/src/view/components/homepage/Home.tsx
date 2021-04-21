@@ -3,13 +3,14 @@ import {
   Container,
   Button,
   Typography,
+  Theme,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SwitchView from '../lib/helpers/SwitchView';
 import CreateForm from './create/CreateForm';
 import JoinFrom from './join/JoinForm';
 
-const useStyles = makeStyles((theme: any) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   home: {
     position: 'relative',
     height: '100%',
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme: any) => ({
   },
 }));
 
-const Home = () => {
+const Home = (): JSX.Element => {
   const classes = useStyles();
   const [formToggle, setFormToggle] = useState(false);
   const handleClick = () => {
@@ -60,18 +61,19 @@ const Home = () => {
         >
           {
             !formToggle
-            ? "Join Room"
-            : "Create Room"
+              ? 'Join Room'
+              : 'Create Room'
           }
         </Typography>
         <SwitchView
-          trigger={formToggle }
+          trigger={ formToggle }
           current={ JoinFrom }
           next={ CreateForm }
           useAnimation
         />
         <Button
           color="primary"
+          data-testid="toggle-button"
           className={ classes.buttonToggle }
           onClick={ handleClick }
         >

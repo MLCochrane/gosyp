@@ -3,6 +3,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import winston, { Logger } from 'winston';
 import flushPromises from 'flush-promises';
+import { ExtendedSocket } from 'types/global.d';
 import RoomService from '../services/room-service';
 import socketRooms, {
   socketCreateRoom,
@@ -10,13 +11,11 @@ import socketRooms, {
   socketLeavesRoom,
 } from './socket-rooms';
 import RoomModel from '../models/room';
-import { ExtendedSocket } from '../types/global';
 
 jest.mock('../models/room');
 jest.mock('socket.io');
 jest.mock('winston');
 jest.mock('../services/room-service');
-
 
 let mockedSocket: ExtendedSocket;
 describe('Room CRUD', () => {
@@ -62,7 +61,7 @@ describe('Room CRUD', () => {
     socketRooms({ socket: userSocket });
 
     expect(userSocket.on).toBeCalledTimes(3);
-    expect((userSocket.on as any).mock.calls).toEqual(
+    expect((userSocket.on as jest.Mock).mock.calls).toEqual(
       [
         ['addMeToRoom', expect.anything()],
         ['removeMeFromRoom', expect.anything()],
@@ -147,9 +146,9 @@ describe('Room CRUD', () => {
       },
     ];
     const userSocket = mockedSocket as ExtendedSocket;
-    (userSocket.broadcast as any) = userSocket;
+    (userSocket.broadcast as unknown) = userSocket;
     (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb({ 'room-id': '583' }));
-    (userSocket.join as jest.Mock).mockImplementationOnce((event) => null);
+    (userSocket.join as jest.Mock).mockImplementationOnce(() => null);
     (mockedRoomService.CheckForRoom as jest.Mock).mockReturnValue(true);
     (mockedRoomService.UpdateRoomUsers as jest.Mock).mockReturnValue(roomDetails);
 
@@ -167,7 +166,7 @@ describe('Room CRUD', () => {
           id: '123',
           nickname: null,
         },
-      })
+      }),
     );
     expect(mockedIO.emit).toHaveBeenCalledWith(
       'updatedRoomInfo',
@@ -195,11 +194,11 @@ describe('Room CRUD', () => {
       },
     ];
     const userSocket = mockedSocket as ExtendedSocket;
-    userSocket.rooms = new Set(['583']);
+    (userSocket.rooms as Set<string>) = new Set(['583']);
 
-    (userSocket.broadcast as any) = userSocket;
+    (userSocket.broadcast as unknown) = userSocket;
     (userSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb('583'));
-    (userSocket.leave as jest.Mock).mockImplementationOnce((event) => null);
+    (userSocket.leave as jest.Mock).mockImplementationOnce(() => null);
     (mockedRoomService.CheckForRoom as jest.Mock).mockReturnValue(true);
     (mockedRoomService.UpdateRoomUsers as jest.Mock).mockReturnValue(roomDetails);
 

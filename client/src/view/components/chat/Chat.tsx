@@ -7,6 +7,7 @@ import {
 } from 'react-redux';
 import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { AppState } from 'store/reducers';
 import Feed from './Feed';
 import MessageForm from './form/Form';
 import TypingAlert from './TypingAlert';
@@ -21,8 +22,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Chat = () => {
-  const { needsResize, appHeight } = useSelector((state: any) => state.global);
+const Chat = (): JSX.Element => {
+  const { needsResize, appHeight } = useSelector((state: AppState) => state.global);
   const [mobileStyle, setMobileStyle] = useState({});
 
   /**
@@ -34,7 +35,7 @@ const Chat = () => {
   useEffect(() => {
     if (needsResize === 1) {
       setMobileStyle({
-        height: appHeight + 'px',
+        height: `${appHeight}px`,
       });
     }
   }, [needsResize, appHeight]);

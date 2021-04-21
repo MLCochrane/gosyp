@@ -2,10 +2,10 @@ import { Container } from 'typedi';
 import { Server } from 'socket.io';
 import winston, { Logger } from 'winston';
 import flushPromises from 'flush-promises';
+import { ExtendedSocket } from 'types/global.d';
 import RoomService from '../services/room-service';
 import socketLifecycle from './socket-lifecycle';
 import RoomModel from '../models/room';
-import { ExtendedSocket } from '../types/global';
 
 jest.mock('../models/room');
 jest.mock('socket.io');
@@ -40,9 +40,9 @@ describe('Room lifecycle', () => {
   });
 
   it('sends room update if others in room and socket leaves', async () => {
-    const roomDetailsStub = [
+    const roomDetailsStub: ClientRoomInterface = [
       {
-        name: 'Room ID',
+        name: 'ID',
         value: '12345',
       },
       {
@@ -50,16 +50,16 @@ describe('Room lifecycle', () => {
         value: '',
       },
       {
-        name: 'Created At',
+        name: 'Created at',
         value: 'Thursday',
       },
       {
-        name: 'Active users',
+        name: 'Active Users',
         value: 1,
       },
     ];
     const userSocket = mockedSocket as ExtendedSocket;
-    userSocket.rooms = new Set(['12345']);
+    (userSocket.rooms as Set<string>) = new Set(['12345']);
     (userSocket.on as jest.Mock).mockImplementation((event, cb) => cb());
     mockedRoomService.UpdateRoomUsers.mockResolvedValueOnce(roomDetailsStub);
 
@@ -87,7 +87,7 @@ describe('Room lifecycle', () => {
 
   it('does not send any events if room no longer has anyone in it', async () => {
     const userSocket = mockedSocket as ExtendedSocket;
-    userSocket.rooms = new Set(['548']);
+    (userSocket.rooms as Set<string>) = new Set(['548']);
     (userSocket.on as jest.Mock).mockImplementation((event, cb) => cb());
     mockedRoomService.UpdateRoomUsers.mockResolvedValueOnce(false);
 

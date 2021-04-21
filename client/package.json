@@ -1,5 +1,5 @@
 {
-  "name": "jkpn",
+  "name": "gosyp",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -13,17 +13,18 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-redux": "^7.2.2",
-    "react-scripts": "^3.4.4",
+    "react-scripts": "^4.0.3",
     "react-transition-group": "^4.4.1",
     "redux": "^4.0.5",
-    "socket.io-client": "^3.1.2",
+    "sass": "^1.32.8",
+    "socket.io-client": "^4.0.1",
     "yup": "^0.32.9"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build && node postbuild.js",
-    "watch": "react-scripts test",
-    "test": "react-scripts test --watchAll='false' --maxWorkers=2",
+    "watch": "react-scripts test --coverage",
+    "test": "react-scripts test --watchAll='false' --maxWorkers=2 --coverage",
     "eject": "react-scripts eject",
     "log": "ls -la"
   },
@@ -42,7 +43,14 @@
       "last 1 safari version"
     ]
   },
+  "jest": {
+    "resetMocks": false
+  },
   "devDependencies": {
+    "@babel/core": "^7.13.5",
+    "@testing-library/jest-dom": "^5.11.10",
+    "@testing-library/react": "^11.2.6",
+    "@testing-library/user-event": "^13.1.3",
     "@types/enzyme": "^3.10.8",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^26.0.20",
@@ -50,9 +58,8 @@
     "@types/react-dom": "^16.9.10",
     "@types/react-redux": "^7.1.15",
     "@types/socket.io-client": "^1.4.35",
-    "@types/yup": "^0.29.11",
-    "@typescript-eslint/eslint-plugin": "^3.10.1",
-    "@typescript-eslint/parser": "^3.10.1",
+    "@typescript-eslint/eslint-plugin": "^4.21.0",
+    "@typescript-eslint/parser": "^4.21.0",
     "axios-mock-adapter": "^1.19.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
@@ -62,10 +69,9 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "node-sass": "^4.14.1",
     "path-to-regexp": "^6.2.0",
     "prop-types": "^15.7.2",
     "react-test-renderer": "^16.14.0",
-    "typescript": "^3.9.7"
+    "typescript": "^4.2.4"
   }
 }

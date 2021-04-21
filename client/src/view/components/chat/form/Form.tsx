@@ -9,6 +9,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { socket } from 'api';
 import Events from 'view/components/lib/events/eventTypes';
+import { AppState } from 'store/reducers';
 
 const useStyles = makeStyles((theme) => (
   {
@@ -24,9 +25,9 @@ const useStyles = makeStyles((theme) => (
   }
 ));
 
-const Form = () => {
+const Form = (): JSX.Element => {
   const classes = useStyles();
-  const { currentRoom: roomID } = useSelector((state: any) => state.rooms);
+  const { currentRoom: roomID } = useSelector((state: AppState) => state.rooms);
   const [message, setMessage] = useState('');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -53,6 +54,7 @@ const Form = () => {
         className={ classes.form }
         onSubmit={ formSubmit }
         action=""
+        aria-label="form"
       >
         <TextField
           className={ classes.field }
@@ -61,6 +63,8 @@ const Form = () => {
           value={ message }
           placeholder="Enter message..."
           variant="outlined"
+          name="message"
+          label="Message"
           fullWidth
         />
         <Button

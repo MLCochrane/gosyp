@@ -1,7 +1,6 @@
 import React, {
   useState,
   useRef,
-  MouseEvent,
 } from 'react';
 import {
   Paper,
@@ -27,43 +26,46 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-const ShareLink = () => {
+const ShareLink = (): JSX.Element => {
   const classes = useStyles();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [roomDetails] = RoomDetailsUpdated();
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLDivElement>(null);
 
   const generateLink = () => {
     const [roomID] = roomDetails;
     const host = process.env.NODE_ENV === 'production' ? window.location.origin : process.env.REACT_APP_CLIENT_URL;
-    return roomID ? `${host}?roomId=${roomID.value}` : ''
-  }
+    return roomID ? `${host}?roomId=${roomID.value}` : '';
+  };
 
-  const handleClickCopy = (e: MouseEvent) => {
+  const handleClickCopy = () => {
     if (inputRef != null && inputRef.current != null) {
-      const input = (inputRef.current as any).querySelector('input');
+      const input = inputRef.current.querySelector('input');
+      if (!input) return;
       input.select();
-      document.execCommand("copy");
+      document.execCommand('copy');
       input.blur();
       setSnackbarOpen(true);
     }
-  }
+  };
 
   const handleClose = () => {
     setSnackbarOpen(false);
-  }
+  };
 
   return (
     <Paper
-      elevation={0}
+      elevation={ 0 }
     >
       <Typography
         variant="h5"
         component="p"
         className={ classes.message }
       >
-        Chatting is better with friends! Share the invite link below to encourage others to join your room.
+        {
+        'Chatting is better with friends! '
+        + 'Share the invite link below to encourage others to join your room.'
+        }
       </Typography>
       <TextField
         fullWidth
@@ -72,34 +74,35 @@ const ShareLink = () => {
         id="share-link"
         value={ generateLink() }
         ref={ inputRef }
-        InputProps={{
+        InputProps={ {
           endAdornment: (
             <InputAdornment position="end">
               <Tooltip title="Copy invite link">
                 <IconButton
                   aria-label="copy invite link to clipboard"
                   onClick={ handleClickCopy }
-                  >
+                >
                   <FileCopy />
                 </IconButton>
               </Tooltip>
             </InputAdornment>
-          )
-        }}
+          ),
+        } }
       />
       <Snackbar
-        open={snackbarOpen}
+        open={ snackbarOpen }
         // autoHideDuration={6000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        onClose={ handleClose }
+        anchorOrigin={ { vertical: 'bottom', horizontal: 'left' } }
       >
         <Alert
           variant="success"
           message="Copied to clipboard"
+          closeAriaLabel="close alert"
           closeHandler={ handleClose }
         />
       </Snackbar>
     </Paper>
-  )
-}
+  );
+};
 export default ShareLink;

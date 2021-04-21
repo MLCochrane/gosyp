@@ -12,9 +12,8 @@
     "experimentalDecorators": true,
     "typeRoots": [
       "./node_modules/@types",
-      "./src/types"
     ],
-    "jsx": "react",
+    "jsx": "react-jsx",
     "lib": [
       "dom",
       "dom.iterable",
@@ -24,9 +23,9 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "noFallthroughCasesInSwitch": true,
   },
-  "include": [
-    "src"
-  ]
+  "exclude": ["src/__mocks__"],
+  "include": ["src"]
 }

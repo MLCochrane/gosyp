@@ -1,10 +1,8 @@
 import React from 'react';
 import * as Redux from 'react-redux';
-import { shallow, mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import io, { Socket } from 'socket.io-client';
 import RoomDetails from './RoomDetails';
-import DetailRow from './DetailRow';
-import ShareLink from './ShareLink';
 
 jest.mock('socket.io-client', () => {
   const emit = jest.fn();
@@ -26,7 +24,7 @@ describe('Room specific detail widget', () => {
 
     const initialState = {
       rooms: {
-        '5593': '5593',
+        5593: '5593',
       },
       currentRoom: '5593',
     };
@@ -34,35 +32,37 @@ describe('Room specific detail widget', () => {
     useSelectorSpy.mockReturnValue(initialState);
   });
 
-  it('renders default rows before getting details', () => {
-    const wrapper = shallow(<RoomDetails />);
-    expect(wrapper.find(DetailRow)).toHaveLength(0);
-    expect(wrapper.find(ShareLink)).toHaveLength(1);
+  it('updates rows when receiving new details', () => {
+    (mockedSocket.on as jest.Mock).mockImplementation((event, cb) => cb({
+      roomDetails: [
+        {
+          name: 'ID',
+          value: '#123-024',
+        },
+        {
+          name: 'Room Name',
+          value: 'PopPop',
+        },
+        {
+          name: 'Created at',
+          value: '12/24/20',
+        },
+      ],
+    }));
+
+    render(<RoomDetails />);
+    expect(screen.getByText('ID:')).toBeDefined();
+    expect(screen.getByText('Room Name:')).toBeDefined();
+    expect(screen.getByText('Created at:')).toBeDefined();
+
+    expect(screen.getByText('#123-024')).toBeDefined();
+    expect(screen.getByText('PopPop')).toBeDefined();
+    expect(screen.getByText('12/24/20')).toBeDefined();
   });
 
-  it('updates rows when receiving new details', () => {
-    (mockedSocket.on as jest.Mock).mockImplementation((event, cb) => {
-      if (event === 'updatedRoomInfo') {
-        return cb({
-        roomDetails: [
-          {
-            name: 'ID',
-            value: '#123-024',
-          },
-          {
-            name: 'Room Name:',
-            value: 'PopPop',
-          },
-          {
-            name: 'Created at:',
-            value: '12/24/20',
-          },
-        ]
-      });
-      }
-    });
-
-    const wrapper = mount(<RoomDetails />);
-    expect(wrapper.find(DetailRow)).toHaveLength(3);
+  it('renders our two buttons,', () => {
+    render(<RoomDetails />);
+    expect(screen.getByRole('button', { name: /leave current chat room/i })).toBeDefined();
+    expect(screen.getByRole('button', { name: /copy invite link to clipboard/i })).toBeDefined();
   });
 });

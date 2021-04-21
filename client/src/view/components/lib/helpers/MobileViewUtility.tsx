@@ -5,18 +5,19 @@ import {
   useDispatch,
   useSelector,
 } from 'react-redux';
-import { MobileCheck, ResizeHandler } from './windowEvents';
 import {
   setNeedsResize,
   setShouldResize,
   mobileDetect,
   setAppHeight,
 } from 'store/actions/globalActions';
+import { AppState } from 'store/reducers';
+import { MobileCheck, ResizeHandler } from './windowEvents';
 
-const MobileViewUtility = () => {
+const MobileViewUtility = (): JSX.Element => {
   const [smallScreen] = MobileCheck();
   const [isResizing] = ResizeHandler();
-  const { isMobile } = useSelector((state: any) => state.global);
+  const { isMobile } = useSelector((state: AppState) => state.global);
 
   const dispatch = useDispatch();
   /**
@@ -50,5 +51,5 @@ const MobileViewUtility = () => {
     <>
     </>
   );
-}
+};
 export default MobileViewUtility;

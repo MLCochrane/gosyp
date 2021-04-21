@@ -13,7 +13,8 @@ import { makeStyles } from '@material-ui/core/styles';
 interface AlertProps {
   variant: 'success' | 'error',
   message: string,
-  closeHandler: Function,
+  closeAriaLabel: string,
+  closeHandler: () => void,
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -28,29 +29,33 @@ const useStyles = makeStyles((theme) => ({
   },
   closeButton: {
     marginLeft: theme.spacing(1),
-  }
+  },
 }));
 
 const Alert = ({
   variant,
   message,
+  closeAriaLabel,
   closeHandler,
-}: AlertProps) => {
+}: AlertProps): JSX.Element => {
   const classes = useStyles();
 
+  // eslint-disable-next-line consistent-return
   const backgroundClass = () => {
-    switch(variant) {
+    switch (variant) {
       case 'success':
         return classes.success;
       case 'error':
         return classes.error;
+
+      // no default
     }
-  }
+  };
 
   return (
     <Paper
       elevation={ 0 }
-      className={ `${ classes.wrapper } ${ backgroundClass() }` }
+      className={ `${classes.wrapper} ${backgroundClass()}` }
     >
       <Grid container alignItems="center">
         <Grid item>
@@ -62,14 +67,14 @@ const Alert = ({
           <IconButton
             size="small"
             className={ classes.closeButton }
-            aria-label="copy invite link to clipboard"
+            aria-label={ closeAriaLabel }
             onClick={ () => closeHandler() }
-            >
+          >
             <Close />
           </IconButton>
         </Grid>
       </Grid>
     </Paper>
-  )
-}
+  );
+};
 export default Alert;

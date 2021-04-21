@@ -1,9 +1,14 @@
 import React from 'react';
 import * as Redux from 'react-redux';
-import { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import io, { Socket } from 'socket.io-client';
 import DetailWidget from './DetailWidget';
-import SwitchView from '../../lib/helpers/SwitchView';
+
+jest.mock('react-transition-group', () => {
+  const Transition = jest.fn(({ children }) => (children || null));
+  const TransitionGroup = jest.fn(({ children }) => (children || null));
+  return { Transition, TransitionGroup };
+});
 
 jest.mock('socket.io-client', () => {
   const emit = jest.fn();
@@ -25,7 +30,7 @@ describe('Detail widget wrapper', () => {
 
     const initialState = {
       rooms: {
-        '5593': '5593',
+        5593: '5593',
       },
       currentRoom: '5593',
     };
@@ -33,17 +38,18 @@ describe('Detail widget wrapper', () => {
     useSelectorSpy.mockReturnValue(initialState);
   });
 
-  it('sets switch trigger to false when not in room', () => {
+  it('displays info block when not in room', () => {
     (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb(false));
-    const wrapper = mount(<DetailWidget />);
-    expect(wrapper.find(SwitchView)).toHaveLength(1);
-    expect(wrapper.find(SwitchView).props().trigger).toEqual(false);
+    render(<DetailWidget />);
+    expect(screen.getByTestId('info-block')).toBeDefined();
+    expect(screen.queryByTestId('room-details')).toBeFalsy();
   });
 
-  it('sets switch trigger to true when in room', () => {
+  it('displays room details when in room', () => {
     (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb(true));
-    const wrapper = mount(<DetailWidget />);
-    expect(wrapper.find(SwitchView)).toHaveLength(1);
-    expect(wrapper.find(SwitchView).props().trigger).toEqual(true);
+    render(<DetailWidget />);
+
+    expect(screen.queryByTestId('info-block')).toBeFalsy();
+    expect(screen.getByTestId('room-details')).toBeDefined();
   });
 });

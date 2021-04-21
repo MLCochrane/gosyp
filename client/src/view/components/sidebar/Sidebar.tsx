@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -8,7 +8,7 @@ import {
   Hidden,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Close } from '@material-ui/icons'
+import { Close } from '@material-ui/icons';
 import Details from './details/DetailWidget';
 import Burger from './Burger';
 
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     [theme.breakpoints.up('lg')]: {
-      background: `linear-gradient(0, transparent, ${ theme.palette.background.paper })`,
+      background: `linear-gradient(0, transparent, ${theme.palette.background.paper})`,
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },
@@ -52,38 +52,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Sidebar = () => {
+const Sidebar = (): JSX.Element => {
   const classes = useStyles();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
-  };
-
-  const drawer = (hasButton: boolean) => {
-    return (
-      <>
-        <div className={ classes.toolbar }>
-          {
-            hasButton
-            ? (
-            <IconButton
-              color="inherit"
-              aria-label="close drawer"
-              edge="start"
-              onClick={ handleDrawerToggle }
-              className={ classes.closeButton }
-            >
-              <Close />
-            </IconButton>
-            )
-            : null
-          }
-        </div>
-        <Divider />
-        <Details />
-      </>
-    )
   };
 
   return (
@@ -105,24 +79,36 @@ const Sidebar = () => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <nav className={ classes.drawer } aria-label="mailbox folders">
-        <Hidden lgUp implementation="css">
-          <Drawer
-            variant="temporary"
-            anchor="left"
-            open={ mobileOpen }
-            onClose={ handleDrawerToggle }
-            classes={ {
-              paper: classes.drawerPaper,
-            } }
-            ModalProps={ {
-              keepMounted: true,
-            } }
-          >
-            { drawer(true) }
-          </Drawer>
-        </Hidden>
-        <Hidden mdDown implementation="css">
+      <Hidden lgUp implementation="css">
+        <Drawer
+          variant="temporary"
+          anchor="left"
+          open={ mobileOpen }
+          onClose={ handleDrawerToggle }
+          classes={ {
+            paper: classes.drawerPaper,
+          } }
+          ModalProps={ {
+            keepMounted: true,
+          } }
+        >
+          <div className={ classes.toolbar }>
+            <IconButton
+              color="inherit"
+              aria-label="close drawer"
+              edge="start"
+              onClick={ handleDrawerToggle }
+              className={ classes.closeButton }
+            >
+              <Close />
+            </IconButton>
+          </div>
+          <Divider />
+          <Details />
+        </Drawer>
+      </Hidden>
+      <Hidden mdDown implementation="css">
+        <div className={ classes.drawer }>
           <Drawer
             classes={ {
               paper: classes.drawerPaper,
@@ -130,10 +116,11 @@ const Sidebar = () => {
             variant="permanent"
             open
           >
-            { drawer(false) }
+            <Divider />
+            <Details />
           </Drawer>
-        </Hidden>
-      </nav>
+        </div>
+      </Hidden>
     </>
   );
 };

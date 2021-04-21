@@ -1,7 +1,7 @@
 import type { Server } from 'socket.io';
 import { Container } from 'typedi';
 import type { Logger } from 'winston';
-import { ExtendedSocket } from '../types/global';
+import { ExtendedSocket } from 'types/global.d';
 import Events from './socket-event-names';
 import RoomService from '../services/room-service';
 import { updateRoom } from './socket-rooms';
@@ -10,7 +10,7 @@ export default function socketLifecycle({
   socket,
 }: {
   socket: ExtendedSocket,
-}) {
+}): void {
   const logger: Logger = Container.get('logger');
   const io: Server = Container.get('io');
   const roomService = Container.get(RoomService);
@@ -29,7 +29,7 @@ export default function socketLifecycle({
     const rooms = Array.from(socket.rooms);
 
     // Filters out sockets default room and updates any others they are in
-    rooms.filter(id => id !== socket.id).forEach(async (roomID) => {
+    rooms.filter((id) => id !== socket.id).forEach(async (roomID) => {
       await updateRoom(
         Events.userLeft,
         roomID,
@@ -37,7 +37,7 @@ export default function socketLifecycle({
         roomService,
         io,
         false,
-        );
-      });
+      );
+    });
   });
 }

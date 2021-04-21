@@ -18,12 +18,14 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "baseUrl": "./src",
     "typeRoots": [
       "./node_modules/@types",
-      "./src/types" // path to your typings directory (relative to tsconfig.json)
-    ]
+    ],
+    "paths": {
+      "types": ["./types"]
+    }
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

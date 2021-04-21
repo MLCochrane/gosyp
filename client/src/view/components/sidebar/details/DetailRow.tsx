@@ -17,14 +17,13 @@ const useStyles = makeStyles((theme) => (
   }
 ));
 
-
 const DetailRow = ({
   name,
   value,
 }: {
   name: string,
   value: string,
-}) => {
+}): JSX.Element => {
   const classes = useStyles();
   return (
     <Grid
@@ -36,19 +35,21 @@ const DetailRow = ({
         <Typography
           variant="h5"
           component="p"
-          className={ classes.detailName }>
-            { `${name}:` }
-          </Typography>
+          className={ classes.detailName }
+        >
+          { `${name}:` }
+        </Typography>
       </Grid>
       <Grid item>
         <Typography
           variant="h5"
           component="p"
-          className={ classes.detailValue }>
-            { value }
-          </Typography>
+          className={ classes.detailValue }
+        >
+          { value }
+        </Typography>
       </Grid>
     </Grid>
-  )
+  );
 };
 export default DetailRow;

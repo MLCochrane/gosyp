@@ -1,6 +1,18 @@
 import { useEffect, useState } from 'react';
 import { socket } from 'api';
-import Events from './eventTypes';
+import Events from 'view/components/lib/events/eventTypes';
+
+/*
+ * Wondreing if it would be worthwhile to combine the HasAddedToRoom event and
+ * the NotAddedToRoom event into a single one. Currently we just use the latter
+ * event to send early if we find there's no room when requesting access.
+ *
+ * We already pass a boolean with the addedToRoom event so it's almost more
+ * confusing to split this into two events. Standardizing our response from the
+ * server would make this even clearer as one expects two args and the other an
+ * object.
+ *
+ */
 
 export const HasAddedToRoom = () : [boolean, string] => {
   const [addedToRoom, setAddedToRoom] = useState(false);
@@ -48,20 +60,23 @@ export const NotAddedToRoom = () : [boolean, string] => {
   return [notAdded, errorMessage];
 };
 
-export const CreateRoomSuccess = () : [any] => {
-  const [responseMessage, setResponseMessage] = useState<any>({});
+export const CreateRoomSuccess = () : [{ 'room-id': string, nickname: string | null }] => {
+  const [responseMessage, setResponseMessage] = useState<{ 'room-id': string, nickname: string | null }>({
+    'room-id': '',
+    nickname: null,
+  });
 
   useEffect(() => {
     let cancelled = false;
     socket.on(Events.createRoomSuccess, ({
       message,
     } : {
-      message: any,
+      message: RoomFieldsInterface,
     }) => {
       if (!cancelled) {
         setResponseMessage({
           'room-id': message.uuid,
-          nickname: message.nickname,
+          nickname: message.nickname || null,
         });
       }
     });
@@ -73,14 +88,14 @@ export const CreateRoomSuccess = () : [any] => {
   return [responseMessage];
 };
 
-export const CreateRoomError = () : [any] => {
-  const [errorMessage, setErrorMessage] = useState<any>({});
+export const CreateRoomError = () : [DefaultMessage] => {
+  const [errorMessage, setErrorMessage] = useState<DefaultMessage>({ message: '' });
 
   useEffect(() => {
     socket.on(Events.createRoomError, ({
       message,
     } : {
-      message: any,
+      message: DefaultMessage,
     }) => {
       setErrorMessage(message);
     });

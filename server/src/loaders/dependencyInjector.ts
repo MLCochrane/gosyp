@@ -2,13 +2,12 @@ import { Db } from 'mongodb';
 import type { Server } from 'socket.io';
 import { Container } from 'typedi';
 import LoggerInstance from './logger';
-import { IModelArray } from '../types/global';
 
 export default (
   SocketServer: Server,
   MongoDB: Db,
   models: IModelArray[],
-) => {
+): void => {
   Container.set('logger', LoggerInstance);
   LoggerInstance.info('Logger injected into container');
 

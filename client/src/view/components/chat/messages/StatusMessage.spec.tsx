@@ -1,15 +1,25 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import StatusMessage from './StatusMessage';
 
 it('renders props', () => {
-  const wrapper = shallow(<StatusMessage
+  const { rerender } = render(<StatusMessage
     id="random"
     messageType="status"
     msg="John Snow entered the chat"
     timestamp={ new Date('March 20, 2020') }
   />);
 
-  expect(wrapper.contains('John Snow entered the chat')).toEqual(true);
-  expect(wrapper.contains('12:00:00 AM')).toEqual(true);
+  expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('John Snow entered the chat');
+  expect(screen.getByText('12:00:00 AM')).toBeDefined();
+
+  rerender(<StatusMessage
+    id="random"
+    messageType="status"
+    msg="Bob left"
+    timestamp={ new Date('October 18, 2021, 03:24:00') }
+  />);
+
+  expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('Bob left');
+  expect(screen.getByText('3:24:00 AM')).toBeDefined();
 });

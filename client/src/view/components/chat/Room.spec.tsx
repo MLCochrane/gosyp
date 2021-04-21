@@ -1,8 +1,8 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import * as Redux from 'react-redux';
+import { render } from '@testing-library/react';
 import 'socket.io-client';
 import Room from './Room';
-import Chat from './Chat';
 
 jest.mock('socket.io-client', () => {
   const emit = jest.fn();
@@ -11,9 +11,15 @@ jest.mock('socket.io-client', () => {
   return jest.fn(() => socket);
 });
 
-describe('Room component', () => {
-  it('displays children', () => {
-    const wrapper = shallow(<Room />);
-    expect(wrapper.find(Chat)).toHaveLength(1);
-  });
+const useSelectorSpy = jest.spyOn(Redux, 'useSelector');
+const initialState = {
+  isMobile: false,
+  needsResize: 0,
+  shouldResize: 0,
+  hasResized: 0,
+};
+useSelectorSpy.mockReturnValue(initialState);
+
+it('renders without crashing', () => {
+  render(<Room />);
 });
