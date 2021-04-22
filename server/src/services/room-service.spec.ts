@@ -169,7 +169,7 @@ describe('Room service', () => {
           },
           {
             name: 'Created at',
-            value: '7/9/2020, 8:26:30 PM',
+            value: 'Thu Jul 09 2020 20:26:30',
           },
           {
             name: 'Active Users',
