@@ -45,16 +45,24 @@ const RoomDetails = (): JSX.Element => {
   const detailList = () => (
     <ul>
       {
-      rows.map((row) => (
-        <li
-          key={ row.value }
-        >
-          <DetailRow
-            name={ row.name }
-            value={ row.value }
-          />
-        </li>
-      ))
+      rows.map((row) => {
+        let dateVal = null;
+        if (row.name === 'Created at') {
+          const timeToShow = new Date(row.value);
+          dateVal = timeToShow.toLocaleString();
+        }
+
+        return (
+          <li
+            key={ row.value }
+          >
+            <DetailRow
+              name={ row.name }
+              value={ (dateVal || row.value) }
+            />
+          </li>
+        );
+      })
     }
     </ul>
   );
