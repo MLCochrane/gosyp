@@ -38,8 +38,14 @@ export function userTyping(
   socket: ExtendedSocket,
 ): void {
   socket.on(Events.userTyping, (room: string, isTyping: boolean) => {
+    const response: ResponseInterface = {
+      status: 'success',
+      data: {
+        isTyping,
+      },
+    };
     // broadcast to others in the room
-    socket.broadcast.to(room).emit(Events.userTyping, isTyping);
+    socket.broadcast.to(room).emit(Events.userTyping, response);
   });
 }
 

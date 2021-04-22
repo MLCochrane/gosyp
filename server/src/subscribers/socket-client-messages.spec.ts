@@ -95,7 +95,12 @@ describe('Chat messages', () => {
     expect(userSocket.broadcast.to).toHaveBeenCalledWith('89991');
     expect(userSocket.broadcast.emit).toHaveBeenCalledWith(
       'userTyping',
-      true,
+      {
+        status: 'success',
+        data: {
+          isTyping: true,
+        },
+      },
     );
 
     userTyping(userSocket);
@@ -103,7 +108,12 @@ describe('Chat messages', () => {
     expect(userSocket.broadcast.to).toHaveBeenCalledWith('89991');
     expect(userSocket.broadcast.emit).toHaveBeenCalledWith(
       'userTyping',
-      false,
+      {
+        status: 'success',
+        data: {
+          isTyping: false,
+        },
+      },
     );
   });
 });
