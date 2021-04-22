@@ -5,7 +5,6 @@ import {
   HasAddedToRoom,
   NotAddedToRoom,
   CreateRoomSuccess,
-  CreateRoomError,
   RoomDetailsUpdated,
 } from './rooms';
 
@@ -72,20 +71,32 @@ it('returns error message when refused room access', async () => {
 
 it('returns room id and optional nickname on room creation success', async () => {
   (mockedSocket.on as jest.Mock)
-    .mockImplementationOnce((event, cb) => cb({ message: { uuid: '1245-12', nickname: null } }))
-    .mockImplementationOnce((event, cb) => cb({ message: { uuid: '5125', nickname: 'Porkchop' } }));
+    .mockImplementationOnce((event, cb) => cb(
+      {
+        status: 'success',
+        data: { room: { uuid: '1245-12', nickname: null } },
+      },
+    ))
+    .mockImplementationOnce((event, cb) => cb(
+      {
+        status: 'success',
+        data: { room: { uuid: '5125', nickname: 'Porkchop' } },
+      },
+    ));
 
   const Dummy = () => {
-    const [message] = CreateRoomSuccess();
+    const [status, message] = CreateRoomSuccess();
     return (
-      <div>
-        <h1>{ message['room-id'] }</h1>
-        {
-          message.nickname ? (
-            <h2>{ message.nickname }</h2>
-          ) : null
-        }
-      </div>
+      status === 'success' ? (
+        <div>
+          <h1>{ message['room-id'] }</h1>
+          {
+            message.nickname ? (
+              <h2>{ message.nickname }</h2>
+            ) : null
+          }
+        </div>
+      ) : null
     );
   };
 
@@ -102,15 +113,27 @@ it('returns room id and optional nickname on room creation success', async () =>
 
 it('returns error if room not created', async () => {
   (mockedSocket.on as jest.Mock)
-    .mockImplementationOnce((event, cb) => cb({ message: { message: 'Oops, no room for you!' } }))
-    .mockImplementationOnce((event, cb) => cb({ message: { message: 'That room already exists.' } }));
+    .mockImplementationOnce((event, cb) => cb(
+      {
+        status: 'error',
+        data: { message: 'Oops, no room for you!' },
+      },
+    ))
+    .mockImplementationOnce((event, cb) => cb(
+      {
+        status: 'error',
+        data: { message: 'That room already exists.' },
+      },
+    ));
 
   const Dummy = () => {
-    const [message] = CreateRoomError();
+    const [status, , error] = CreateRoomSuccess();
     return (
-      <div>
-        <h1>{ message.message }</h1>
-      </div>
+      status === 'error' ? (
+        <div>
+          <h1>{ error }</h1>
+        </div>
+      ) : null
     );
   };
 

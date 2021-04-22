@@ -78,8 +78,11 @@ describe('Room CRUD', () => {
     socketCreateRoom(userSocket, mockedRoomService, mockedLogger);
     await flushPromises();
 
-    expect(userSocket.emit).toHaveBeenCalledWith('createRoomError', {
-      message: Error('Room exists'),
+    expect(userSocket.emit).toHaveBeenCalledWith('createRoomSuccess', {
+      status: 'error',
+      data: {
+        message: Error('Room exists'),
+      },
     });
   });
 
@@ -98,10 +101,13 @@ describe('Room CRUD', () => {
     expect(userSocket.emit).toHaveBeenCalledWith(
       'createRoomSuccess',
       {
-        message: {
-          uuid: '867',
-          roomUuid: 'room-name',
-          userCount: 0,
+        status: 'success',
+        data: {
+          room: {
+            uuid: '867',
+            roomUuid: 'room-name',
+            userCount: 0,
+          },
         },
       },
     );

@@ -143,14 +143,25 @@ export function socketCreateRoom(
       freshRoom = await roomService.CreateRoom(name) as RoomRecordObjectInterface;
       // Add on user nickname
       freshRoom.nickname = nickname;
-      socket.emit(Events.createRoomSuccess, {
-        message: freshRoom,
-      });
+      const response: ResponseInterface = {
+        status: 'success',
+        data: {
+          room: {
+            ...freshRoom,
+          },
+        },
+      };
+      socket.emit(Events.createRoomSuccess, response);
     } catch (err) {
       logger.info(err);
-      socket.emit(Events.createRoomError, {
-        message: err,
-      });
+      const response: ResponseInterface = {
+        status: 'error',
+        data: {
+          message: err,
+        },
+      };
+
+      socket.emit(Events.createRoomSuccess, response);
     }
   });
 }
