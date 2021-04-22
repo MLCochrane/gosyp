@@ -94,9 +94,6 @@ export default class RoomService {
       return removal;
     }
 
-    // Format date
-    const formatDate = new Date((updatedRoom as IRoom).createdAt);
-
     return [
       {
         name: 'ID',
@@ -108,7 +105,7 @@ export default class RoomService {
       },
       {
         name: 'Created at',
-        value: formatDate.toLocaleString(),
+        value: updatedRoom.createdAt,
       },
       {
         name: 'Active Users',

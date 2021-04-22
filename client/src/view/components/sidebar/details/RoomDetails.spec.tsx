@@ -57,7 +57,7 @@ describe('Room specific detail widget', () => {
 
     expect(screen.getByText('#123-024')).toBeDefined();
     expect(screen.getByText('PopPop')).toBeDefined();
-    expect(screen.getByText('12/24/20')).toBeDefined();
+    expect(screen.getByText('12/24/2020, 12:00:00 AM')).toBeDefined();
   });
 
   it('renders our two buttons,', () => {
