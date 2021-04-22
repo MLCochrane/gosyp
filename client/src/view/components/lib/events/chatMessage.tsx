@@ -14,8 +14,9 @@ export default (): [ChatMessage] => {
   });
   useEffect(() => {
     let mounted = true;
-    socket.on('chatMessage', (msg: ChatMessage) => {
+    socket.on('chatMessage', (response: ResponseInterface) => {
       if (mounted) {
+        const msg: ChatMessage = response.data.msg as ChatMessage;
         setMessage({ ...msg, messageType: 'message' });
       }
     });

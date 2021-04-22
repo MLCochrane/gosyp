@@ -62,9 +62,18 @@ describe('Chat messages', () => {
     expect(mockedIO.to).toHaveBeenCalledWith('782');
     expect(mockedIO.emit).toHaveBeenCalledWith(
       'chatMessage',
-      expect.objectContaining({
-        msg: 'My message',
-      }),
+      {
+        status: 'success',
+        data: {
+          id: expect.anything(),
+          timestamp: expect.anything(),
+          msg: 'My message',
+          user: {
+            id: '123',
+            nickname: '',
+          },
+        },
+      },
     );
 
     chatMessage(userSocket, mockedIO);
@@ -72,9 +81,18 @@ describe('Chat messages', () => {
     expect(mockedIO.to).toHaveBeenCalledWith('782');
     expect(mockedIO.emit).toHaveBeenCalledWith(
       'chatMessage',
-      expect.objectContaining({
-        msg: 'My Second Message!',
-      }),
+      {
+        status: 'success',
+        data: {
+          id: expect.anything(),
+          timestamp: expect.anything(),
+          msg: 'My Second Message!',
+          user: {
+            id: '123',
+            nickname: '',
+          },
+        },
+      },
     );
   });
 

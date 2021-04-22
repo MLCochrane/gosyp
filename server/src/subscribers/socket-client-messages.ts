@@ -4,7 +4,7 @@ import { ExtendedSocket } from 'types/global.d';
 import Events from './socket-event-names';
 
 /**
- * Defauilt chat message.
+ * Default chat message.
  */
 export function chatMessage(
   socket: ExtendedSocket,
@@ -19,15 +19,20 @@ export function chatMessage(
     * the id is only used for react and we're not saving it,
     * perhaps we could just make the id on the frontend?
     */
-    io.to(room).emit(Events.chatMessage, {
-      id: (Math.random() + 1).toString(36).substring(7),
-      timestamp: Date.now(),
-      msg,
-      user: {
-        id: socket.id,
-        nickname: socket.nickname,
+    const response: ResponseInterface = {
+      status: 'success',
+      data: {
+        id: (Math.random() + 1).toString(36).substring(7),
+        timestamp: Date.now(),
+        msg,
+        user: {
+          id: socket.id,
+          nickname: socket.nickname,
+        },
       },
-    });
+    };
+
+    io.to(room).emit(Events.chatMessage, response);
   });
 }
 

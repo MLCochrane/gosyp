@@ -29,26 +29,36 @@ const messageObject = ({
 
 it('returns message object when socket event received', () => {
   (mockedSocket.on as jest.Mock)
-    .mockImplementationOnce((event, cb) => cb(messageObject({
-      messageType: 'message',
-      id: '5991',
-      msg: 'Howdy Partner!',
-      user: {
-        id: '123',
-        nickname: 'goober',
+    .mockImplementationOnce((event, cb) => cb({
+      status: 'success',
+      data: {
+        msg: messageObject({
+          messageType: 'message',
+          id: '5991',
+          msg: 'Howdy Partner!',
+          user: {
+            id: '123',
+            nickname: 'goober',
+          },
+          timestamp: new Date('Wednesday 12, 2014'),
+        }),
       },
-      timestamp: new Date('Wednesday 12, 2014'),
-    })))
-    .mockImplementationOnce((event, cb) => cb(messageObject({
-      messageType: 'message',
-      id: '1971',
-      msg: 'Arrrrrr!',
-      user: {
-        id: '123',
-        nickname: 'goober',
+    }))
+    .mockImplementationOnce((event, cb) => cb({
+      status: 'success',
+      data: {
+        msg: messageObject({
+          messageType: 'message',
+          id: '1971',
+          msg: 'Arrrrrr!',
+          user: {
+            id: '123',
+            nickname: 'goober',
+          },
+          timestamp: new Date('Wednesday 12, 2014'),
+        }),
       },
-      timestamp: new Date('Wednesday 12, 2014'),
-    })));
+    }));
 
   const DummyComp = () => {
     const [message] = chatMessage();
