@@ -22,14 +22,21 @@ export async function updateRoom(
     roomDetails,
   });
 
-  // Let everyone else know they're in the room
-  io.to(roomID).emit(event, {
-    user: {
-      id: socket.id,
-      nickname: socket.nickname,
+  const userResponse: ResponseInterface = {
+    status: 'success',
+    data: {
+      userAction: {
+        user: {
+          id: socket.id,
+          nickname: socket.nickname,
+        },
+        timestamp: Date.now(),
+      },
     },
-    timestamp: Date.now(),
-  });
+  };
+
+  // Let everyone else know they're in the room
+  io.to(roomID).emit(event, userResponse);
 }
 
 /**

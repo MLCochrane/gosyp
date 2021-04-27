@@ -167,12 +167,18 @@ describe('Room CRUD', () => {
     ]);
     expect(mockedIO.to).toHaveBeenCalledWith('583');
     expect(mockedIO.emit).toHaveBeenCalledWith(
-      'userJoined', expect.objectContaining({
-        user: {
-          id: '123',
-          nickname: null,
+      'userJoined', {
+        status: 'success',
+        data: {
+          userAction: {
+            user: {
+              id: '123',
+              nickname: null,
+            },
+            timestamp: expect.anything(),
+          },
         },
-      }),
+      },
     );
     expect(mockedIO.emit).toHaveBeenCalledWith(
       'updatedRoomInfo',
@@ -219,13 +225,20 @@ describe('Room CRUD', () => {
     expect(mockedIO.to).toHaveBeenCalledWith('583');
     expect(mockedIO.emit).toHaveBeenNthCalledWith(
       2,
-      'userLeft', expect.objectContaining({
-        user: {
-          id: '123',
-          nickname: null,
+      'userLeft', {
+        status: 'success',
+        data: {
+          userAction: {
+            user: {
+              id: '123',
+              nickname: null,
+            },
+            timestamp: expect.anything(),
+          },
         },
-      }),
+      },
     );
+
     expect(mockedIO.emit).toHaveBeenNthCalledWith(
       1,
       'updatedRoomInfo',
