@@ -34,21 +34,35 @@ describe('Feed', () => {
     (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => {
       switch (event) {
         case 'userLeft':
-          return cb({
-            user: {
-              id: null,
-              nickname: null,
+          return cb(
+            {
+              status: 'success',
+              data: {
+                userAction: {
+                  user: {
+                    id: null,
+                    nickname: null,
+                  },
+                  timestamp: new Date('June 20, 2021'),
+                },
+              },
             },
-            timestamp: new Date('June 20, 2021'),
-          });
+          );
         case 'userJoined':
-          return cb({
-            user: {
-              id: null,
-              nickname: null,
+          return cb(
+            {
+              status: 'success',
+              data: {
+                userAction: {
+                  user: {
+                    id: null,
+                    nickname: null,
+                  },
+                  timestamp: new Date('June 20, 2021'),
+                },
+              },
             },
-            timestamp: new Date('June 20, 2021'),
-          });
+          );
         case 'chatMessage':
           return cb({
             status: 'success',
@@ -109,21 +123,35 @@ describe('Feed', () => {
     (mockedSocket.on as jest.Mock).mockImplementation((event, cb) => {
       switch (event) {
         case 'userLeft':
-          return cb({
-            user: {
-              id: '12345',
-              nickname: null,
+          return cb(
+            {
+              status: 'success',
+              data: {
+                userAction: {
+                  user: {
+                    id: '12345',
+                    nickname: null,
+                  },
+                  timestamp: new Date('June 20, 2021'),
+                },
+              },
             },
-            timestamp: new Date('June 20, 2021'),
-          });
+          );
         case 'userJoined':
-          return cb({
-            user: {
-              id: '51515',
-              nickname: null,
+          return cb(
+            {
+              status: 'success',
+              data: {
+                userAction: {
+                  user: {
+                    id: '51515',
+                    nickname: null,
+                  },
+                  timestamp: new Date('June 20, 2021'),
+                },
+              },
             },
-            timestamp: new Date('June 20, 2021'),
-          });
+          );
         case 'chatMessage':
           return cb({
             status: 'success',
