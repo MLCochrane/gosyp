@@ -2,28 +2,26 @@ import { useEffect, useState } from 'react';
 import { socket } from 'api';
 import Events from 'view/components/lib/events/eventTypes';
 
-/*
- * Wondreing if it would be worthwhile to combine the HasAddedToRoom event and
- * the NotAddedToRoom event into a single one. Currently we just use the latter
- * event to send early if we find there's no room when requesting access.
- *
- * We already pass a boolean with the addedToRoom event so it's almost more
- * confusing to split this into two events. Standardizing our response from the
- * server would make this even clearer as one expects two args and the other an
- * object.
- *
- */
-
-export const HasAddedToRoom = () : [boolean, string] => {
+export const HasAddedToRoom = () : [boolean, string, string] => {
   const [addedToRoom, setAddedToRoom] = useState(false);
   const [roomID, setRoomID] = useState('');
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     let mounted = true;
-    socket.on(Events.addUserToRoom, (status: boolean, id: string) => {
+    socket.on(Events.addUserToRoom, (response: ResponseInterface) => {
       if (mounted) {
-        setAddedToRoom(status);
-        setRoomID(id);
+        const { status, data } = response;
+        if (status === 'success') {
+          setAddedToRoom(true);
+          setRoomID(data.roomID as string);
+        } else if (status === 'failure') {
+          setAddedToRoom(false);
+          setMessage(data.message as string);
+        } else if (status === 'error') {
+          setAddedToRoom(false);
+          setMessage(data.message as string);
+        }
       }
     });
     return () => {
@@ -31,33 +29,7 @@ export const HasAddedToRoom = () : [boolean, string] => {
     };
   }, []);
 
-  return [addedToRoom, roomID];
-};
-
-export const NotAddedToRoom = () : [boolean, string] => {
-  const [notAdded, setNotAdded] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-
-  useEffect(() => {
-    let mounted = true;
-    socket.on(Events.socketDeniedRoomAccess, ({
-      status,
-      message,
-    } : {
-      status: boolean,
-      message: string,
-    }) => {
-      if (mounted) {
-        setNotAdded(status);
-        setErrorMessage(message);
-      }
-    });
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  return [notAdded, errorMessage];
+  return [addedToRoom, roomID, message];
 };
 
 export const CreateRoomSuccess = () : [ResponseStatus | null, { 'room-id': string, nickname: string | null }, Error | null] => {
