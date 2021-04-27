@@ -4,16 +4,15 @@ import {
   string,
 } from 'yup';
 import { socket } from 'api';
-import { CreateRoomSuccess, CreateRoomError } from 'view/components/lib/events/rooms';
+import { CreateRoomSuccess } from 'view/components/lib/events/rooms';
 import Events from 'view/components/lib/events/eventTypes';
 import Form from 'view/components/lib/forms/Form';
 
 const CreateForm = (): JSX.Element => {
-  const [roomSuccess] = CreateRoomSuccess();
-  const [roomError] = CreateRoomError();
+  const [status, roomSuccess, error] = CreateRoomSuccess();
 
   useEffect(() => {
-    if (roomSuccess['room-id']) {
+    if (status === 'success') {
       socket.emit(Events.socketRequestsRoom, roomSuccess);
     }
   }, [roomSuccess]);
@@ -50,7 +49,7 @@ const CreateForm = (): JSX.Element => {
         }
         submissionCallback={ handleClick }
         wasSuccess={ false }
-        wasError={ !!roomError.message }
+        wasError={ error != null }
         schema={ schema }
       />
     </div>

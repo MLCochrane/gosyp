@@ -60,48 +60,39 @@ export const NotAddedToRoom = () : [boolean, string] => {
   return [notAdded, errorMessage];
 };
 
-export const CreateRoomSuccess = () : [{ 'room-id': string, nickname: string | null }] => {
-  const [responseMessage, setResponseMessage] = useState<{ 'room-id': string, nickname: string | null }>({
+export const CreateRoomSuccess = () : [ResponseStatus | null, { 'room-id': string, nickname: string | null }, Error | null] => {
+  const [serverStatus, setStatus] = useState<ResponseStatus | null>(null);
+  const [responseMessage, setResponseMessage] = useState<{'room-id': string, nickname: string | null }>({
     'room-id': '',
     nickname: null,
   });
+  const [errorMessage, setErrorMessage] = useState<Error | null>(null);
 
   useEffect(() => {
-    let cancelled = false;
-    socket.on(Events.createRoomSuccess, ({
-      message,
-    } : {
-      message: RoomFieldsInterface,
-    }) => {
-      if (!cancelled) {
-        setResponseMessage({
-          'room-id': message.uuid,
-          nickname: message.nickname || null,
-        });
+    let mounted = true;
+    socket.on(Events.createRoomSuccess, (response: ResponseInterface) => {
+      if (mounted) {
+        const { data, status } = response;
+        if (response.status === 'success') {
+          const msg = data.room as RoomFieldsInterface;
+          setStatus(status);
+          setResponseMessage({
+            'room-id': msg.uuid,
+            nickname: msg.nickname || null,
+          });
+        } else if (response.status === 'error') {
+          const msg = data.message as Error;
+          setStatus(status);
+          setErrorMessage(msg);
+        }
       }
     });
     return () => {
-      cancelled = true;
+      mounted = false;
     };
   }, []);
 
-  return [responseMessage];
-};
-
-export const CreateRoomError = () : [DefaultMessage] => {
-  const [errorMessage, setErrorMessage] = useState<DefaultMessage>({ message: '' });
-
-  useEffect(() => {
-    socket.on(Events.createRoomError, ({
-      message,
-    } : {
-      message: DefaultMessage,
-    }) => {
-      setErrorMessage(message);
-    });
-  }, []);
-
-  return [errorMessage];
+  return [serverStatus, responseMessage, errorMessage];
 };
 
 export const RoomDetailsUpdated = () : [RoomDetails] => {
