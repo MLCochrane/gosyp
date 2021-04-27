@@ -111,20 +111,19 @@ export function socketLeavesRoom(
 
     // If no errors, add the user to the room
     socket.leave(roomID);
-    (async () => {
-      // Tell client they've been removed
-      socket.emit(Events.userRemovedFromRoom, true);
-      socket.emit(Events.addUserToRoom, false, roomID);
 
-      await updateRoom(
-        Events.userLeft,
-        roomID,
-        socket,
-        roomService,
-        io,
-        false,
-      );
-    })();
+    // Tell client they've been removed
+    socket.emit(Events.userRemovedFromRoom, true);
+    socket.emit(Events.addUserToRoom, false, roomID);
+
+    await updateRoom(
+      Events.userLeft,
+      roomID,
+      socket,
+      roomService,
+      io,
+      false,
+    );
   });
 }
 

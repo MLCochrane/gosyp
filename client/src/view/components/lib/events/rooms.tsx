@@ -95,22 +95,6 @@ export const CreateRoomSuccess = () : [ResponseStatus | null, { 'room-id': strin
   return [serverStatus, responseMessage, errorMessage];
 };
 
-// export const CreateRoomError = () : [DefaultMessage] => {
-//   const [errorMessage, setErrorMessage] = useState<DefaultMessage>({ message: '' });
-
-//   useEffect(() => {
-//     socket.on(Events.createRoomError, ({
-//       message,
-//     } : {
-//       message: DefaultMessage,
-//     }) => {
-//       setErrorMessage(message);
-//     });
-//   }, []);
-
-//   return [errorMessage];
-// };
-
 export const RoomDetailsUpdated = () : [RoomDetails] => {
   const [details, setDetails] = useState<RoomDetails>([]);
 
