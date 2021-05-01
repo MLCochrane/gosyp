@@ -39,12 +39,15 @@ describe('/ (Home Page)', () => {
     const submitButtonQuery = '.create-form button[type=submit]';
     const sidebarQuery = '[data-testid="room-details"]';
 
+    // Clicks toggle and gets create form
     await page.click(toggleQuery);
     await page.waitForSelector(formQuery);
 
+    // Got our submit button and it's not disabled
     const button = await page.waitForSelector(submitButtonQuery);
     expect(await page.evaluate((el) => el.getAttribute('disabled'), button)).toBeNull();
 
+    // Submit and check we're now in the chat room
     await page.click(submitButtonQuery);
     const sidebar = await page.waitForSelector(sidebarQuery);
     expect(await page.evaluate((el) => el.textContent, sidebar)).toContain('Chatting is better with friends!');
