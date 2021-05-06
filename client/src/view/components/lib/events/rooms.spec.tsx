@@ -3,7 +3,9 @@ import { render, screen } from '@testing-library/react';
 import io, { Socket } from 'socket.io-client';
 import {
   HasAddedToRoom,
+  NotAddedToRoom,
   CreateRoomSuccess,
+  CreateRoomError,
   RoomDetailsUpdated,
 } from './rooms';
 
@@ -19,22 +21,8 @@ const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
 
 it('returns room status and id when added to room', async () => {
   (mockedSocket.on as jest.Mock)
-    .mockImplementationOnce((event, cb) => cb(
-      {
-        status: 'failure',
-        data: {
-          message: 'No access for you',
-        },
-      },
-    ))
-    .mockImplementationOnce((event, cb) => cb(
-      {
-        status: 'success',
-        data: {
-          roomID: '1234',
-        },
-      },
-    ));
+    .mockImplementationOnce((event, cb) => cb(false, null))
+    .mockImplementationOnce((event, cb) => cb(true, '1234'));
 
   const Dummy = () => {
     const [addedToRoom, roomId] = HasAddedToRoom();
@@ -59,88 +47,45 @@ it('returns room status and id when added to room', async () => {
 
 it('returns error message when refused room access', async () => {
   (mockedSocket.on as jest.Mock)
-    .mockImplementationOnce((event, cb) => cb(
-      {
-        status: 'success',
-        data: {
-          roomID: '213',
-        },
-      },
-    ))
-    .mockImplementationOnce((event, cb) => cb(
-      {
-        status: 'failure',
-        data: {
-          message: 'Not added to room',
-        },
-      },
-    ))
-    .mockImplementationOnce((event, cb) => cb(
-      {
-        status: 'error',
-        data: {
-          message: 'Cannot connect to server',
-        },
-      },
-    ));
+    .mockImplementationOnce((event, cb) => cb({ status: false, message: null }))
+    .mockImplementationOnce((event, cb) => cb({ status: true, message: 'Not added to room' }));
 
   const Dummy = () => {
-    const [added, , message] = HasAddedToRoom();
+    const [notAdded, message] = NotAddedToRoom();
     return (
       <div>
         {
-          !added ? <h1>{ message }</h1> : <h1>Added!</h1>
+          notAdded ? <h1>{ message }</h1> : <h1>Added!</h1>
         }
       </div>
     );
   };
 
-  /**
-   * Not sure why, but using rerender wasn't working here, stuck with double
-   * unmount.
-   */
   const { unmount } = render(<Dummy />);
   expect((await screen.findByRole('heading')).textContent).toBe('Added!');
 
   unmount();
 
-  const { unmount: secondUnmount } = render(<Dummy />);
-  expect((await screen.findByRole('heading')).textContent).toBe('Not added to room');
-
-  secondUnmount();
-
   render(<Dummy />);
-  expect((await screen.findByRole('heading')).textContent).toBe('Cannot connect to server');
+  expect((await screen.findByRole('heading')).textContent).toBe('Not added to room');
 });
 
 it('returns room id and optional nickname on room creation success', async () => {
   (mockedSocket.on as jest.Mock)
-    .mockImplementationOnce((event, cb) => cb(
-      {
-        status: 'success',
-        data: { room: { uuid: '1245-12', nickname: null } },
-      },
-    ))
-    .mockImplementationOnce((event, cb) => cb(
-      {
-        status: 'success',
-        data: { room: { uuid: '5125', nickname: 'Porkchop' } },
-      },
-    ));
+    .mockImplementationOnce((event, cb) => cb({ message: { uuid: '1245-12', nickname: null } }))
+    .mockImplementationOnce((event, cb) => cb({ message: { uuid: '5125', nickname: 'Porkchop' } }));
 
   const Dummy = () => {
-    const [status, message] = CreateRoomSuccess();
+    const [message] = CreateRoomSuccess();
     return (
-      status === 'success' ? (
-        <div>
-          <h1>{ message['room-id'] }</h1>
-          {
-            message.nickname ? (
-              <h2>{ message.nickname }</h2>
-            ) : null
-          }
-        </div>
-      ) : null
+      <div>
+        <h1>{ message['room-id'] }</h1>
+        {
+          message.nickname ? (
+            <h2>{ message.nickname }</h2>
+          ) : null
+        }
+      </div>
     );
   };
 
@@ -157,27 +102,15 @@ it('returns room id and optional nickname on room creation success', async () =>
 
 it('returns error if room not created', async () => {
   (mockedSocket.on as jest.Mock)
-    .mockImplementationOnce((event, cb) => cb(
-      {
-        status: 'error',
-        data: { message: 'Oops, no room for you!' },
-      },
-    ))
-    .mockImplementationOnce((event, cb) => cb(
-      {
-        status: 'error',
-        data: { message: 'That room already exists.' },
-      },
-    ));
+    .mockImplementationOnce((event, cb) => cb({ message: { message: 'Oops, no room for you!' } }))
+    .mockImplementationOnce((event, cb) => cb({ message: { message: 'That room already exists.' } }));
 
   const Dummy = () => {
-    const [status, , error] = CreateRoomSuccess();
+    const [message] = CreateRoomError();
     return (
-      status === 'error' ? (
-        <div>
-          <h1>{ error }</h1>
-        </div>
-      ) : null
+      <div>
+        <h1>{ message.message }</h1>
+      </div>
     );
   };
 
