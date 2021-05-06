@@ -18,9 +18,11 @@ export const HasAddedToRoom = () : [boolean, string, string] => {
         } else if (status === 'failure') {
           setAddedToRoom(false);
           setMessage(data.message as string);
+          setRoomID('');
         } else if (status === 'error') {
           setAddedToRoom(false);
           setMessage(data.message as string);
+          setRoomID('');
         }
       }
     });

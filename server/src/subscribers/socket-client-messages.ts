@@ -22,12 +22,14 @@ export function chatMessage(
     const response: ResponseInterface = {
       status: 'success',
       data: {
-        id: (Math.random() + 1).toString(36).substring(7),
-        timestamp: Date.now(),
-        msg,
-        user: {
-          id: socket.id,
-          nickname: socket.nickname,
+        msg: {
+          id: (Math.random() + 1).toString(36).substring(7),
+          timestamp: Date.now(),
+          msg,
+          user: {
+            id: socket.id,
+            nickname: socket.nickname,
+          },
         },
       },
     };

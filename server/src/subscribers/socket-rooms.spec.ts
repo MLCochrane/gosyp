@@ -226,8 +226,12 @@ describe('Room CRUD', () => {
 
     expect(userSocket.leave).toHaveBeenCalledWith('583');
     expect((userSocket.emit as jest.Mock).mock.calls).toEqual([
-      ['removedFromRoom', true],
-      ['addedToRoom', false, '583'],
+      ['addedToRoom', {
+        status: 'failure',
+        data: {
+          message: 'Removed from room',
+        },
+      }],
     ]);
     expect(mockedIO.to).toHaveBeenCalledWith('583');
     expect(mockedIO.emit).toHaveBeenNthCalledWith(
