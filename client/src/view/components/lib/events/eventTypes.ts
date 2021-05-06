@@ -9,7 +9,6 @@ enum Events {
   createRoomSuccess = 'createRoomSuccess',
   socketRequestsRoom = 'addMeToRoom',
   socketRequestsLeaveRoom = 'removeMeFromRoom',
-  socketDeniedRoomAccess = 'notAddedToRoom',
 }
 
 export default Events;

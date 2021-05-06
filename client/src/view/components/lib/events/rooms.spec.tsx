@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import io, { Socket } from 'socket.io-client';
 import {
   HasAddedToRoom,
-  NotAddedToRoom,
   CreateRoomSuccess,
   RoomDetailsUpdated,
 } from './rooms';
@@ -20,8 +19,22 @@ const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
 
 it('returns room status and id when added to room', async () => {
   (mockedSocket.on as jest.Mock)
-    .mockImplementationOnce((event, cb) => cb(false, null))
-    .mockImplementationOnce((event, cb) => cb(true, '1234'));
+    .mockImplementationOnce((event, cb) => cb(
+      {
+        status: 'failure',
+        data: {
+          message: 'No access for you',
+        },
+      },
+    ))
+    .mockImplementationOnce((event, cb) => cb(
+      {
+        status: 'success',
+        data: {
+          roomID: '1234',
+        },
+      },
+    ));
 
   const Dummy = () => {
     const [addedToRoom, roomId] = HasAddedToRoom();
@@ -46,27 +59,58 @@ it('returns room status and id when added to room', async () => {
 
 it('returns error message when refused room access', async () => {
   (mockedSocket.on as jest.Mock)
-    .mockImplementationOnce((event, cb) => cb({ status: false, message: null }))
-    .mockImplementationOnce((event, cb) => cb({ status: true, message: 'Not added to room' }));
+    .mockImplementationOnce((event, cb) => cb(
+      {
+        status: 'success',
+        data: {
+          roomID: '213',
+        },
+      },
+    ))
+    .mockImplementationOnce((event, cb) => cb(
+      {
+        status: 'failure',
+        data: {
+          message: 'Not added to room',
+        },
+      },
+    ))
+    .mockImplementationOnce((event, cb) => cb(
+      {
+        status: 'error',
+        data: {
+          message: 'Cannot connect to server',
+        },
+      },
+    ));
 
   const Dummy = () => {
-    const [notAdded, message] = NotAddedToRoom();
+    const [added, , message] = HasAddedToRoom();
     return (
       <div>
         {
-          notAdded ? <h1>{ message }</h1> : <h1>Added!</h1>
+          !added ? <h1>{ message }</h1> : <h1>Added!</h1>
         }
       </div>
     );
   };
 
+  /**
+   * Not sure why, but using rerender wasn't working here, stuck with double
+   * unmount.
+   */
   const { unmount } = render(<Dummy />);
   expect((await screen.findByRole('heading')).textContent).toBe('Added!');
 
   unmount();
 
-  render(<Dummy />);
+  const { unmount: secondUnmount } = render(<Dummy />);
   expect((await screen.findByRole('heading')).textContent).toBe('Not added to room');
+
+  secondUnmount();
+
+  render(<Dummy />);
+  expect((await screen.findByRole('heading')).textContent).toBe('Cannot connect to server');
 });
 
 it('returns room id and optional nickname on room creation success', async () => {

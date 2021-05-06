@@ -123,10 +123,12 @@ describe('Room CRUD', () => {
 
     expect(userSocket.emit).toHaveBeenCalledTimes(1);
     expect(userSocket.emit).toHaveBeenCalledWith(
-      'notAddedToRoom',
+      'addedToRoom',
       {
-        status: true,
-        message: 'Room ID is not available',
+        status: 'failure',
+        data: {
+          message: 'Room ID is not available',
+        },
       },
     );
     expect(userSocket.join).toHaveBeenCalledTimes(0);
@@ -163,7 +165,12 @@ describe('Room CRUD', () => {
 
     expect(userSocket.join).toHaveBeenCalledWith('583');
     expect((userSocket.emit as jest.Mock).mock.calls).toEqual([
-      ['addedToRoom', true, '583'],
+      ['addedToRoom', {
+        status: 'success',
+        data: {
+          roomID: '583',
+        },
+      }],
     ]);
     expect(mockedIO.to).toHaveBeenCalledWith('583');
     expect(mockedIO.emit).toHaveBeenCalledWith(
