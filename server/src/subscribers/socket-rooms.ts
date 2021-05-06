@@ -22,14 +22,21 @@ export async function updateRoom(
     roomDetails,
   });
 
-  // Let everyone else know they're in the room
-  io.to(roomID).emit(event, {
-    user: {
-      id: socket.id,
-      nickname: socket.nickname,
+  const userResponse: ResponseInterface = {
+    status: 'success',
+    data: {
+      userAction: {
+        user: {
+          id: socket.id,
+          nickname: socket.nickname,
+        },
+        timestamp: Date.now(),
+      },
     },
-    timestamp: Date.now(),
-  });
+  };
+
+  // Let everyone else know they're in the room
+  io.to(roomID).emit(event, userResponse);
 }
 
 /**
@@ -58,31 +65,38 @@ export function socketRequestsRoom(
 
     // Simply tell the socket there's no room
     if (!room) {
-      socket.emit(Events.socketDeniedRoomAccess, {
-        // redundant to return true here
-        status: true,
-        message: 'Room ID is not available',
-      });
+      const deniedResponse: ResponseInterface = {
+        status: 'failure',
+        data: {
+          message: 'Room ID is not available',
+        },
+      };
+
+      socket.emit(Events.addUserToRoom, deniedResponse);
       return;
     }
 
     // If no errors, add the user to the room
     socket.join(roomID);
-    (async () => {
-      // eslint-disable-next-line no-param-reassign
-      socket.nickname = requestBody.nickname || null;
-      // Tell client they've been included
-      socket.emit(Events.addUserToRoom, true, roomID);
-
-      await updateRoom(
-        Events.userJoined,
+    // eslint-disable-next-line no-param-reassign
+    socket.nickname = requestBody.nickname || null;
+    // Tell client they've been included
+    const successResponse: ResponseInterface = {
+      status: 'success',
+      data: {
         roomID,
-        socket,
-        roomService,
-        io,
-        true,
-      );
-    })();
+      },
+    };
+    socket.emit(Events.addUserToRoom, successResponse);
+
+    await updateRoom(
+      Events.userJoined,
+      roomID,
+      socket,
+      roomService,
+      io,
+      true,
+    );
   });
 }
 
@@ -111,20 +125,19 @@ export function socketLeavesRoom(
 
     // If no errors, add the user to the room
     socket.leave(roomID);
-    (async () => {
-      // Tell client they've been removed
-      socket.emit(Events.userRemovedFromRoom, true);
-      socket.emit(Events.addUserToRoom, false, roomID);
 
-      await updateRoom(
-        Events.userLeft,
-        roomID,
-        socket,
-        roomService,
-        io,
-        false,
-      );
-    })();
+    // Tell client they've been removed
+    socket.emit(Events.userRemovedFromRoom, true);
+    socket.emit(Events.addUserToRoom, false, roomID);
+
+    await updateRoom(
+      Events.userLeft,
+      roomID,
+      socket,
+      roomService,
+      io,
+      false,
+    );
   });
 }
 
@@ -143,14 +156,25 @@ export function socketCreateRoom(
       freshRoom = await roomService.CreateRoom(name) as RoomRecordObjectInterface;
       // Add on user nickname
       freshRoom.nickname = nickname;
-      socket.emit(Events.createRoomSuccess, {
-        message: freshRoom,
-      });
+      const response: ResponseInterface = {
+        status: 'success',
+        data: {
+          room: {
+            ...freshRoom,
+          },
+        },
+      };
+      socket.emit(Events.createRoomSuccess, response);
     } catch (err) {
       logger.info(err);
-      socket.emit(Events.createRoomError, {
-        message: err,
-      });
+      const response: ResponseInterface = {
+        status: 'error',
+        data: {
+          message: err,
+        },
+      };
+
+      socket.emit(Events.createRoomSuccess, response);
     }
   });
 }
