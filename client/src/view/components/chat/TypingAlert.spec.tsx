@@ -15,23 +15,13 @@ const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
 
 describe('Typing status alert', () => {
   it('diplays no message when socket returns false', () => {
-    (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb({
-      status: 'success',
-      data: {
-        isTyping: false,
-      },
-    }));
+    (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb(false));
     render(<TypingAlert />);
     expect(screen.queryByText('Someone is typing...')).toBeFalsy();
   });
 
   it('displays message if socket returns true', () => {
-    (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb({
-      status: 'success',
-      data: {
-        isTyping: true,
-      },
-    }));
+    (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb(true));
     render(<TypingAlert />);
     expect(screen.getByText('Someone is typing...')).toBeDefined();
   });
