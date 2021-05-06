@@ -22,8 +22,10 @@ const App = (): JSX.Element => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(addRoomID(roomID));
-    dispatch(setCurrentRoom(roomID));
+    if (addedToRoom) {
+      dispatch(addRoomID(roomID));
+      dispatch(setCurrentRoom(roomID));
+    }
   }, [dispatch, roomID, addedToRoom]);
 
   useEffect(() => {

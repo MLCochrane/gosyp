@@ -39,14 +39,28 @@ describe('Detail widget wrapper', () => {
   });
 
   it('displays info block when not in room', () => {
-    (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb(false));
+    (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb(
+      {
+        status: 'failure',
+        data: {
+          message: 'Not in room',
+        },
+      },
+    ));
     render(<DetailWidget />);
     expect(screen.getByTestId('info-block')).toBeDefined();
     expect(screen.queryByTestId('room-details')).toBeFalsy();
   });
 
   it('displays room details when in room', () => {
-    (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb(true));
+    (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb(
+      {
+        status: 'success',
+        data: {
+          roomID: '1234',
+        },
+      },
+    ));
     render(<DetailWidget />);
 
     expect(screen.queryByTestId('info-block')).toBeFalsy();
