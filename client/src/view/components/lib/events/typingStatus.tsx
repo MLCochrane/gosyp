@@ -5,9 +5,9 @@ export default (): [boolean] => {
   const [typing, setTyping] = useState<boolean>(false);
   useEffect(() => {
     let mounted = true;
-    socket.on('userTyping', (response: ResponseInterface) => {
+    socket.on('userTyping', (isTyping: boolean) => {
       if (mounted) {
-        setTyping(response.data.isTyping as boolean);
+        setTyping(isTyping);
       }
     });
     return () => {

@@ -15,18 +15,8 @@ const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
 
 it('returns the bool from our hook', () => {
   (mockedSocket.on as jest.Mock)
-    .mockImplementationOnce((event, cb) => cb({
-      status: 'success',
-      data: {
-        isTyping: true,
-      },
-    }))
-    .mockImplementationOnce((event, cb) => cb({
-      status: 'success',
-      data: {
-        isTyping: false,
-      },
-    }));
+    .mockImplementationOnce((event, cb) => cb(true))
+    .mockImplementationOnce((event, cb) => cb(false));
 
   const DummyComp = () => {
     const [typing] = typingStatus();

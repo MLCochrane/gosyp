@@ -2,26 +2,28 @@ import { useEffect, useState } from 'react';
 import { socket } from 'api';
 import Events from 'view/components/lib/events/eventTypes';
 
-export const HasAddedToRoom = () : [boolean, string, string] => {
+/*
+ * Wondreing if it would be worthwhile to combine the HasAddedToRoom event and
+ * the NotAddedToRoom event into a single one. Currently we just use the latter
+ * event to send early if we find there's no room when requesting access.
+ *
+ * We already pass a boolean with the addedToRoom event so it's almost more
+ * confusing to split this into two events. Standardizing our response from the
+ * server would make this even clearer as one expects two args and the other an
+ * object.
+ *
+ */
+
+export const HasAddedToRoom = () : [boolean, string] => {
   const [addedToRoom, setAddedToRoom] = useState(false);
   const [roomID, setRoomID] = useState('');
-  const [message, setMessage] = useState('');
 
   useEffect(() => {
     let mounted = true;
-    socket.on(Events.addUserToRoom, (response: ResponseInterface) => {
+    socket.on(Events.addUserToRoom, (status: boolean, id: string) => {
       if (mounted) {
-        const { status, data } = response;
-        if (status === 'success') {
-          setAddedToRoom(true);
-          setRoomID(data.roomID as string);
-        } else if (status === 'failure') {
-          setAddedToRoom(false);
-          setMessage(data.message as string);
-        } else if (status === 'error') {
-          setAddedToRoom(false);
-          setMessage(data.message as string);
-        }
+        setAddedToRoom(status);
+        setRoomID(id);
       }
     });
     return () => {
@@ -29,42 +31,77 @@ export const HasAddedToRoom = () : [boolean, string, string] => {
     };
   }, []);
 
-  return [addedToRoom, roomID, message];
+  return [addedToRoom, roomID];
 };
 
-export const CreateRoomSuccess = () : [ResponseStatus | null, { 'room-id': string, nickname: string | null }, Error | null] => {
-  const [serverStatus, setStatus] = useState<ResponseStatus | null>(null);
-  const [responseMessage, setResponseMessage] = useState<{'room-id': string, nickname: string | null }>({
+export const NotAddedToRoom = () : [boolean, string] => {
+  const [notAdded, setNotAdded] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    let mounted = true;
+    socket.on(Events.socketDeniedRoomAccess, ({
+      status,
+      message,
+    } : {
+      status: boolean,
+      message: string,
+    }) => {
+      if (mounted) {
+        setNotAdded(status);
+        setErrorMessage(message);
+      }
+    });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  return [notAdded, errorMessage];
+};
+
+export const CreateRoomSuccess = () : [{ 'room-id': string, nickname: string | null }] => {
+  const [responseMessage, setResponseMessage] = useState<{ 'room-id': string, nickname: string | null }>({
     'room-id': '',
     nickname: null,
   });
-  const [errorMessage, setErrorMessage] = useState<Error | null>(null);
 
   useEffect(() => {
-    let mounted = true;
-    socket.on(Events.createRoomSuccess, (response: ResponseInterface) => {
-      if (mounted) {
-        const { data, status } = response;
-        if (response.status === 'success') {
-          const msg = data.room as RoomFieldsInterface;
-          setStatus(status);
-          setResponseMessage({
-            'room-id': msg.uuid,
-            nickname: msg.nickname || null,
-          });
-        } else if (response.status === 'error') {
-          const msg = data.message as Error;
-          setStatus(status);
-          setErrorMessage(msg);
-        }
+    let cancelled = false;
+    socket.on(Events.createRoomSuccess, ({
+      message,
+    } : {
+      message: RoomFieldsInterface,
+    }) => {
+      if (!cancelled) {
+        setResponseMessage({
+          'room-id': message.uuid,
+          nickname: message.nickname || null,
+        });
       }
     });
     return () => {
-      mounted = false;
+      cancelled = true;
     };
   }, []);
 
-  return [serverStatus, responseMessage, errorMessage];
+  return [responseMessage];
+};
+
+export const CreateRoomError = () : [DefaultMessage] => {
+  const [errorMessage, setErrorMessage] = useState<DefaultMessage>({ message: '' });
+
+  useEffect(() => {
+    socket.on(Events.createRoomError, ({
+      message,
+    } : {
+      message: DefaultMessage,
+    }) => {
+      setErrorMessage(message);
+    });
+  }, []);
+
+  return [errorMessage];
 };
 
 export const RoomDetailsUpdated = () : [RoomDetails] => {

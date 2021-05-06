@@ -23,34 +23,20 @@ const userObject = ({
 
 it('UserJoined hook returns user on socket event', () => {
   (mockedSocket.on as jest.Mock)
-    .mockImplementationOnce((event, cb) => cb(
-      {
-        status: 'success',
-        data: {
-          userAction: userObject({
-            user: {
-              id: '123',
-              nickname: 'goober',
-            },
-            timestamp: new Date('Wednesday 12, 2014'),
-          }),
-        },
+    .mockImplementationOnce((event, cb) => cb(userObject({
+      user: {
+        id: '123',
+        nickname: 'goober',
       },
-    ))
-    .mockImplementationOnce((event, cb) => cb(
-      {
-        status: 'success',
-        data: {
-          userAction: userObject({
-            user: {
-              id: '591',
-              nickname: 'Petunia',
-            },
-            timestamp: new Date('Wednesday 12, 2014'),
-          }),
-        },
+      timestamp: new Date('Wednesday 12, 2014'),
+    })))
+    .mockImplementationOnce((event, cb) => cb(userObject({
+      user: {
+        id: '591',
+        nickname: 'Petunia',
       },
-    ));
+      timestamp: new Date('Wednesday 12, 2014'),
+    })));
 
   const DummyComp = () => {
     const [user] = UserJoined();
@@ -75,34 +61,20 @@ it('UserJoined hook returns user on socket event', () => {
 
 it('UserLeft hook returns user on socket event', () => {
   (mockedSocket.on as jest.Mock)
-    .mockImplementationOnce((event, cb) => cb(
-      {
-        status: 'success',
-        data: {
-          userAction: userObject({
-            user: {
-              id: '160',
-              nickname: 'Hector',
-            },
-            timestamp: new Date('February 12, 2014'),
-          }),
-        },
+    .mockImplementationOnce((event, cb) => cb(userObject({
+      user: {
+        id: '160',
+        nickname: 'Hector',
       },
-    ))
-    .mockImplementationOnce((event, cb) => cb(
-      {
-        status: 'success',
-        data: {
-          userAction: userObject({
-            user: {
-              id: '858',
-              nickname: 'Raj',
-            },
-            timestamp: new Date('Wednesday 12, 2014'),
-          }),
-        },
+      timestamp: new Date('February 12, 2014'),
+    })))
+    .mockImplementationOnce((event, cb) => cb(userObject({
+      user: {
+        id: '858',
+        nickname: 'Raj',
       },
-    ));
+      timestamp: new Date('Wednesday 12, 2014'),
+    })));
 
   const DummyComp = () => {
     const [user] = UserLeft();
