@@ -78,8 +78,11 @@ describe('Room CRUD', () => {
     socketCreateRoom(userSocket, mockedRoomService, mockedLogger);
     await flushPromises();
 
-    expect(userSocket.emit).toHaveBeenCalledWith('createRoomError', {
-      message: Error('Room exists'),
+    expect(userSocket.emit).toHaveBeenCalledWith('createRoomSuccess', {
+      status: 'error',
+      data: {
+        message: Error('Room exists'),
+      },
     });
   });
 
@@ -98,10 +101,13 @@ describe('Room CRUD', () => {
     expect(userSocket.emit).toHaveBeenCalledWith(
       'createRoomSuccess',
       {
-        message: {
-          uuid: '867',
-          roomUuid: 'room-name',
-          userCount: 0,
+        status: 'success',
+        data: {
+          room: {
+            uuid: '867',
+            roomUuid: 'room-name',
+            userCount: 0,
+          },
         },
       },
     );
@@ -117,10 +123,12 @@ describe('Room CRUD', () => {
 
     expect(userSocket.emit).toHaveBeenCalledTimes(1);
     expect(userSocket.emit).toHaveBeenCalledWith(
-      'notAddedToRoom',
+      'addedToRoom',
       {
-        status: true,
-        message: 'Room ID is not available',
+        status: 'failure',
+        data: {
+          message: 'Room ID is not available',
+        },
       },
     );
     expect(userSocket.join).toHaveBeenCalledTimes(0);
@@ -157,16 +165,27 @@ describe('Room CRUD', () => {
 
     expect(userSocket.join).toHaveBeenCalledWith('583');
     expect((userSocket.emit as jest.Mock).mock.calls).toEqual([
-      ['addedToRoom', true, '583'],
+      ['addedToRoom', {
+        status: 'success',
+        data: {
+          roomID: '583',
+        },
+      }],
     ]);
     expect(mockedIO.to).toHaveBeenCalledWith('583');
     expect(mockedIO.emit).toHaveBeenCalledWith(
-      'userJoined', expect.objectContaining({
-        user: {
-          id: '123',
-          nickname: null,
+      'userJoined', {
+        status: 'success',
+        data: {
+          userAction: {
+            user: {
+              id: '123',
+              nickname: null,
+            },
+            timestamp: expect.anything(),
+          },
         },
-      }),
+      },
     );
     expect(mockedIO.emit).toHaveBeenCalledWith(
       'updatedRoomInfo',
@@ -207,19 +226,30 @@ describe('Room CRUD', () => {
 
     expect(userSocket.leave).toHaveBeenCalledWith('583');
     expect((userSocket.emit as jest.Mock).mock.calls).toEqual([
-      ['removedFromRoom', true],
-      ['addedToRoom', false, '583'],
+      ['addedToRoom', {
+        status: 'failure',
+        data: {
+          message: 'Removed from room.',
+        },
+      }],
     ]);
     expect(mockedIO.to).toHaveBeenCalledWith('583');
     expect(mockedIO.emit).toHaveBeenNthCalledWith(
       2,
-      'userLeft', expect.objectContaining({
-        user: {
-          id: '123',
-          nickname: null,
+      'userLeft', {
+        status: 'success',
+        data: {
+          userAction: {
+            user: {
+              id: '123',
+              nickname: null,
+            },
+            timestamp: expect.anything(),
+          },
         },
-      }),
+      },
     );
+
     expect(mockedIO.emit).toHaveBeenNthCalledWith(
       1,
       'updatedRoomInfo',

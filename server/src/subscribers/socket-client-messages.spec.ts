@@ -62,9 +62,20 @@ describe('Chat messages', () => {
     expect(mockedIO.to).toHaveBeenCalledWith('782');
     expect(mockedIO.emit).toHaveBeenCalledWith(
       'chatMessage',
-      expect.objectContaining({
-        msg: 'My message',
-      }),
+      {
+        status: 'success',
+        data: {
+          msg: {
+            id: expect.anything(),
+            timestamp: expect.anything(),
+            msg: 'My message',
+            user: {
+              id: '123',
+              nickname: '',
+            },
+          },
+        },
+      },
     );
 
     chatMessage(userSocket, mockedIO);
@@ -72,9 +83,20 @@ describe('Chat messages', () => {
     expect(mockedIO.to).toHaveBeenCalledWith('782');
     expect(mockedIO.emit).toHaveBeenCalledWith(
       'chatMessage',
-      expect.objectContaining({
-        msg: 'My Second Message!',
-      }),
+      {
+        status: 'success',
+        data: {
+          msg: {
+            id: expect.anything(),
+            timestamp: expect.anything(),
+            msg: 'My Second Message!',
+            user: {
+              id: '123',
+              nickname: '',
+            },
+          },
+        },
+      },
     );
   });
 
@@ -95,7 +117,12 @@ describe('Chat messages', () => {
     expect(userSocket.broadcast.to).toHaveBeenCalledWith('89991');
     expect(userSocket.broadcast.emit).toHaveBeenCalledWith(
       'userTyping',
-      true,
+      {
+        status: 'success',
+        data: {
+          isTyping: true,
+        },
+      },
     );
 
     userTyping(userSocket);
@@ -103,7 +130,12 @@ describe('Chat messages', () => {
     expect(userSocket.broadcast.to).toHaveBeenCalledWith('89991');
     expect(userSocket.broadcast.emit).toHaveBeenCalledWith(
       'userTyping',
-      false,
+      {
+        status: 'success',
+        data: {
+          isTyping: false,
+        },
+      },
     );
   });
 });

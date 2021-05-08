@@ -6,11 +6,9 @@ enum Events {
   addUserToRoom = 'addedToRoom',
   updatedRoomInfo = 'updatedRoomInfo',
   socketCreateRoom = 'createRoom',
-  createRoomError = 'createRoomError',
   createRoomSuccess = 'createRoomSuccess',
   socketRequestsRoom = 'addMeToRoom',
   socketRequestsLeaveRoom = 'removeMeFromRoom',
-  socketDeniedRoomAccess = 'notAddedToRoom',
 }
 
 export default Events;

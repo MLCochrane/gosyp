@@ -55,9 +55,12 @@ it('requests room access once room successfully created', () => {
     (event, message) => message,
   );
   (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => cb({
-    message: {
-      uuid: '125f',
-      nickname: 'Rebecca',
+    status: 'success',
+    data: {
+      room: {
+        uuid: '125f',
+        nickname: 'Rebecca',
+      },
     },
   }));
   render(<CreateForm />);

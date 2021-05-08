@@ -13,9 +13,13 @@ export const UserJoined = (): [UserAction] => {
 
   useEffect(() => {
     let mounted = true;
-    socket.on(Events.userJoined, (data: UserAction) => {
+    socket.on(Events.userJoined, (response: ResponseInterface) => {
       if (mounted) {
-        setUser(data);
+        const { status, data } = response;
+        if (status === 'success') {
+          const userData: UserAction = data.userAction as UserAction;
+          setUser(userData);
+        }
       }
     });
     return () => {
@@ -36,9 +40,13 @@ export const UserLeft = (): [UserAction] => {
   });
   useEffect(() => {
     let mounted = true;
-    socket.on(Events.userLeft, (data: UserAction) => {
+    socket.on(Events.userLeft, (response: ResponseInterface) => {
       if (mounted) {
-        setUser(data);
+        const { status, data } = response;
+        if (status === 'success') {
+          const userData: UserAction = data.userAction as UserAction;
+          setUser(userData);
+        }
       }
     });
     return () => {
