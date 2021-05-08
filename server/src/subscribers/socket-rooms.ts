@@ -123,12 +123,17 @@ export function socketLeavesRoom(
       return;
     }
 
-    // If no errors, add the user to the room
+    // If no errors, remove user from room.
     socket.leave(roomID);
 
+    const leaveResponse: ResponseInterface = {
+      status: 'failure',
+      data: {
+        message: 'Removed from room.',
+      },
+    };
     // Tell client they've been removed
-    socket.emit(Events.userRemovedFromRoom, true);
-    socket.emit(Events.addUserToRoom, false, roomID);
+    socket.emit(Events.addUserToRoom, leaveResponse);
 
     await updateRoom(
       Events.userLeft,

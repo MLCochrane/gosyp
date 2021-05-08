@@ -65,12 +65,14 @@ describe('Chat messages', () => {
       {
         status: 'success',
         data: {
-          id: expect.anything(),
-          timestamp: expect.anything(),
-          msg: 'My message',
-          user: {
-            id: '123',
-            nickname: '',
+          msg: {
+            id: expect.anything(),
+            timestamp: expect.anything(),
+            msg: 'My message',
+            user: {
+              id: '123',
+              nickname: '',
+            },
           },
         },
       },
@@ -84,12 +86,14 @@ describe('Chat messages', () => {
       {
         status: 'success',
         data: {
-          id: expect.anything(),
-          timestamp: expect.anything(),
-          msg: 'My Second Message!',
-          user: {
-            id: '123',
-            nickname: '',
+          msg: {
+            id: expect.anything(),
+            timestamp: expect.anything(),
+            msg: 'My Second Message!',
+            user: {
+              id: '123',
+              nickname: '',
+            },
           },
         },
       },
