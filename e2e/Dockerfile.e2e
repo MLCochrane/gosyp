@@ -1,0 +1,13 @@
+# Base Image
+FROM mlcochrane/gosyp-ci:alpha-1
+
+USER circleci
+
+ENV NPM_CONFIG_PREFIX=/home/circleci/.npm-global
+ENV PATH=$PATH:/home/circleci/.npm-global/bin
+WORKDIR /home/circleci/project
+
+COPY . .
+RUN cd /home/circleci/project && CI=true npm install
+
+# CMD ["npm", "run", "test"]

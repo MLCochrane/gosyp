@@ -1,5 +1,29 @@
 version: 2.1
 jobs:
+  e2e:
+    docker:
+      - image: mlcochrane/gosyp-ci:alpha-1
+        user: root # Maybe we just need to add circleci user to docker group in base image?
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Check for dirs
+          command: |
+            echo $(ls -l)
+      - run:
+          name: Updating env for docker
+          command: mv .env.example .env
+      - run:
+          name: Start docker compose maybe?
+          command: docker-compose up -d
+      - run:
+          name: Waiting for frontend to be ready
+          command: |
+            docker exec mongo-container curl --retry 10 --retry-connrefused http://localhost:8081
+      - run:
+          name: Stoping docker-compose
+          command: docker-compose down
   build:
     # pre-built images: https://circleci.com/docs/2.0/circleci-images/
     docker:
@@ -92,6 +116,7 @@ jobs:
 workflows:
   build-test-and-deploy:
       jobs:
+        - e2e
         - build
         - test-client:
             requires:

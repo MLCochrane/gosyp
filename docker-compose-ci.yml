@@ -18,15 +18,6 @@ services:
     volumes:
       - ./mongo-init:/docker-entrypoint-initdb.d/
 
-  # mongo-express:
-  #   image: mongo-express
-  #   restart: always
-  #   ports:
-  #     - 8081:8081
-  #   environment:
-  #     ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ROOT_USER}
-  #     ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ROOT_PASSWORD}
-
   node:
     container_name: 'gosyp-server'
     build:
@@ -58,3 +49,11 @@ services:
       - "4242"
     ports:
       - "4242:4242"
+
+  puppeteer:
+    container_name: 'puppeteer'
+    stdin_open: true
+    tty: true
+    build:
+      context: ./e2e
+      dockerfile: Dockerfile.e2e
