@@ -5,9 +5,9 @@ USER circleci
 
 ENV NPM_CONFIG_PREFIX=/home/circleci/.npm-global
 ENV PATH=$PATH:/home/circleci/.npm-global/bin
-WORKDIR /home/circleci/project
 
-COPY . .
+WORKDIR /home/circleci/project
+COPY ./package*.json /home/circleci/project/
 RUN cd /home/circleci/project && CI=true npm install
 
-# CMD ["npm", "run", "test"]
+CMD ["bash", "./wait-it-out.sh", "-t", "web:4242", "-c", "npm run test"]

@@ -6,6 +6,8 @@ services:
     image: mongo:latest
     command: [--auth]
     container_name: 'mongo-container'
+    networks:
+      - app-network
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
@@ -18,17 +20,19 @@ services:
     volumes:
       - ./mongo-init:/docker-entrypoint-initdb.d/
 
-  # mongo-express:
-  #   image: mongo-express
-  #   restart: always
-  #   ports:
-  #     - 8081:8081
-  #   environment:
-  #     ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ROOT_USER}
-  #     ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ROOT_PASSWORD}
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ROOT_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ROOT_PASSWORD}
 
   node:
     container_name: 'gosyp-server'
+    networks:
+      - app-network
     build:
       context: ./server
       dockerfile: Dockerfile.backend-dev
@@ -44,6 +48,8 @@ services:
 
   web:
     container_name: 'gosyp-client'
+    networks:
+      - app-network
     stdin_open: true
     tty: true
     depends_on:
@@ -58,3 +64,8 @@ services:
       - "4242"
     ports:
       - "4242:4242"
+
+networks:
+  app-network:
+    driver: bridge
+    name: app-network

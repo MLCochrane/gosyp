@@ -13,8 +13,6 @@ services:
       MONGO_SUPERUSER_USER: ${SUPERUSER_USER}
       MONGO_SUPERUSER_PASSWORD: ${SUPERUSER_PASSWORD}
       MONGO_DB_NAME: ${DB_NAME}
-    ports:
-      - 27017:27017
     volumes:
       - ./mongo-init:/docker-entrypoint-initdb.d/
 
@@ -28,10 +26,6 @@ services:
     volumes:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
-    expose:
-      - "3000"
-    ports:
-      - "3000:3000"
 
   web:
     container_name: 'gosyp-client'
@@ -45,15 +39,15 @@ services:
     volumes:
       - ./client:/usr/src/app
       - /usr/src/app/node_modules
-    expose:
-      - "4242"
-    ports:
-      - "4242:4242"
 
   puppeteer:
     container_name: 'puppeteer'
     stdin_open: true
     tty: true
+    depends_on:
+      - web
+    volumes:
+      - ./e2e:/home/circleci/project
     build:
       context: ./e2e
       dockerfile: Dockerfile.e2e

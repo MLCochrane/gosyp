@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 let url;
 switch (process.env.NODE_ENV) {
   case 'development':
-    url = 'localhost:3000';
+    url = 'node:3000';
     break;
   case 'production':
     url = 'api.gosyp.io';

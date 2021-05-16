@@ -16,11 +16,7 @@ jobs:
           command: mv .env.example .env
       - run:
           name: Start docker compose maybe?
-          command: docker-compose up -d
-      - run:
-          name: Waiting for frontend to be ready
-          command: |
-            docker exec mongo-container curl --retry 10 --retry-connrefused http://localhost:8081
+          command: docker-compose -f docker-compose-ci.yml up -d
       - run:
           name: Stoping docker-compose
           command: docker-compose down

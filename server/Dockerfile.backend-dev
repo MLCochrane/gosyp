@@ -9,7 +9,6 @@ ENV CHOKIDAR_USEPOLLING=true
 
 WORKDIR /usr/src/app
 COPY ./package*.json /usr/src/app/
-COPY . /usr/src/app
 RUN cd /usr/src/app && CI=true npm install
 
 EXPOSE 3000
