@@ -189,7 +189,12 @@ describe('Room CRUD', () => {
     );
     expect(mockedIO.emit).toHaveBeenCalledWith(
       'updatedRoomInfo',
-      { roomDetails },
+      {
+        status: 'success',
+        data: {
+          roomDetails,
+        },
+      },
     );
   });
 
@@ -253,7 +258,12 @@ describe('Room CRUD', () => {
     expect(mockedIO.emit).toHaveBeenNthCalledWith(
       1,
       'updatedRoomInfo',
-      { roomDetails },
+      {
+        status: 'success',
+        data: {
+          roomDetails,
+        },
+      },
     );
   });
 });

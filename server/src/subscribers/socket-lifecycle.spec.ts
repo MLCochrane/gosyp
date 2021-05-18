@@ -71,7 +71,10 @@ describe('Room lifecycle', () => {
     expect(mockedIO.emit).toHaveBeenCalledWith(
       'updatedRoomInfo',
       {
-        roomDetails: roomDetailsStub,
+        status: 'success',
+        data: {
+          roomDetails: roomDetailsStub,
+        },
       },
     );
     expect(mockedIO.emit).toHaveBeenCalledWith(

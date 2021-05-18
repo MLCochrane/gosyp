@@ -1,6 +1,8 @@
 # Base Image
 FROM node:latest
 
+USER node
+
 ENV NODE_ENV=development
 ENV PORT=4242
 ENV CHOKIDAR_USEPOLLING=true
