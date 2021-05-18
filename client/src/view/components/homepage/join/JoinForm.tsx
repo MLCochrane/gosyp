@@ -7,13 +7,13 @@ import {
   string,
 } from 'yup';
 import { socket } from 'api';
-import { NotAddedToRoom } from 'view/components/lib/events/rooms';
+import { HasAddedToRoom } from 'view/components/lib/events/rooms';
 import Events from 'view/components/lib/events/eventTypes';
 import Form from 'view/components/lib/forms/Form';
 
 const JoinForm = (): JSX.Element => {
   const [prePopulateId, setPrePopulateId] = useState('');
-  const [notAddedToRoom] = NotAddedToRoom();
+  const [addedToRoom, , message] = HasAddedToRoom();
 
   useEffect(() => {
     const [roomIdParam] = window.location.search.slice(1).split('&').map((el) => {
@@ -56,7 +56,7 @@ const JoinForm = (): JSX.Element => {
       }
       submissionCallback={ handleClick }
       wasSuccess={ false }
-      wasError={ notAddedToRoom }
+      wasError={ !addedToRoom && message !== '' }
       schema={ schema }
     />
   );

@@ -71,17 +71,26 @@ describe('Room lifecycle', () => {
     expect(mockedIO.emit).toHaveBeenCalledWith(
       'updatedRoomInfo',
       {
-        roomDetails: roomDetailsStub,
+        status: 'success',
+        data: {
+          roomDetails: roomDetailsStub,
+        },
       },
     );
     expect(mockedIO.emit).toHaveBeenCalledWith(
       'userLeft',
-      expect.objectContaining({
-        user: {
-          id: '123',
-          nickname: '',
+      {
+        status: 'success',
+        data: {
+          userAction: {
+            user: {
+              id: '123',
+              nickname: '',
+            },
+            timestamp: expect.anything(),
+          },
         },
-      }),
+      },
     );
   });
 
