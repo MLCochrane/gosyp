@@ -17,10 +17,15 @@ export async function updateRoom(
   const roomDetails = await roomService.UpdateRoomUsers(roomID, addToRoom);
   if (typeof roomDetails === 'boolean') return;
 
+  const updatedRoomResponse: ResponseInterface = {
+    status: 'success',
+    data: {
+      roomDetails,
+    },
+  };
+
   // Send room detail updates to erybody
-  io.to(roomID).emit(Events.updatedRoomInfo, {
-    roomDetails,
-  });
+  io.to(roomID).emit(Events.updatedRoomInfo, updatedRoomResponse);
 
   const userResponse: ResponseInterface = {
     status: 'success',

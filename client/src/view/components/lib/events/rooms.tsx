@@ -72,9 +72,13 @@ export const RoomDetailsUpdated = () : [RoomDetails] => {
 
   useEffect(() => {
     let mounted = true;
-    socket.on(Events.updatedRoomInfo, ({ roomDetails }: { roomDetails: RoomDetails }) => {
+    socket.on(Events.updatedRoomInfo, (response: ResponseInterface) => {
       if (mounted) {
-        setDetails(roomDetails);
+        const { data, status } = response;
+        if (status === 'success') {
+          const roomDetails = data.roomDetails as RoomDetails;
+          setDetails(roomDetails);
+        }
       }
     });
     return () => {

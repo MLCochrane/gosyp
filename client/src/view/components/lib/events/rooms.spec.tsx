@@ -194,26 +194,32 @@ it('returns updated room details', async () => {
   (mockedSocket.on as jest.Mock)
     .mockImplementationOnce((event, cb) => cb(
       {
-        roomDetails: [
-          {
-            name: 'id',
-            value: '1234',
-          },
-        ],
+        status: 'success',
+        data: {
+          roomDetails: [
+            {
+              name: 'id',
+              value: '1234',
+            },
+          ],
+        },
       },
     ))
     .mockImplementationOnce((event, cb) => cb(
       {
-        roomDetails: [
-          {
-            name: 'id',
-            value: '4321',
-          },
-          {
-            name: 'room name',
-            value: 'ChitChat',
-          },
-        ],
+        status: 'success',
+        data: {
+          roomDetails: [
+            {
+              name: 'id',
+              value: '4321',
+            },
+            {
+              name: 'room name',
+              value: 'ChitChat',
+            },
+          ],
+        },
       },
     ));
 

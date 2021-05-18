@@ -17,20 +17,23 @@ const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
 describe('Share link', () => {
   it('creates url with room id', () => {
     (mockedSocket.on as jest.Mock).mockImplementation((event, cb) => cb({
-      roomDetails: [
-        {
-          name: 'ID',
-          value: '123-024',
-        },
-        {
-          name: 'Room Name:',
-          value: 'PopPop',
-        },
-        {
-          name: 'Created at:',
-          value: '12/24/20',
-        },
-      ],
+      status: 'success',
+      data: {
+        roomDetails: [
+          {
+            name: 'ID',
+            value: '123-024',
+          },
+          {
+            name: 'Room Name:',
+            value: 'PopPop',
+          },
+          {
+            name: 'Created at:',
+            value: '12/24/20',
+          },
+        ],
+      },
     }));
 
     render(<ShareLink />);
