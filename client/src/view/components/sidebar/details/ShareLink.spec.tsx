@@ -51,7 +51,6 @@ describe('Share link', () => {
     userEvent.click(screen.getByRole('button', { name: /close alert/i }));
     await waitFor(() => {
       expect(screen.queryByText('Copied to clipboard')).toBeFalsy();
-    // expect(screen.getByText('Copied to clipboard')).not.toBeDefined();
     });
   });
 });

@@ -6,6 +6,7 @@ import {
   Paper,
   Divider,
   Grid,
+  Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import DetailRow from './DetailRow';
@@ -22,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
   },
   divideWrapper: {
     paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
+  title: {
     paddingBottom: theme.spacing(2),
   },
 }));
@@ -79,6 +83,13 @@ const RoomDetails = (): JSX.Element => {
           elevation={ 0 }
           className={ classes.roomDetails }
         >
+          <Typography
+            component="h2"
+            variant="h5"
+            className={ classes.title }
+          >
+            Room Details
+          </Typography>
           { detailList() }
           <Paper
             elevation={ 0 }
@@ -88,6 +99,13 @@ const RoomDetails = (): JSX.Element => {
               variant="middle"
             />
           </Paper>
+          <Typography
+            component="h2"
+            variant="h5"
+            className={ classes.title }
+          >
+            Sharing
+          </Typography>
           <ShareLink />
         </Paper>
       </Grid>

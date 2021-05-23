@@ -6,14 +6,14 @@ import Home from './Home';
 it('renders components', () => {
   render(<Home />);
   expect(screen.getByText('GOSYP')).toBeDefined();
-  expect(screen.getByRole('heading', { level: 5 }).textContent).toBe('Join Room');
+  expect(screen.getByRole('heading', { level: 2 }).textContent).toBe('Join Room');
   expect(screen.getByRole('button', { name: 'No room set up? Create a new room!' })).toBeDefined();
 });
 
 it('switches between the two forms and changes surrounding elements', () => {
   render(<Home />);
   const toggle = screen.getByTestId('toggle-button');
-  const title = screen.getByRole('heading', { level: 5 });
+  const title = screen.getByRole('heading', { level: 2 });
   expect(toggle.textContent).toBe('No room set up? Create a new room!');
   expect(title.textContent).toBe('Join Room');
   userEvent.click(toggle);
