@@ -38,7 +38,8 @@ const TitleBar = (): JSX.Element => {
   }, [details]);
 
   useEffect(() => {
-    if (!inRoom && message === 'Removed from room') {
+    // Checking string feels flaky
+    if (!inRoom) {
       setTitle(siteTitle);
     }
   }, [inRoom, message]);
