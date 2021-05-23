@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
-    textAlign: 'center',
   },
   header: {
     marginBottom: theme.spacing(2),
@@ -25,8 +24,14 @@ const InfoBlock = (): JSX.Element => {
       >
         <Typography
           className={ classes.header }
-          component="p"
+          component="h2"
           variant="h5"
+        >
+          Room Details
+        </Typography>
+        <Typography
+          component="p"
+          variant="h6"
         >
           Not much happening...
         </Typography>

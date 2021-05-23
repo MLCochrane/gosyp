@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { socket } from 'api';
 import Events from 'view/components/lib/events/eventTypes';
 
-export const HasAddedToRoom = () : [boolean, string, string] => {
+export const HasAddedToRoom = () : [addedToRoom: boolean, roomId: string, message: string] => {
   const [addedToRoom, setAddedToRoom] = useState(false);
   const [roomID, setRoomID] = useState('');
   const [message, setMessage] = useState('');

@@ -34,7 +34,7 @@ const DetailRow = ({
       <Grid item>
         <Typography
           variant="h5"
-          component="p"
+          component="h3"
           className={ classes.detailName }
         >
           { `${name}:` }
