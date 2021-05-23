@@ -56,6 +56,7 @@ const Home = (): JSX.Element => {
           GOSYP
         </Typography>
         <Typography
+          component="h2"
           variant="h5"
           className={ classes.welcomeText }
         >

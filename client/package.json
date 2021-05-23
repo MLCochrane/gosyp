@@ -21,7 +21,7 @@
     "yup": "^0.32.9"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
     "build": "react-scripts build && node postbuild.js",
     "watch": "react-scripts test --coverage",
     "test": "react-scripts test --watchAll='false' --maxWorkers=2 --coverage",

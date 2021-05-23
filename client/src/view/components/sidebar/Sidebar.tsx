@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
 import Details from './details/DetailWidget';
 import Burger from './Burger';
+import TitleBar from './TitleBar';
 
 const drawerWidth = 400;
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     [theme.breakpoints.up('lg')]: {
-      background: `linear-gradient(0, transparent, ${theme.palette.background.paper})`,
+      background: theme.palette.background.default,
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },
@@ -63,11 +64,12 @@ const Sidebar = (): JSX.Element => {
   return (
     <>
       <AppBar
-        elevation={ 0 }
+        elevation={ 1 }
         position="fixed"
         className={ classes.appBar }
       >
         <Toolbar>
+          <TitleBar />
           <IconButton
             color="inherit"
             aria-label="open drawer"
