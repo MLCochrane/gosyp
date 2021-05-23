@@ -69,7 +69,6 @@ const Sidebar = (): JSX.Element => {
         className={ classes.appBar }
       >
         <Toolbar>
-          <TitleBar />
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -79,6 +78,7 @@ const Sidebar = (): JSX.Element => {
           >
             <Burger />
           </IconButton>
+          <TitleBar />
         </Toolbar>
       </AppBar>
       <Hidden lgUp implementation="css">
