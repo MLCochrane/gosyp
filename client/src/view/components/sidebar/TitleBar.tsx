@@ -41,7 +41,7 @@ const TitleBar = (): JSX.Element => {
     if (!inRoom && message === 'Removed from room') {
       setTitle(siteTitle);
     }
-  }, [inRoom]);
+  }, [inRoom, message]);
 
   return (
     <Typography

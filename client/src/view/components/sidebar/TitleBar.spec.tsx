@@ -42,6 +42,12 @@ it('displays title based on room detail name', () => {
     .mockImplementationOnce((event, cb) => cb({
       status: 'success',
       data: {
+        roomID: '12151',
+      },
+    }))
+    .mockImplementationOnce((event, cb) => cb({
+      status: 'success',
+      data: {
         roomDetails: [
           {
             name: 'ID',
@@ -57,6 +63,12 @@ it('displays title based on room detail name', () => {
           },
         ],
       },
+    }))
+    .mockImplementationOnce((event, cb) => cb({
+      status: 'success',
+      data: {
+        roomID: '12151',
+      },
     }));
 
   // First room name
@@ -71,48 +83,63 @@ it('displays title based on room detail name', () => {
 });
 
 it('displays the site title again after leaving a room', () => {
-  (mockedSocket.on as jest.Mock).mockImplementationOnce((event, cb) => {
-    switch (event) {
-      case 'updatedRoomInfo':
-        return cb(
+  (mockedSocket.on as jest.Mock)
+    .mockImplementationOnce((event, cb) => cb({
+      status: 'success',
+      data: {
+        roomDetails: [
           {
-            status: 'success',
-            data: {
-              roomDetails: [
-                {
-                  name: 'ID',
-                  value: '#123-024',
-                },
-                {
-                  name: 'Room Name',
-                  value: 'The Grand Hotel',
-                },
-                {
-                  name: 'Created at',
-                  value: '12/24/20',
-                },
-              ],
-            },
+            name: 'ID',
+            value: '#123-024',
           },
-        );
-      case 'addedToRoom':
-        return cb(
           {
-            status: 'failure',
-            data: {
-              message: 'Removed from room',
-            },
+            name: 'Room Name',
+            value: 'The Grand Hotel',
           },
-        );
-      default:
-        return cb(null);
-    }
-  });
+          {
+            name: 'Created at',
+            value: '12/24/20',
+          },
+        ],
+      },
+    }))
+    .mockImplementationOnce((event, cb) => cb({
+      status: 'success',
+      data: {
+        roomID: '15151f',
+      },
+    }))
+    .mockImplementationOnce((event, cb) => cb({
+      status: 'success',
+      data: {
+        roomDetails: [
+          {
+            name: 'ID',
+            value: '#123-024',
+          },
+          {
+            name: 'Room Name',
+            value: 'The Grand Hotel',
+          },
+          {
+            name: 'Created at',
+            value: '12/24/20',
+          },
+        ],
+      },
+    }))
+    .mockImplementationOnce((event, cb) => cb({
+      status: 'failure',
+      data: {
+        message: 'Removed from room',
+      },
+    }));
 
-  const { rerender } = render(<TitleBar />);
+  const { unmount } = render(<TitleBar />);
   expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('Room Name: The Grand Hotel');
 
-  // Second room name
-  rerender(<TitleBar />);
+  unmount();
+
+  render(<TitleBar />);
   expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('gosyp.io');
 });
