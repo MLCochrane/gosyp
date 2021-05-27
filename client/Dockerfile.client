@@ -1,0 +1,17 @@
+# Base Image
+FROM node:latest
+
+USER node
+
+ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
+ENV PATH=$PATH:/home/node/.npm-global/bin
+ENV NODE_ENV=development
+# ENV PORT=4242
+ENV CHOKIDAR_USEPOLLING=true
+
+WORKDIR /usr/src/app
+COPY ./package*.json /usr/src/app/
+RUN cd /usr/src/app && CI=true npm install
+
+# EXPOSE 4242
+CMD ["npm", "run", "start"]

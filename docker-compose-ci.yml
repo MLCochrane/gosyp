@@ -20,7 +20,7 @@ services:
     container_name: 'gosyp-server'
     build:
       context: ./server
-      dockerfile: Dockerfile.backend-dev
+      dockerfile: Dockerfile.server
     depends_on:
       - mongo
     volumes:
@@ -35,7 +35,7 @@ services:
       - node
     build:
       context: ./client
-      dockerfile: Dockerfile.frontend-dev
+      dockerfile: Dockerfile.client
     volumes:
       - ./client:/usr/src/app
       - /usr/src/app/node_modules
