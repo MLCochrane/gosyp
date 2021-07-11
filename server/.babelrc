@@ -16,10 +16,7 @@
       }
     ],
     [
-      "@babel/proposal-class-properties",
-      {
-        "loose": true
-      }
+      "@babel/proposal-class-properties"
     ]
   ]
 }
