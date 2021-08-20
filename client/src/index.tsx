@@ -9,7 +9,7 @@ import {
 import store from './store';
 import App from './view/App';
 
-import './scss/theme.scss';
+import './reset.css';
 
 const theme = responsiveFontSizes(createTheme({
   typography: {
