@@ -49,7 +49,7 @@ const Form = (): JSX.Element => {
   };
 
   return (
-    <div className="form-wrapper chat__component">
+    <div className="form-wrapper">
       <form
         className={ classes.form }
         onSubmit={ formSubmit }

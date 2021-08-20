@@ -6,6 +6,9 @@ import {
   useDispatch,
   useSelector,
 } from 'react-redux';
+import {
+  makeStyles,
+} from '@material-ui/core';
 import { addRoomID, setCurrentRoom } from 'store/actions/roomActions';
 import { AppState } from 'store/reducers';
 import Sidebar from './components/sidebar/Sidebar';
@@ -15,7 +18,22 @@ import Room from './components/chat/Room';
 import { HasAddedToRoom } from './components/lib/events/rooms';
 import MobileViewUtility from './components/lib/helpers/MobileViewUtility';
 
+const useStyles = makeStyles(() => ({
+  appBase: {
+    position: 'relative',
+    width: '100%',
+    height: '100vh',
+    zIndex: 0,
+  },
+  pageContent: {
+    display: 'flex',
+    width: '100%',
+    height: '100%',
+  },
+}));
+
 const App = (): JSX.Element => {
+  const classes = useStyles();
   const [addedToRoom, roomID] = HasAddedToRoom();
   const { needsResize, appHeight } = useSelector((state: AppState) => state.global);
   const [mobileStyle, setMobileStyle] = useState({});
@@ -38,10 +56,10 @@ const App = (): JSX.Element => {
 
   return (
     <div
-      className="app"
+      className={ classes.appBase }
       style={ mobileStyle }
     >
-      <div className="page-content">
+      <div className={ classes.pageContent }>
         <Sidebar />
         <SwitchView
           trigger={ addedToRoom }
