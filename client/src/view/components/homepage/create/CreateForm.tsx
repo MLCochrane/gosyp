@@ -15,7 +15,7 @@ const CreateForm = (): JSX.Element => {
     if (status === 'success') {
       socket.emit(Events.socketRequestsRoom, roomSuccess);
     }
-  }, [roomSuccess]);
+  }, [status, roomSuccess]);
 
   const handleClick = (body: FormBody) => {
     socket.emit(Events.socketCreateRoom, body);
