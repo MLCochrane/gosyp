@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import io, { Socket } from 'socket.io-client';
+import io from 'socket.io-client';
 import {
   HasAddedToRoom,
   CreateRoomSuccess,
@@ -15,7 +15,7 @@ jest.mock('socket.io-client', () => {
 });
 
 const mockedIO = io as jest.Mocked<typeof io>;
-const mockedSocket = mockedIO() as jest.Mocked<typeof Socket>;
+const mockedSocket = mockedIO();
 
 it('returns room status and id when added to room', async () => {
   (mockedSocket.on as jest.Mock)

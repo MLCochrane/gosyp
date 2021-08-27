@@ -25,16 +25,11 @@ export default function reducer(state = {
       };
     }
     case 'LEAVE_ROOM': {
-      const actionRoom = action.roomID;
-      let clearCurrent = false;
-      if (actionRoom === state.currentRoom) {
-        clearCurrent = true;
-      }
       const roomsCopy: {[key: string]: string} = { ...state.rooms };
-      delete roomsCopy[actionRoom];
+      delete roomsCopy[action.roomID];
       return {
         ...state,
-        currentRoom: clearCurrent ? '' : state.currentRoom,
+        currentRoom: action.roomID === state.currentRoom ? '' : state.currentRoom,
         rooms: roomsCopy,
       };
     }

@@ -81,7 +81,7 @@ const Sidebar = (): JSX.Element => {
           <TitleBar />
         </Toolbar>
       </AppBar>
-      <Hidden lgUp implementation="css">
+      <Hidden lgUp>
         <Drawer
           variant="temporary"
           anchor="left"
@@ -109,7 +109,7 @@ const Sidebar = (): JSX.Element => {
           <Details />
         </Drawer>
       </Hidden>
-      <Hidden mdDown implementation="css">
+      <Hidden mdDown>
         <div className={ classes.drawer }>
           <Drawer
             classes={ {
