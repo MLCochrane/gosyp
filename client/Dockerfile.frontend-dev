@@ -10,8 +10,8 @@ ENV NODE_ENV=development
 ENV CHOKIDAR_USEPOLLING=true
 
 WORKDIR /usr/src/app
-COPY ./package*.json /usr/src/app/
-RUN cd /usr/src/app && CI=true npm install
+COPY ./package*.json ./
+RUN CI=true npm install
 
 # EXPOSE 4242
 CMD ["npm", "run", "start"]

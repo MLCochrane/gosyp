@@ -6,13 +6,13 @@ USER node
 ENV NODE_ENV=development
 ENV PORT=3000
 ENV CHOKIDAR_USEPOLLING=true
+ENV FRONTEND_URL="http://web:80"
 
 WORKDIR /usr/src/app
-COPY ./package*.json /usr/src/app/
-RUN cd /usr/src/app && CI=true npm install
+COPY ./package*.json ./
+RUN CI=true npm install
+
+COPY . ./
 
 EXPOSE 3000
 CMD ["npm", "run", "start"]
-
-# build the image with this command
-# docker build --tag [repo-name]:[tag] -f Dockerfile.backend .

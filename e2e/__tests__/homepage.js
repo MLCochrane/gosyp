@@ -8,7 +8,7 @@ describe('/ (Home Page)', () => {
       height: 1080
     });
 
-    await page.goto('http://web:4242');
+    await page.goto('http://web:80');
   });
 
   afterAll(async () => {

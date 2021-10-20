@@ -23,9 +23,6 @@ services:
       dockerfile: Dockerfile.server
     depends_on:
       - mongo
-    volumes:
-      - ./server:/usr/src/app
-      - /usr/src/app/node_modules
 
   web:
     container_name: 'gosyp-client'
@@ -33,12 +30,12 @@ services:
     tty: true
     depends_on:
       - node
+    ports:
+      - "4242:80"
+
     build:
       context: ./client
       dockerfile: Dockerfile.client
-    volumes:
-      - ./client:/usr/src/app
-      - /usr/src/app/node_modules
 
   puppeteer:
     container_name: 'puppeteer'
@@ -46,8 +43,13 @@ services:
     tty: true
     depends_on:
       - web
-    volumes:
-      - ./e2e:/home/circleci/project
     build:
       context: ./e2e
       dockerfile: Dockerfile.e2e
+
+
+# TODO
+# - find better method of setting env vars throughout
+#   - goes for both secrets and urls
+#   - urls need to swap between localhost for dev and their container name when testing
+# - revisit puppeteer image and see if it can be optimized
