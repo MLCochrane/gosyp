@@ -17,6 +17,7 @@ jobs:
       - run:
           name: Start docker compose maybe?
           command: docker-compose -f docker-compose-ci.yml up -d
+      # store test results somewhere in here...???
       - run:
           name: Stoping docker-compose
           command: docker-compose down
@@ -112,7 +113,6 @@ jobs:
 workflows:
   build-test-and-deploy:
       jobs:
-        - e2e
         - build
         - test-client:
             requires:

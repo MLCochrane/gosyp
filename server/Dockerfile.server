@@ -6,13 +6,15 @@ USER node
 ENV NODE_ENV=development
 ENV PORT=3000
 ENV CHOKIDAR_USEPOLLING=true
-ENV FRONTEND_URL="http://web:80"
 
 WORKDIR /usr/src/app
 COPY ./package*.json ./
 RUN CI=true npm install
 
 COPY . ./
+
+ARG FRONTEND_URL
+ENV FRONTEND_URL="${FRONTEND_URL}"
 
 EXPOSE 3000
 CMD ["npm", "run", "start"]

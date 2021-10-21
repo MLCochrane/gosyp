@@ -12,6 +12,8 @@ while [[ "$#" -gt 0 ]]; do
     shift
 done
 
+echo ${target}
+
 until $(curl --output /dev/null --silent --head --fail ${target}); do
     if [ ${attempt_counter} -eq ${max_attempts} ];then
       echo "Max attempts reached"

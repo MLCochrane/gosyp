@@ -18,11 +18,13 @@ services:
 
   node:
     container_name: 'gosyp-server'
+    depends_on:
+      - mongo
     build:
       context: ./server
       dockerfile: Dockerfile.server
-    depends_on:
-      - mongo
+      args:
+        FRONTEND_URL: ${FRONTEND_URL}
 
   web:
     container_name: 'gosyp-client'
@@ -32,7 +34,6 @@ services:
       - node
     ports:
       - "4242:80"
-
     build:
       context: ./client
       dockerfile: Dockerfile.client
@@ -46,6 +47,10 @@ services:
     build:
       context: ./e2e
       dockerfile: Dockerfile.e2e
+      args:
+        FRONTEND_URL: ${FRONTEND_URL}
+    volumes:
+      - ./e2e/results:/home/circleci/project/results/
 
 
 # TODO

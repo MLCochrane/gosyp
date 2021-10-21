@@ -12,4 +12,9 @@ RUN CI=true npm install
 COPY setup ./setup
 COPY __tests__ ./__tests__
 
-CMD ["bash", "./wait-it-out.sh", "-t", "web:80", "-c", "npm run test"]
+# Sets the env to our arg in compose so we can use it in CMD at run
+ARG FRONTEND_URL
+ENV FRONTEND_URL=${FRONTEND_URL}
+
+CMD bash ./wait-it-out.sh -t "${FRONTEND_URL}" -c "npm run test"
+

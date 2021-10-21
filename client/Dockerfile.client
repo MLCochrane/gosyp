@@ -5,9 +5,6 @@ USER node
 
 ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
 ENV PATH=$PATH:/home/node/.npm-global/bin
-ENV NODE_ENV=development
-# ENV PORT=4242
-ENV CHOKIDAR_USEPOLLING=true
 
 WORKDIR /usr/src/app
 COPY ./package*.json ./
@@ -15,7 +12,7 @@ RUN CI=true npm install
 
 # Technically moving package*.json files twice, but fine so we don't prematurely invalidate npm install
 COPY . ./
-RUN npm run build
+RUN REACT_APP_IS_DOCKER=true npm run build
 
 # Web Server
 FROM nginx:stable-alpine

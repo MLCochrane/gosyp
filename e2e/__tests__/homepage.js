@@ -9,6 +9,8 @@ describe('/ (Home Page)', () => {
     });
 
     await page.goto('http://web:80');
+     page.on('console', message =>
+      console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))
   });
 
   afterAll(async () => {
