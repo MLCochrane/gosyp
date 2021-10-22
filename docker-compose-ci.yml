@@ -50,7 +50,7 @@ services:
       args:
         FRONTEND_URL: ${FRONTEND_URL}
     volumes:
-      - ./e2e/results:/home/circleci/project/results/
+      - ./e2e/reports:/home/circleci/project/reports/
 
 
 # TODO
