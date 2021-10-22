@@ -5,7 +5,8 @@ jobs:
       - image: cimg/node:14.13.0
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 20.10.7
       - run:
           name: Check for dirs
           command: |
