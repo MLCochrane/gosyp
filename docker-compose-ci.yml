@@ -54,7 +54,4 @@ services:
 
 
 # TODO
-# - find better method of setting env vars throughout
-#   - goes for both secrets and urls
-#   - urls need to swap between localhost for dev and their container name when testing
 # - revisit puppeteer image and see if it can be optimized

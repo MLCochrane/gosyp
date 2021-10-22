@@ -2,8 +2,7 @@ version: 2.1
 jobs:
   e2e:
     docker:
-      - image: mlcochrane/gosyp-ci:alpha-1
-        user: root # Maybe we just need to add circleci user to docker group in base image?
+      - image: cimg/node:14.13.0
     steps:
       - checkout
       - setup_remote_docker
@@ -12,15 +11,19 @@ jobs:
           command: |
             echo $(ls -l)
       - run:
+          name: Make reports folder
+          command: |
+            mkdir -p ~/e2e/reports
+      - run:
           name: Updating env for docker
           command: mv .env.example .env
       - run:
           name: Start docker compose maybe?
-          command: docker-compose -f docker-compose-ci.yml up -d
-      # store test results somewhere in here...???
-      - run:
-          name: Stoping docker-compose
-          command: docker-compose down
+          command: docker-compose -f docker-compose-ci.yml up --exit-code-from puppeteer
+      - store_test_results:
+          path: ~/e2e/reports
+      - store_artifacts:
+          path: ~/e2e/reports
   build:
     # pre-built images: https://circleci.com/docs/2.0/circleci-images/
     docker:
@@ -114,6 +117,7 @@ workflows:
   build-test-and-deploy:
       jobs:
         - build
+        - e2e
         - test-client:
             requires:
               - build
