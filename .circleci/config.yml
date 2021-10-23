@@ -16,10 +16,6 @@ jobs:
           command: |
             mkdir -p ~/e2e/reports
       - run:
-          name: Open permissions
-          command: |
-            chmod -R 777 ./e2e ./client ./server
-      - run:
           name: Updating env for docker
           command: mv .env.example .env
       - run:

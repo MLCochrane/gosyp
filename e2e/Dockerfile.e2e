@@ -1,20 +1,20 @@
 # Base Image
 FROM mlcochrane/gosyp-ci:alpha-1
 
-USER circleci
-
 ENV NPM_CONFIG_PREFIX=/home/circleci/.npm-global
 ENV PATH=$PATH:/home/circleci/.npm-global/bin
 
-WORKDIR /home/circleci/project
-COPY package*.json wait-it-out.sh jest.config.js ./
+WORKDIR /usr/src/app
+COPY --chown=circleci:circleci package*.json wait-it-out.sh jest.config.js ./
 RUN CI=true npm install
-COPY setup ./setup
-COPY __tests__ ./__tests__
+COPY --chown=circleci:circleci setup ./setup
+COPY --chown=circleci:circleci __tests__ ./__tests__
 
 # Sets the env to our arg in compose so we can use it in CMD at run
 ARG FRONTEND_URL
 ENV FRONTEND_URL=${FRONTEND_URL}
+
+RUN chown -R circleci:circleci .
 
 CMD bash ./wait-it-out.sh -t "${FRONTEND_URL}" -c "npm run test"
 
