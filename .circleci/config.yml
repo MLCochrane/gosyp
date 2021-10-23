@@ -17,7 +17,7 @@ jobs:
       - run:
           name: Start containers
           command: docker-compose -f docker-compose-ci.yml up --build --abort-on-container-exit
-      -run:
+      - run:
           name: Copy test artifacts
           command: docker cp puppeteer:/tmp/artifacts/ ~/reports
       - run:
