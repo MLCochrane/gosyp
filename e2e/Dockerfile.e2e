@@ -1,6 +1,8 @@
 # Base Image
 FROM mlcochrane/gosyp-ci:alpha-1
 
+USER root
+
 WORKDIR /usr/src/app
 COPY package*.json wait-it-out.sh jest.config.js ./
 RUN CI=true npm install
