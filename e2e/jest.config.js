@@ -8,7 +8,7 @@ module.exports = {
       'jest-junit',
       {
         suiteName: 'pupeteer tests',
-        outputFile: '/home/circleci/project/reports/junit.xml',
+        outputFile: '/tmp/artifacts/junit.xml',
       },
     ],
   ],

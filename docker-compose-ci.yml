@@ -32,8 +32,6 @@ services:
     tty: true
     depends_on:
       - node
-    ports:
-      - "4242:80"
     build:
       context: ./client
       dockerfile: Dockerfile.client
@@ -49,9 +47,6 @@ services:
       dockerfile: Dockerfile.e2e
       args:
         FRONTEND_URL: ${FRONTEND_URL}
-    volumes:
-      - ./e2e/results:/usr/src/app/results/
-
 
 # TODO
 # - revisit puppeteer image and see if it can be optimized

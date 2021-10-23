@@ -8,23 +8,25 @@ jobs:
       - setup_remote_docker:
           version: 20.10.7
       - run:
-          name: Check for dirs
-          command: |
-            echo $(ls -l)
-      - run:
           name: Make reports folder
           command: |
-            mkdir -p ~/e2e/reports
+            mkdir -p ~/reports
       - run:
           name: Updating env for docker
           command: mv .env.example .env
       - run:
-          name: Start docker compose maybe?
-          command: docker-compose -f docker-compose-ci.yml up --exit-code-from puppeteer
+          name: Start containers
+          command: docker-compose -f docker-compose-ci.yml up --build --abort-on-container-exit
+      -run:
+          name: Copy test artifacts
+          command: docker cp puppeteer:/tmp/artifacts/ ~/reports
+      - run:
+          name: Stop containers
+          command: docker-compose -f docker-compose-ci.yml down
       - store_test_results:
-          path: ~/e2e/reports
+          path: ~/reports
       - store_artifacts:
-          path: ~/e2e/reports
+          path: ~/reports
   build:
     # pre-built images: https://circleci.com/docs/2.0/circleci-images/
     docker:
