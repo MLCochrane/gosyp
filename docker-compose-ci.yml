@@ -3,7 +3,6 @@ version: '3.7'
 
 services:
   mongo:
-    image: mongo:latest
     command: [--auth]
     container_name: 'mongo-container'
     restart: always
@@ -13,8 +12,8 @@ services:
       MONGO_SUPERUSER_USER: ${SUPERUSER_USER}
       MONGO_SUPERUSER_PASSWORD: ${SUPERUSER_PASSWORD}
       MONGO_DB_NAME: ${DB_NAME}
-    volumes:
-      - ./mongo-init:/docker-entrypoint-initdb.d/
+    build:
+      context: ./mongo-init
 
   node:
     container_name: 'gosyp-server'
