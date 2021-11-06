@@ -122,8 +122,8 @@ workflows:
       jobs:
         - build
         - e2e
-        - test-client:
-        - test-server:
+        - test-client
+        - test-server
         - deploy:
             requires:
               - e2e
