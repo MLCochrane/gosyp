@@ -29,7 +29,6 @@ jobs:
       - store_artifacts:
           path: ~/reports
   build:
-    # pre-built images: https://circleci.com/docs/2.0/circleci-images/
     docker:
       - image: cimg/node:14.13.0
     steps:
