@@ -1,7 +1,5 @@
 # Base Image
-FROM mlcochrane/gosyp-ci:alpha-1
-
-USER root
+FROM mlcochrane/node-pup:1.0
 
 WORKDIR /usr/src/app
 COPY package*.json wait-it-out.sh jest.config.js ./

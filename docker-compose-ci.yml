@@ -1,4 +1,3 @@
-# Use root/example as user/password credentials
 version: '3.7'
 
 services:
@@ -33,8 +32,6 @@ services:
 
   web:
     container_name: 'gosyp-client'
-    stdin_open: true
-    tty: true
     depends_on:
       - node
     build:
@@ -43,8 +40,6 @@ services:
 
   puppeteer:
     container_name: 'puppeteer'
-    stdin_open: true
-    tty: true
     depends_on:
       - web
     build:
@@ -52,6 +47,3 @@ services:
       dockerfile: Dockerfile.e2e
       args:
         FRONTEND_URL: ${FRONTEND_URL}
-
-# TODO
-# - revisit puppeteer image and see if it can be optimized
