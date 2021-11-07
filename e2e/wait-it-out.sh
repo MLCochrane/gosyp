@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Based on answer here: https://stackoverflow.com/a/50583452
+
 attempt_counter=0
 max_attempts=5
 
