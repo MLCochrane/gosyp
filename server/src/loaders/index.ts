@@ -12,6 +12,8 @@ export default async ({
   httpServer: Server;
 }): Promise<void> => {
   const mongoConnection = await mongooseLoader();
+  Logger.info('Mongoose initialized');
+
   const ioServer = await socketLoader({ httpServer });
   Logger.info('SocketIO initialized');
 

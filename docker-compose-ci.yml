@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+  mongo:
+    command: [--auth]
+    container_name: 'mongo-container'
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_SUPERUSER_USER: ${SUPERUSER_USER}
+      MONGO_SUPERUSER_PASSWORD: ${SUPERUSER_PASSWORD}
+      MONGO_DB_NAME: ${DB_NAME}
+    build:
+      context: ./mongo-init
+
+  node:
+    container_name: 'gosyp-server'
+    depends_on:
+      - mongo
+    build:
+      context: ./server
+      dockerfile: Dockerfile.server
+      args:
+        FRONTEND_URL: ${FRONTEND_URL}
+        # Probably shouldn't make a habit of this, but
+        # for the purposes of spinning up the containers
+        # for ephemeral e2e tests in CI this should be fine.
+        MONGO_SUPERUSER_USER: ${SUPERUSER_USER}
+        MONGO_SUPERUSER_PASSWORD: ${SUPERUSER_PASSWORD}
+        MONGO_DB_NAME: ${DB_NAME}
+
+  web:
+    container_name: 'gosyp-client'
+    depends_on:
+      - node
+    build:
+      context: ./client
+      dockerfile: Dockerfile.client
+
+  puppeteer:
+    container_name: 'puppeteer'
+    depends_on:
+      - web
+    build:
+      context: ./e2e
+      dockerfile: Dockerfile.e2e
+      args:
+        FRONTEND_URL: ${FRONTEND_URL}

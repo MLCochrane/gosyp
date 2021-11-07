@@ -8,12 +8,8 @@ ENV PORT=3000
 ENV CHOKIDAR_USEPOLLING=true
 
 WORKDIR /usr/src/app
-COPY ./package*.json /usr/src/app/
-COPY . /usr/src/app
-RUN cd /usr/src/app && CI=true npm install
+COPY ./package*.json ./
+RUN CI=true npm install
 
 EXPOSE 3000
 CMD ["npm", "run", "start"]
-
-# build the image with this command
-# docker build --tag [repo-name]:[tag] -f Dockerfile.backend .

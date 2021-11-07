@@ -1,0 +1,17 @@
+{
+  "name": "gosyp-e2e",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --runInBand"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^26.6.3",
+    "jest-junit": "^13.0.0",
+    "mkdirp": "^1.0.4",
+    "puppeteer": "^9.0.0"
+  }
+}

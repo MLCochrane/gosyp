@@ -1,0 +1,15 @@
+# Base Image
+FROM mlcochrane/node-pup:1.0
+
+WORKDIR /usr/src/app
+COPY package*.json wait-it-out.sh jest.config.js ./
+RUN CI=true npm install
+COPY setup ./setup
+COPY __tests__ ./__tests__
+
+# Sets the env to our arg in compose so we can use it in CMD at run
+ARG FRONTEND_URL
+ENV FRONTEND_URL=${FRONTEND_URL}
+
+CMD bash ./wait-it-out.sh -t "${FRONTEND_URL}" -c "npm run test"
+

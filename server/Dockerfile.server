@@ -1,0 +1,27 @@
+# Base Image
+FROM node:14.13.0
+
+WORKDIR /usr/src/app
+COPY ./package*.json ./tsconfig.json ./.babelrc ./
+RUN CI=true npm install
+
+COPY . ./
+
+RUN npm run build
+
+ARG FRONTEND_URL
+ENV FRONTEND_URL="${FRONTEND_URL}"
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV CHOKIDAR_USEPOLLING=true
+
+ARG MONGO_SUPERUSER_USER
+ARG MONGO_SUPERUSER_PASSWORD
+ARG MONGO_DB_NAME
+
+ENV MONGODB_URI="mongodb://${MONGO_SUPERUSER_USER}:${MONGO_SUPERUSER_PASSWORD}@mongo:27017/${MONGO_DB_NAME}"
+
+RUN echo '' > .env
+
+EXPOSE 3000
+CMD ["npm", "run", "serve"]
