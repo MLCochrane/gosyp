@@ -1,5 +1,8 @@
 import React, { ComponentType } from 'react';
 import {
+  makeStyles,
+} from '@material-ui/core';
+import {
   Transition,
   TransitionGroup,
 } from 'react-transition-group';
@@ -17,19 +20,27 @@ type SwitchViewTypes = {
   useAnimation?: boolean,
 };
 
+const useStyles = makeStyles(() => ({
+  switchWrapper: {
+    flexGrow: 1,
+    height: '100%',
+    overflow: 'hidden',
+  },
+}));
+
 const SwitchView = ({
   trigger,
   current,
   next,
   useAnimation = true,
 }: SwitchViewTypes): JSX.Element => {
+  const classes = useStyles();
   const enterView = (node: Element) => {
     if (useAnimation) {
       const tl = gsap.timeline();
       tl
         .set(node, { autoAlpha: 0, y: 100 }, 0)
         .to(node, { autoAlpha: 1, y: 0, duration: 0.3 }, 0);
-      // .set(node, { clearProps: 'all' }, 0.5);
     }
   };
 
@@ -45,7 +56,7 @@ const SwitchView = ({
   const Next = next;
   return (
     <TransitionGroup
-      className="switch-wrapper"
+      className={ classes.switchWrapper }
     >
       {
         !trigger

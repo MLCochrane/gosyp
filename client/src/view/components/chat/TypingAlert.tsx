@@ -1,12 +1,25 @@
 import React, {
-  useEffect, useState,
+  useEffect,
+  useState,
 } from 'react';
 import {
+  makeStyles,
   Typography,
 } from '@material-ui/core';
 import TypingUpdate from 'view/components/lib/events/typingStatus';
 
+const useStyles = makeStyles((theme) => (
+  {
+    typingStatus: {
+      height: '40px',
+      padding: '10px 0',
+      color: theme.palette.text.secondary,
+    },
+  }
+));
+
 const TypingStatus = (): JSX.Element => {
+  const classes = useStyles();
   const [isTyping] = TypingUpdate();
   const [typingStatus, setTypingStatus] = useState<string>('');
 
@@ -17,8 +30,9 @@ const TypingStatus = (): JSX.Element => {
 
     return () => setTypingStatus('');
   }, [isTyping]);
+
   return (
-    <div className="typing-status chat__component alt-type">
+    <div className={ classes.typingStatus }>
       <Typography>
         { typingStatus }
       </Typography>

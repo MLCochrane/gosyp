@@ -42,6 +42,8 @@ module.exports = {
     'react/jsx-props-no-spreading': 0,
     'react/no-array-index-key': 0,
     'react/button-has-type': 0,
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
     'import/extensions': ['error', 'ignorePackages', {
       js: 'never',
       jsx: 'never',

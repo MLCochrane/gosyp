@@ -3,15 +3,15 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import {
   MuiThemeProvider,
-  createMuiTheme,
   responsiveFontSizes,
+  createTheme,
 } from '@material-ui/core/styles';
 import store from './store';
 import App from './view/App';
 
-import './scss/theme.scss';
+import './reset.css';
 
-const theme = responsiveFontSizes(createMuiTheme({
+const theme = responsiveFontSizes(createTheme({
   typography: {
     h1: {
       fontFamily: 't26-carbon',
